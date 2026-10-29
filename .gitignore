@@ -1,0 +1,6 @@
+.DS_Store
+__pycache__/
+.bridge-cache/
+.env
+node_modules/
+.venv/

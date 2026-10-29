@@ -1,0 +1,3 @@
+## 9. Conclusion
+
+We built Misty, a system that embodies the conceptual blending and enables designers and developers to blend concepts from UI examples into their own work. We operationalized conceptual blending within Misty through a multi-modal AI model—postulating that these models have some capability to interpret and apply conceptual blending. Although imperfect and occasionally uneven in its generation, these models nevertheless demonstrated a remarkable ability to apply blends and even produce surprising and serendipitous results. Participants in our exploratory first-use study were encouraged by Misty’s capabilities. Creativity is a kaleidoscope, and Misty demonstrates the potential for tools that blur the boundaries between developers and designers.

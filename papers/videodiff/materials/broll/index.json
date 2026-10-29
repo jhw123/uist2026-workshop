@@ -1,0 +1,663 @@
+[
+ {
+  "file": "images/chaplin-drawing.jpg",
+  "type": "illustration",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "Charlie Chaplin",
+   "Chaplin"
+  ],
+  "width": 519,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Caricatures_of_some_leading_comedians_in_American_films,_1915.jpg",
+  "title": "Caricatures of some leading comedians in American films, 1915.jpg",
+  "credit": "Caricatures of film actors by various artists of the era.",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/aberdeen.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "Aberdeen",
+   "city"
+  ],
+  "width": 800,
+  "height": 600,
+  "source": "https://commons.wikimedia.org/wiki/File:DSCN3802_West_Church_Of_St_Nicholas_Union_Street_Screen_Wall.jpg",
+  "title": "DSCN3802 West Church Of St Nicholas Union Street Screen Wall.jpg",
+  "credit": "AlasdairW",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/charlie-chaplin.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "Charlie Chaplin",
+   "Chaplin",
+   "silent film"
+  ],
+  "width": 518,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Charlie_Chaplin_in_unknown_year.jpg",
+  "title": "Charlie Chaplin in unknown year.jpg",
+  "credit": "Unknown authorUnknown author",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/cinema-museum.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "cinema museum",
+   "museum",
+   "Kennington",
+   "building"
+  ],
+  "width": 800,
+  "height": 427,
+  "source": "https://commons.wikimedia.org/wiki/File:Exterior_of_Cinema_Museum_lecture,_Kennington,_Lambeth.jpg",
+  "title": "Exterior of Cinema Museum lecture, Kennington, Lambeth.jpg",
+  "credit": "AnonymousUnknown author",
+  "license": "CC0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/cinema-poster.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "poster",
+   "posters",
+   "film"
+  ],
+  "width": 535,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Hunting_in_the_USSR_(3530725667).jpg",
+  "title": "Hunting in the USSR (3530725667).jpg",
+  "credit": "Unknown authorUnknown author",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/cinema-seats.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "seats",
+   "cinema seats",
+   "cinema"
+  ],
+  "width": 800,
+  "height": 601,
+  "source": "https://commons.wikimedia.org/wiki/File:Cinema_Seats_-_geograph.org.uk_-_4896683.jpg",
+  "title": "Cinema Seats - geograph.org.uk - 4896683.jpg",
+  "credit": "Gerald England",
+  "license": "CC BY-SA 2.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/cinema-sign.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "sign",
+   "signs",
+   "cinema"
+  ],
+  "width": 599,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Bridgeport_Village_Regal_Cinemas_-_marquee_and_entrance_(2019).jpg",
+  "title": "Bridgeport Village Regal Cinemas - marquee and entrance (2019).jpg",
+  "credit": "Steve Morgan",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/cinema-usherette.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "usherette",
+   "uniform",
+   "cinema"
+  ],
+  "width": 800,
+  "height": 520,
+  "source": "https://commons.wikimedia.org/wiki/File:Pat_OKeeffe_training_cinema_usherettes_at_Regal_Cinema_1929.png",
+  "title": "Pat OKeeffe training cinema usherettes at Regal Cinema 1929.png",
+  "credit": "Unknown authorUnknown author",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/cinematographe.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "projector",
+   "early cinema",
+   "film"
+  ],
+  "width": 518,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Institut_Lumi%C3%A8re_-_CINEMATOGRAPHE_Camera.jpg",
+  "title": "Institut Lumière - CINEMATOGRAPHE Camera.jpg",
+  "credit": "Victorgrigas",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/film-projector.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "projector",
+   "projectors",
+   "film",
+   "cinema"
+  ],
+  "width": 600,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Strong_Highlight_II_35mm_Film_Projectors_20250624_01.jpg",
+  "title": "Strong Highlight II 35mm Film Projectors 20250624 01.jpg",
+  "credit": "Steven Sun",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/film-reel.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "film reel",
+   "film",
+   "projected film"
+  ],
+  "width": 800,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Film_8_mm_Kodak.jpg",
+  "title": "Film 8 mm Kodak.jpg",
+  "credit": "Lionel Allorge",
+  "license": "CC BY-SA 3.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/film-strip.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "film",
+   "digital",
+   "celluloid"
+  ],
+  "width": 800,
+  "height": 533,
+  "source": "https://commons.wikimedia.org/wiki/File:Used_135_film_cartridges.jpg",
+  "title": "Used 135 film cartridges.jpg",
+  "credit": "Petar Milošević",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/gramophone-record.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "gramophone record",
+   "record",
+   "sound film"
+  ],
+  "width": 676,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Azuma_Ladies%27_Music_Association_-_Gramophone_concert_Record_-_GC_1072.jpg",
+  "title": "Azuma Ladies' Music Association - Gramophone concert Record - GC 1072.jpg",
+  "credit": "AnonymousUnknown author",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/gramophone.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "gramophone",
+   "record",
+   "sound"
+  ],
+  "width": 635,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Edison_and_phonograph_edit2.jpg",
+  "title": "Edison and phonograph edit2.jpg",
+  "credit": "Levin C. Handy (per http://hdl.loc.gov/loc.pnp/cwpbh.04326)",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/lambeth-workhouse.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "workhouse",
+   "building",
+   "1871"
+  ],
+  "width": 800,
+  "height": 600,
+  "source": "https://commons.wikimedia.org/wiki/File:Lambeth_hospital_4.jpg",
+  "title": "Lambeth hospital 4.jpg",
+  "credit": "Secretlondon",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/silent-film-still.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "silent films",
+   "stills",
+   "film"
+  ],
+  "width": 617,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Silent_film_actress_Mary_Hay_(SAYRE_3444).jpg",
+  "title": "Silent film actress Mary Hay (SAYRE 3444).jpg",
+  "credit": "Unknown authorUnknown author",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/teapot.jpg",
+  "type": "photo",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "teapot",
+   "teapots"
+  ],
+  "width": 800,
+  "height": 533,
+  "source": "https://commons.wikimedia.org/wiki/File:Warm_tea_served_in_a_vintage_teapot_by_a_person.jpg",
+  "title": "Warm tea served in a vintage teapot by a person.jpg",
+  "credit": "Shixart1985",
+  "license": "CC BY 2.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "videos/chaplin-film.mp4",
+  "type": "video",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "Charlie Chaplin",
+   "silent film",
+   "film"
+  ],
+  "duration": 6,
+  "source": "https://commons.wikimedia.org/wiki/File:Charlie_Chaplin_%27The_Tramp%27_-_Film_1915.webm",
+  "title": "Charlie Chaplin 'The Tramp' - Film 1915.webm",
+  "credit": "Charlie Chaplin",
+  "license": "Public domain",
+  "changes": "Resized, cut to a 6-second clip without sound"
+ },
+ {
+  "file": "videos/projector-running.mp4",
+  "type": "video",
+  "video": "cinema-museum-tour",
+  "keywords": [
+   "projector",
+   "film",
+   "cinema"
+  ],
+  "duration": 6,
+  "source": "https://commons.wikimedia.org/wiki/File:How_a_Film_Projector_Works.webm",
+  "title": "How a Film Projector Works.webm",
+  "credit": "engineerguy on YouTube",
+  "license": "CC BY 3.0",
+  "changes": "Resized, cut to a 6-second clip without sound"
+ },
+ {
+  "file": "images/celery.jpg",
+  "type": "illustration",
+  "video": "pheasant-howto",
+  "keywords": [
+   "celery",
+   "vegetable",
+   "stock"
+  ],
+  "width": 621,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Everything_for_the_garden_(16828250546).jpg",
+  "title": "Everything for the garden (16828250546).jpg",
+  "credit": "Henry G. Gilbert Nursery and Seed Trade Catalog Collection.; Peter Henderson &amp; Co.",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/pheasant-illustration.jpg",
+  "type": "illustration",
+  "video": "pheasant-howto",
+  "keywords": [
+   "pheasant",
+   "bird"
+  ],
+  "width": 800,
+  "height": 525,
+  "source": "https://commons.wikimedia.org/wiki/File:Nederlandsche_vogelen_(KB)_-_Phasianus_colchicus_(160b).jpg",
+  "title": "Nederlandsche vogelen (KB) - Phasianus colchicus (160b).jpg",
+  "credit": "Cornelius Nozeman / Christiaan Andreas Sepp / Jan Christiaan Sepp / Martinus Houttuyn",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/bouillon-cube.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "bouillon",
+   "stock cube",
+   "can"
+  ],
+  "width": 800,
+  "height": 658,
+  "source": "https://commons.wikimedia.org/wiki/File:Br%C3%BChw%C3%BCrfel-1.jpg",
+  "title": "Brühwürfel-1.jpg",
+  "credit": "Rainer Z ...",
+  "license": "CC BY-SA 3.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/butter.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "butter"
+  ],
+  "width": 800,
+  "height": 600,
+  "source": "https://commons.wikimedia.org/wiki/File:Butter_dish.jpg",
+  "title": "Butter dish.jpg",
+  "credit": "The Digital Pimp",
+  "license": "CC BY 2.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/carrots.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "carrot",
+   "vegetable",
+   "stock"
+  ],
+  "width": 496,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Carrots_of_many_colors.jpg",
+  "title": "Carrots of many colors.jpg",
+  "credit": "Stephen Ausmus",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/cast-iron-skillet.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "cast iron skillet",
+   "skillet",
+   "pan",
+   "sear"
+  ],
+  "width": 800,
+  "height": 379,
+  "source": "https://commons.wikimedia.org/wiki/File:Cast-Iron-Pan.jpg",
+  "title": "Cast-Iron-Pan.jpg",
+  "credit": "Evan-Amos",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/chef-knife.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "knife",
+   "cutting",
+   "breakdown",
+   "butcher"
+  ],
+  "width": 800,
+  "height": 600,
+  "source": "https://commons.wikimedia.org/wiki/File:Chefs_knifes_on_a_wooden_cutting_board.jpg",
+  "title": "Chefs knifes on a wooden cutting board.jpg",
+  "credit": "T. Bjornstad",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/chukar.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "chukar",
+   "partridge",
+   "wild bird"
+  ],
+  "width": 800,
+  "height": 598,
+  "source": "https://commons.wikimedia.org/wiki/File:%D0%9A%D0%B5%D0%BA%D0%BB%D0%B8%D0%BA%D0%B8.jpg",
+  "title": "Кеклики.jpg",
+  "credit": "Максат79",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/elk.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "elk",
+   "game",
+   "meat"
+  ],
+  "width": 800,
+  "height": 533,
+  "source": "https://commons.wikimedia.org/wiki/File:Cervus_canadensis_nannodes_at_Tomales_Point.jpg",
+  "title": "Cervus canadensis nannodes at Tomales Point.jpg",
+  "credit": "Frank Schulenburg",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/mirepoix.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "celery",
+   "carrot",
+   "onion",
+   "stock",
+   "braise"
+  ],
+  "width": 800,
+  "height": 546,
+  "source": "https://commons.wikimedia.org/wiki/File:Mirepoix_on_cutting_board.jpg",
+  "title": "Mirepoix on cutting board.jpg",
+  "credit": "Pigup",
+  "license": "CC BY-SA 3.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/olive-oil.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "olive oil",
+   "oil"
+  ],
+  "width": 604,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:2023_Oliwa_z_oliwek_Garda_DOP_(1).jpg",
+  "title": "2023 Oliwa z oliwek Garda DOP (1).jpg",
+  "credit": "Jacek Halicki",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/onion.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "onion",
+   "vegetable",
+   "stock"
+  ],
+  "width": 600,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Onion_with_sprouts_(cut).JPG",
+  "title": "Onion with sprouts (cut).JPG",
+  "credit": "Animeshkulkarni",
+  "license": "CC BY-SA 3.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/pheasant.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "pheasant",
+   "bird",
+   "wild bird",
+   "game bird"
+  ],
+  "width": 800,
+  "height": 533,
+  "source": "https://commons.wikimedia.org/wiki/File:Common_pheasant_(Phasianus_colchicus)_male_3.jpg",
+  "title": "Common pheasant (Phasianus colchicus) male 3.jpg",
+  "credit": "Charles J. Sharp",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/poultry-breast.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "breast",
+   "meat",
+   "lean",
+   "chicken"
+  ],
+  "width": 800,
+  "height": 533,
+  "source": "https://commons.wikimedia.org/wiki/File:Kycklingfil%C3%A9.jpg",
+  "title": "Kycklingfilé.jpg",
+  "credit": "Dnor",
+  "license": "Public domain",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/quail.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "quail",
+   "bird"
+  ],
+  "width": 800,
+  "height": 533,
+  "source": "https://commons.wikimedia.org/wiki/File:Rain_Quail_in_Bhigwan_August_2025_by_Tisha_Mukherjee_13.jpg",
+  "title": "Rain Quail in Bhigwan August 2025 by Tisha Mukherjee 13.jpg",
+  "credit": "Tisha Mukherjee",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/roasting-pan.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "roasting pan",
+   "braise",
+   "oven"
+  ],
+  "width": 800,
+  "height": 518,
+  "source": "https://commons.wikimedia.org/wiki/File:Oven_roasted_brine-soaked_turkey.jpg",
+  "title": "Oven roasted brine-soaked turkey.jpg",
+  "credit": "TheKohser",
+  "license": "CC BY-SA 3.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/stock-pot.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "stock pot",
+   "stock",
+   "simmer",
+   "soup"
+  ],
+  "width": 600,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Pot_of_chicken_broth.jpg",
+  "title": "Pot of chicken broth.jpg",
+  "credit": "Welches2012",
+  "license": "CC BY 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "images/wild-turkey.jpg",
+  "type": "photo",
+  "video": "pheasant-howto",
+  "keywords": [
+   "wild turkey",
+   "bird",
+   "game"
+  ],
+  "width": 800,
+  "height": 800,
+  "source": "https://commons.wikimedia.org/wiki/File:Male_wild_turkey_(Meleagris_gallopavo)_strutting.jpg",
+  "title": "Male wild turkey (Meleagris gallopavo) strutting.jpg",
+  "credit": "Frank Schulenburg",
+  "license": "CC BY-SA 4.0",
+  "changes": "Resized"
+ },
+ {
+  "file": "videos/pheasant.mp4",
+  "type": "video",
+  "video": "pheasant-howto",
+  "keywords": [
+   "pheasant",
+   "bird",
+   "wild bird"
+  ],
+  "duration": 6,
+  "source": "https://commons.wikimedia.org/wiki/File:Phasianus_colchicus_se_prom%C3%A8ne_dans_un_champ_de_Saint-Maurice-de-Beynost_en_avril_2018.webm",
+  "title": "Phasianus colchicus se promène dans un champ de Saint-Maurice-de-Beynost en avril 2018.webm",
+  "credit": "Benoît Prieur",
+  "license": "CC0",
+  "changes": "Resized, cut to a 6-second clip without sound"
+ },
+ {
+  "file": "videos/sizzling-pan.mp4",
+  "type": "video",
+  "video": "pheasant-howto",
+  "keywords": [
+   "skillet",
+   "pan",
+   "sear",
+   "cooking"
+  ],
+  "duration": 6,
+  "source": "https://commons.wikimedia.org/wiki/File:Sassermaet_frying.webm",
+  "title": "Sassermaet frying.webm",
+  "credit": "WhirlieWheeter",
+  "license": "CC BY 4.0",
+  "changes": "Resized, cut to a 6-second clip without sound"
+ }
+]
