@@ -1,28 +1,29 @@
 html, body, #root { height: 100%; margin: 0; }
-body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+body { font-family: Inter, -apple-system, system-ui, "Segoe UI", sans-serif; background: #f6f5fb; color: #1f1d2b; }
 
-/* The rendered UI lives in a phone-sized frame: make viewport units mean the frame. */
-.misty-frame .min-h-screen { min-height: 100% !important; }
-.misty-frame .h-screen { height: 100% !important; }
-.misty-frame .w-screen { width: 100% !important; }
-.misty-frame .misty-live { min-height: 100%; position: relative; }
-.misty-frame .misty-live > * { min-height: 100%; }
-
-/* Drop target highlight while dragging an example section (Section 4.2.1). */
-@keyframes misty-pulse {
-  0%, 100% { box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.95), 0 0 0 6px rgba(124, 58, 237, 0.25); background: rgba(139, 92, 246, 0.18); }
-  50% { box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.95), 0 0 0 12px rgba(124, 58, 237, 0.08); background: rgba(139, 92, 246, 0.32); }
+/* Drop-target highlight: shown on the element under the cursor while a cropped
+   example section is dragged over a source UI (paper §4.2.1). */
+[data-misty-hover] {
+  box-shadow: inset 0 0 0 9999px rgba(167, 139, 250, 0.28), 0 0 0 3px #8b5cf6 !important;
+  border-radius: 6px;
+  animation: misty-pulse 0.9s ease-in-out infinite;
+  transition: box-shadow 0.12s;
 }
-.misty-hl { animation: misty-pulse 1s ease-in-out infinite; transition: all 120ms ease-out; }
-.misty-hl-similar { outline: 2px dashed rgba(124, 58, 237, 0.6); background: rgba(139, 92, 246, 0.08); transition: all 120ms ease-out; }
+@keyframes misty-pulse {
+  50% { box-shadow: inset 0 0 0 9999px rgba(167, 139, 250, 0.12), 0 0 0 3px rgba(139, 92, 246, 0.45) !important; }
+}
 
-/* Handles: a bar on the example node's right edge, a tall drop zone on source nodes' left edge. */
-.react-flow__handle.misty-handle-out { width: 10px; height: 46px; border-radius: 4px; background: #818cf8; border: 2px solid #eef2ff; right: -6px; }
-.react-flow__handle.misty-handle-out:hover { background: #4f46e5; }
-.react-flow__handle.misty-handle-in { width: 10px; height: 46px; border-radius: 4px; background: #c4b5fd; border: 2px solid #f5f3ff; left: -6px; }
-.react-flow__handle.misty-handle-hidden { opacity: 0; pointer-events: none; }
-.react-flow__handle.connectingto, .react-flow__handle.valid { background: #22c55e !important; }
-.react-flow__node { cursor: default; }
-.react-flow__node.dragging { cursor: grabbing; }
-.react-flow__edge-textbg { rx: 4; }
-.cm-editor { height: 100%; }
+/* the rendered phone screen: contains fixed/absolute elements of generated UIs */
+.misty-screen { transform: translateZ(0); }
+.misty-screen::-webkit-scrollbar { width: 6px; }
+.misty-screen::-webkit-scrollbar-thumb { background: #d4d0e6; border-radius: 3px; }
+
+.react-flow__handle.misty-bar { width: 10px; height: 64px; border-radius: 6px; border: 2px solid #fff; background: #8b8fc7; }
+.react-flow__handle.misty-bar:hover { background: #6d5bd0; }
+.react-flow__edge-textbg { fill: #f6f5fb; }
+.react-flow__edge-text { fill: #5b4fa8; font-size: 12px; }
+
+.misty-spin { animation: misty-rot 1s linear infinite; }
+@keyframes misty-rot { to { transform: rotate(360deg); } }
+
+.misty-code pre, .misty-code textarea { font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important; font-size: 12.5px !important; line-height: 1.55 !important; }

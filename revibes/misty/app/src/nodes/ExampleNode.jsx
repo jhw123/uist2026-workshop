@@ -1,176 +1,141 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Handle, Position } from "@xyflow/react";
-import { Undo2, Check, GripVertical, X, Crop, Hand } from "lucide-react";
-import { useMisty } from "../context.js";
-import { cropDataUrl } from "../lib/images.js";
+import { Undo2, Check, Trash2, Hand } from "lucide-react";
+import { useMisty } from "../lib/context.js";
+import { cropImage, loadImage } from "../lib/image.js";
+import { DRAG_MIME, setDrag } from "../lib/dragState.js";
 
-const W = 300;
+const clamp = (v) => Math.max(0, Math.min(1, v));
 
-/**
- * Example node (A in Figure 1): an uploaded screenshot or sketch. Draw a rectangle to select
- * a section; Done crops it so it can be dragged onto a source node. Connect the handle on
- * the right to a source node for global blending.
- */
+// Example node (Figure 1 A): an uploaded screenshot or sketch. Connect its handle
+// to a source node for a global blend, or draw a box around a section, press
+// Done, and drag the section onto part of a source UI for a targeted blend.
 export default function ExampleNode({ id, data, selected }) {
-  const misty = useMisty();
-  const imgRef = useRef(null);
-  const [draft, setDraftState] = useState(null); // selection being drawn, fractions
-  const draftRef = useRef(null);
-  const setDraft = (d) => {
-    draftRef.current = d;
-    setDraftState(d);
-  };
+  const m = useMisty();
+  const boxRef = useRef(null);
   const start = useRef(null);
-  const sel = draft || data.selection || null;
-  const confirmed = !!data.crop && !draft;
-  const cropImg = useRef(null);
-  const wholeImg = useRef(null);
+  const crop = useRef(null);
+  const [sel, setSel] = useState(null);
+  const [mode, setMode] = useState("none"); // none | drawing | pending | ready
 
   const frac = (e) => {
-    const r = imgRef.current.getBoundingClientRect();
-    return {
-      x: Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)),
-      y: Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)),
-    };
+    const r = boxRef.current.getBoundingClientRect();
+    return { x: clamp((e.clientX - r.left) / r.width), y: clamp((e.clientY - r.top) / r.height) };
   };
+  const inside = (p) => sel && p.x >= sel.x && p.x <= sel.x + sel.w && p.y >= sel.y && p.y <= sel.y + sel.h;
 
   const onPointerDown = (e) => {
     if (e.button !== 0) return;
-    e.stopPropagation();
+    if (mode === "ready" && inside(frac(e))) return; // let the HTML5 drag start
+    e.preventDefault();
+    start.current = frac(e);
+    setSel({ ...start.current, w: 0, h: 0 });
+    setMode("drawing");
     e.currentTarget.setPointerCapture(e.pointerId);
-    const p = frac(e);
-    start.current = p;
-    setDraft({ x: p.x, y: p.y, w: 0, h: 0 });
   };
   const onPointerMove = (e) => {
-    if (!start.current) return;
-    const p = frac(e);
-    const s = start.current;
-    setDraft({ x: Math.min(s.x, p.x), y: Math.min(s.y, p.y), w: Math.abs(p.x - s.x), h: Math.abs(p.y - s.y) });
+    if (mode !== "drawing") return;
+    const p = frac(e), s = start.current;
+    setSel({ x: Math.min(s.x, p.x), y: Math.min(s.y, p.y), w: Math.abs(p.x - s.x), h: Math.abs(p.y - s.y) });
   };
   const onPointerUp = () => {
-    if (!start.current) return;
-    start.current = null;
-    const d = draftRef.current;
-    setDraft(null);
-    if (d && d.w >= 0.02 && d.h >= 0.01) misty.updateNode(id, { selection: d, crop: null });
+    if (mode !== "drawing") return;
+    if (!sel || sel.w < 0.03 || sel.h < 0.015) {
+      setSel(null);
+      setMode("none");
+    } else setMode("pending");
   };
 
   const done = async () => {
-    if (!data.selection) return;
-    const url = await cropDataUrl(data.imageUrl, data.selection);
-    misty.updateNode(id, { crop: url });
+    if (!sel) return;
+    const c = await cropImage(data.src, sel);
+    c.img = await loadImage(c.thumb);
+    crop.current = c;
+    setMode("ready");
   };
-  const undo = () => misty.updateNode(id, { selection: null, crop: null });
+  const undo = () => {
+    setSel(null);
+    setMode("none");
+    crop.current = null;
+  };
 
-  const startDrag = (e, whole) => {
-    const url = whole ? data.imageUrl : data.crop;
-    misty.beginDrag({ exampleId: id, imageUrl: url, whole });
-    e.dataTransfer.setData("application/x-misty-example", id);
+  const onDragStart = (e) => {
+    if (!crop.current) return e.preventDefault();
+    e.stopPropagation();
+    e.dataTransfer.setData(DRAG_MIME, id);
     e.dataTransfer.effectAllowed = "copy";
-    const ghost = whole ? wholeImg.current : cropImg.current;
-    if (ghost?.complete) {
-      try {
-        e.dataTransfer.setDragImage(ghost, 24, 24);
-      } catch {}
-    }
+    e.dataTransfer.setDragImage(crop.current.img, 24, 24);
+    setDrag({ exampleId: id, exampleTitle: data.title, crop: crop.current.url, thumb: crop.current.thumb });
   };
+
+  const hint = {
+    none: "Draw a box around a section to blend it, or connect the handle to a source for a global blend.",
+    drawing: "Release to finish the selection.",
+    pending: "Press Done to use this section, or Undo.",
+    ready: "Drag the selected section onto part of a source UI.",
+  }[mode];
 
   return (
     <div
-      className={`rounded-xl bg-indigo-50/95 border ${selected ? "border-indigo-500 ring-2 ring-indigo-300" : "border-indigo-200"} shadow-lg`}
-      style={{ width: W + 24 }}
+      className={`relative w-[300px] rounded-md border-t-[5px] border-[#b9c2e6] bg-[#e6e9f7] px-5 pb-4 pt-2 shadow-[0_2px_10px_rgba(60,60,120,0.10)] ${
+        selected ? "ring-2 ring-indigo-400" : "ring-1 ring-[#d6dbf0]"
+      }`}
     >
-      <div className="flex items-center gap-1 px-3 pt-2 pb-1">
-        <div className="flex-1 text-center">
-          <div className="text-[15px] font-medium text-indigo-950">Reference Example</div>
-          <div className="text-[11px] text-indigo-700/70 truncate" title={data.name}>
-            {data.name}
-          </div>
-        </div>
-        <button
-          className="nodrag p-1 text-indigo-400 hover:text-red-600"
-          title="Delete this example"
-          onClick={() => misty.deleteNode(id)}
-        >
-          <X size={14} />
+      <div className="flex items-center gap-2">
+        <input
+          className="nodrag min-w-0 flex-1 rounded bg-transparent px-1 text-[12px] font-medium text-[#6870a8] outline-none focus:bg-white"
+          value={data.title || ""}
+          onChange={(e) => m.patchNode(id, { title: e.target.value })}
+        />
+        <button title="Delete node" onClick={() => m.deleteNode(id)} className="nodrag rounded p-1 text-[#9aa1cf] hover:bg-white hover:text-red-500">
+          <Trash2 className="h-3.5 w-3.5" />
         </button>
       </div>
-
-      <div className="px-3 pb-2">
-        <div
-          className="nodrag nopan relative select-none cursor-crosshair overflow-hidden rounded-lg bg-white shadow-sm"
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-        >
-          <img ref={imgRef} src={data.imageUrl} draggable={false} className="block w-full" alt={data.name} />
-          {sel && (
-            <div
-              className={`absolute border-2 border-dashed ${confirmed ? "border-indigo-600 bg-indigo-500/15 cursor-grab" : "border-indigo-500 bg-indigo-400/10"}`}
-              style={{ left: `${sel.x * 100}%`, top: `${sel.y * 100}%`, width: `${sel.w * 100}%`, height: `${sel.h * 100}%` }}
-              draggable={confirmed}
-              onPointerDown={(e) => confirmed && e.stopPropagation()}
-              onDragStart={(e) => startDrag(e, false)}
-              onDragEnd={() => misty.endDrag()}
-              title={confirmed ? "Drag this section onto a Code Render" : ""}
-            >
-              {confirmed && (
-                <div className="absolute -right-2 -bottom-2 rounded-full bg-indigo-600 p-1 text-white shadow">
-                  <Hand size={12} />
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-        <img ref={wholeImg} src={data.imageUrl} alt="" className="fixed -left-[9999px] top-0 w-[110px]" />
-        {data.crop && <img ref={cropImg} src={data.crop} alt="" className="fixed -left-[9999px] top-0 max-w-[180px]" />}
-
-        <div className="mt-2 flex items-center justify-center gap-2">
-          {!data.selection ? (
-            <>
-              <span className="text-[11px] text-indigo-800/70 flex items-center gap-1">
-                <Crop size={12} /> Draw on the image to select a section
-              </span>
-            </>
-          ) : (
-            <>
-              <button
-                className="nodrag flex items-center gap-1 rounded-md bg-indigo-400/80 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
-                onClick={undo}
-              >
-                <Undo2 size={13} /> Undo
-              </button>
-              <button
-                className={`nodrag flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-medium text-white ${data.crop ? "bg-indigo-700" : "bg-indigo-400/80 hover:bg-indigo-500"}`}
-                onClick={done}
-              >
-                <Check size={13} /> Done
-              </button>
-            </>
-          )}
-        </div>
-        <div className="mt-1.5 flex items-center justify-center">
+      <h3 className="mb-2 text-center text-[15px] font-semibold text-[#3d4785]">Reference Example</h3>
+      <div
+        ref={boxRef}
+        className="nodrag relative mx-auto w-[240px] cursor-crosshair select-none overflow-hidden rounded-md bg-white shadow-sm"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+      >
+        <img src={data.src} draggable={false} className="pointer-events-none block w-full" />
+        {sel && (
           <div
-            className="nodrag flex cursor-grab items-center gap-1 rounded-md px-2 py-1 text-[11px] text-indigo-700 hover:bg-indigo-100"
-            draggable
-            onDragStart={(e) => startDrag(e, true)}
-            onDragEnd={() => misty.endDrag()}
-            title="Drag the whole screen onto a section of a Code Render"
+            draggable={mode === "ready"}
+            onDragStart={onDragStart}
+            onDragEnd={() => setTimeout(() => setDrag(null), 0)}
+            className={`absolute border-2 border-dashed ${
+              mode === "ready" ? "cursor-grab border-indigo-600 bg-indigo-400/20 active:cursor-grabbing" : "border-indigo-500 bg-indigo-300/20"
+            }`}
+            style={{ left: `${sel.x * 100}%`, top: `${sel.y * 100}%`, width: `${sel.w * 100}%`, height: `${sel.h * 100}%` }}
           >
-            <GripVertical size={12} /> {data.crop ? "or drag the whole screen" : "Drag the whole screen"}
+            {mode === "ready" && (
+              <span className="absolute -bottom-3 -right-3 rounded-full bg-white p-1 text-indigo-700 shadow">
+                <Hand className="h-4 w-4" />
+              </span>
+            )}
           </div>
-        </div>
-        {data.crop && (
-          <div className="mt-1 text-center text-[11px] text-indigo-800/80">Drag the selected section onto a Code Render</div>
         )}
       </div>
-      <Handle
-        type="source"
-        position={Position.Right}
-        className="misty-handle-out"
-        title="Connect to a Code Render for global blending"
-      />
+      <p className="mt-2 min-h-[30px] text-center text-[11px] leading-tight text-[#6870a8]">{hint}</p>
+      <div className="mt-1 flex justify-center gap-3">
+        <button
+          disabled={!sel || mode === "drawing"}
+          onClick={undo}
+          className="nodrag flex items-center gap-1 rounded bg-[#8b93c9] px-4 py-1.5 text-[13px] text-white shadow-sm hover:bg-[#7880bd] disabled:opacity-40"
+        >
+          <Undo2 className="h-3.5 w-3.5" /> Undo
+        </button>
+        <button
+          disabled={mode !== "pending"}
+          onClick={done}
+          className="nodrag flex items-center gap-1 rounded bg-[#8b93c9] px-4 py-1.5 text-[13px] text-white shadow-sm hover:bg-[#7880bd] disabled:opacity-40"
+        >
+          <Check className="h-3.5 w-3.5" /> Done
+        </button>
+      </div>
+      <Handle type="source" position={Position.Right} id="out" className="misty-bar" />
     </div>
   );
 }
