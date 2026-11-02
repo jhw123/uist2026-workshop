@@ -25,7 +25,7 @@ Install with `npm install`, run with `npm run dev` (port 5180), type-check and b
     src/repair.ts             regex repair of model code, tolerant JSON parsing
     src/samples.ts            Fuji profile and parks UIs, sample examples
     src/fixtures/*.json       recorded responses for the cached golden path
-    public/examples/          sample example images; public/stock/ stock photos
+    public/examples/          sample example images, rendered from examples-src/*.html by scripts/render-examples.sh; public/stock/ stock photos
     vite.config.ts            /llm proxy to the bridge, /__fixtures recorder endpoint
 
 ## How a blend works

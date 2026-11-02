@@ -50,4 +50,4 @@ In cached mode, an action that has no exact recording replays the closest one an
 ## Substitutions
 
 - GPT-4o is replaced by the LLM bridge's model (Claude Sonnet by default here; Haiku if you start the bridge without `BRIDGE_MODEL`).
-- Example images are crops of the paper's own figures plus one sketch we drew; stock photos under `/stock/` come from picsum.photos.
+- Example images are recreations of the paper's example screens (HTML in `examples-src/`, rendered with headless Chrome by `scripts/render-examples.sh`) plus one sketch we drew; stock photos under `/stock/` come from picsum.photos.

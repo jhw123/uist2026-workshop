@@ -76,9 +76,9 @@ export interface SampleExample {
 }
 
 export const SAMPLE_EXAMPLES: SampleExample[] = [
-  { id: 'health-categories', label: 'Health Categories (dark list)', src: '/examples/health-categories.png', note: 'From the paper, scenario step 1' },
-  { id: 'music-profile', label: 'Music profile (carousel, Edit button)', src: '/examples/music-profile.png', note: 'From the paper, scenario steps 6 and 10' },
-  { id: 'apple-store', label: 'Store products (featured card)', src: '/examples/apple-store.png', note: 'From the paper, Figure 1 A' },
+  { id: 'health-categories', label: 'Health Categories (dark list)', src: '/examples/health-categories.png', note: 'Recreated from the paper, scenario step 1' },
+  { id: 'music-profile', label: 'Music profile (carousel, Edit button)', src: '/examples/music-profile.png', note: 'Recreated from the paper, scenario steps 6 and 10' },
+  { id: 'apple-store', label: 'Store products (featured card)', src: '/examples/apple-store.png', note: 'Recreated from the paper, Figure 1 A' },
   { id: 'sketch-dashboard', label: 'Hand-drawn sketch (profile grid)', src: '/examples/sketch-dashboard.png', note: 'Our own sketch, for the sketch-blending task' },
 ]
 
