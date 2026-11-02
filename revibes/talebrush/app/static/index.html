@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TaleBrush</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="bridge-banner" class="banner hidden"></div>
+
+  <main class="app">
+    <!-- Text editor (Figure 1 A2 / B1) -->
+    <section class="editor-panel">
+      <div class="editor-head">
+        <input id="title" class="title" placeholder="Title" spellcheck="false">
+        <div class="history">
+          <button id="history-btn" class="history-btn" title="Stored stories (Figure 1 B6)">History <span class="caret">▾</span></button>
+          <div id="history-menu" class="history-menu hidden">
+            <div class="history-empty">No stored stories yet. Each generation is stored here.</div>
+            <ul id="history-list"></ul>
+          </div>
+        </div>
+      </div>
+      <div id="editor" class="editor" aria-label="Story sentences, one per bullet"></div>
+      <div id="preview" class="editor preview hidden" aria-hidden="true"></div>
+      <p class="hint">One sentence per bullet. <kbd>Enter</kbd> adds a bullet, <kbd>Backspace</kbd> on an empty bullet removes it.</p>
+    </section>
+
+    <!-- Canvas (Figure 1 A1, A3, B2-B5) -->
+    <section class="canvas-panel">
+      <div class="canvas-head">
+        <label class="protagonist"><input id="protagonist" value="Mike" spellcheck="false" aria-label="Protagonist name"><span>'s fortune</span></label>
+        <button id="generate-again" class="gen-btn" title="Generate new sentences with the same sketch (Figure 1 B3)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/></svg>
+          Generate Again
+        </button>
+      </div>
+
+      <div class="canvas-wrap">
+        <svg id="fortune-canvas" class="sketch fortune" height="300"></svg>
+        <div id="busy" class="busy hidden"><span class="spinner"></span><span id="busy-text">Generating…</span></div>
+      </div>
+
+      <div id="surprise-wrap" class="canvas-wrap surprise-wrap hidden">
+        <div class="surprise-labels"><span class="hi">High Surprise</span><span class="lo">Low Surprise</span></div>
+        <svg id="surprise-canvas" class="sketch surprise" height="170"></svg>
+      </div>
+
+      <label class="surprise-toggle"><input type="checkbox" id="surprise-on"> Surprise in a separate panel.</label>
+
+      <div class="tools" role="radiogroup" aria-label="Sketch tool">
+        <button id="tool-pen" class="tool active" title="Pen: sketch the fortune arc. Slow strokes are thin (tight control), fast strokes are wide (loose control)." aria-pressed="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 3h6v4l-1 2v10a2 2 0 0 1-4 0V9L9 7z" fill="currentColor"/><path d="M10 19h4l-2 3z" fill="currentColor"/></svg>
+        </button>
+        <button id="tool-eraser" class="tool" title="Eraser: erase part of the sketch. Erased slots are generated without a fortune target." aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="5" y="9" width="14" height="7" rx="1.5" fill="currentColor"/></svg>
+        </button>
+      </div>
+
+      <div id="status" class="status"></div>
+    </section>
+  </main>
+
+  <footer class="substitution">
+    Revibed TaleBrush. <strong>Substitution:</strong> fortune recognition and fortune-controlled generation use a general LLM through the workshop LLM bridge,
+    in place of the paper's soft-prompted GPT-Neo 2.7B and modified GeDi (GPT2-medium). Surprise is given to the model as an instruction, not as softmax temperature.
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
