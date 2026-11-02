@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TaleBrush (revibe)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="banner" class="banner" hidden></div>
+  <main class="app">
+    <!-- Text editor (Figure 1 A2 / B1) -->
+    <section class="editor-pane">
+      <div class="editor-head">
+        <input id="title" class="title" placeholder="Title" aria-label="Story title">
+        <div class="history">
+          <button id="historyBtn" class="history-btn" aria-haspopup="true" aria-expanded="false">History ▾</button>
+          <div id="historyMenu" class="history-menu" hidden>
+            <div class="history-empty">No generated stories yet.</div>
+            <ul id="historyList"></ul>
+          </div>
+        </div>
+      </div>
+      <div id="editor" class="editor" aria-label="Story sentences, one bullet per sentence"></div>
+      <div id="previewNote" class="preview-note" hidden>Previewing a stored story. Click it in History to roll back.</div>
+    </section>
+
+    <!-- Canvas (Figure 1 A1, A3, B2-B5) -->
+    <section class="canvas-pane">
+      <div class="canvas-head">
+        <label class="name-wrap"><input id="name" class="name" placeholder="Name" aria-label="Protagonist name"><span>'s fortune</span></label>
+        <button id="generateBtn" class="generate-btn" disabled>⟳ Generate Again</button>
+      </div>
+
+      <div class="canvas-wrap">
+        <svg id="canvas" class="canvas" viewBox="0 0 640 340" preserveAspectRatio="none" aria-label="Fortune canvas"></svg>
+        <div class="axis-label top">better</div>
+        <div class="axis-label bottom">worse</div>
+        <div id="busy" class="busy" hidden><span class="spinner"></span><span id="busyText">Generating…</span></div>
+      </div>
+
+      <div id="surpriseWrap" class="surprise-wrap" hidden>
+        <svg id="surpriseCanvas" class="canvas surprise" viewBox="0 0 640 150" preserveAspectRatio="none" aria-label="Surprise canvas"></svg>
+        <div class="axis-label top s">High surprise</div>
+        <div class="axis-label bottom s">Low surprise</div>
+      </div>
+
+      <label class="surprise-toggle"><input type="checkbox" id="surpriseToggle"> Surprise in a separate panel.</label>
+
+      <div class="tools" role="toolbar" aria-label="Sketch tools">
+        <button id="penBtn" class="tool active" title="Pen: sketch the fortune arc. Slow = tight, fast = loose." aria-pressed="true">✎ Pen</button>
+        <button id="eraserBtn" class="tool" title="Eraser: erase part of the sketch to leave it unconstrained" aria-pressed="false">⌫ Eraser</button>
+        <button id="clearBtn" class="tool subtle" title="Clear the whole sketch">Clear sketch</button>
+      </div>
+
+      <p class="hint">Draw slowly for a thin band (generation follows it tightly), quickly for a wide band (looser).
+        Each sketched slot between the subtle vertical lines is one sentence. Drawing generates; redraw part of the band to regenerate only that part.</p>
+      <p id="modelNote" class="model-note"></p>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

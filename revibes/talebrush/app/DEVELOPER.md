@@ -1,0 +1,96 @@
+# TaleBrush revibe: developer guide
+
+## What you need
+
+- Python 3.9+ (standard library only, no `pip install`).
+- A modern browser.
+- For real generation: Claude Code (`claude`) installed and signed in, and the
+  workshop LLM bridge (`llm-bridge/bridge.py`, also standard-library Python).
+
+No Node.js, npm or build step: the front end is plain HTML, CSS and JavaScript
+served by the Python server.
+
+## Run
+
+From the repository root:
+
+    python3 llm-bridge/bridge.py claude          # terminal 1, port 8787
+    python3 revibes/talebrush/app/server.py      # terminal 2, port 5177
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `TALEBRUSH_PORT` | `5177` | port of the app |
+| `BRIDGE_URL` | `http://localhost:8787` | where the LLM bridge listens |
+| `TALEBRUSH_STUB=1` or `--stub` | off | no model: canned sentences, keyword fortune scores, a banner says so |
+
+## Layout
+
+    app/
+      server.py          HTTP server: static files + /api/status, /api/recognize, /api/generate
+      static/index.html  page structure: editor (left), canvas + controls (right)
+      static/style.css   look, loosely following Figure 1
+      static/app.js      all interaction: editor, sketching, canvas rendering, history
+      README.md          how to launch and use
+      DEVELOPER.md       this file
+
+## How it maps to the paper
+
+### Front end (`static/app.js`), Section 4.2
+
+- **State.** `state.bullets` is the text editor: one object per bullet with
+  `text`, `kind` (`user` or `gen`), `edited`, and `fortune` (the recognized
+  level). `state.sketch` holds the fortune sketch as 300 columns across the
+  canvas. Each column is `{y, hw}`: the fortune level and the band's half-width,
+  both in fortune units, or `null` where nothing is drawn or it was erased.
+  `state.surprise` is the same for the surprise canvas.
+- **Sentence slots.** There are `max(#bullets, 8)` slots, laid out evenly on x.
+  The thin vertical lines mark slot boundaries. `slotSpec(i)` turns the sketch
+  columns inside a slot into a target fortune (mean y), a tolerance (mean
+  half-width), a number of retries (2 for a thin band, 1 for a wide one) and a
+  surprise level. A slot less than a third covered has no target.
+- **Sketching speed → width.** The pointer speed is smoothed (EMA) and mapped
+  linearly from slow to fast onto a half-width of 0.05 to 0.25. Because the
+  width is interpolated per column, it changes gradually along a stroke.
+- **Generation triggers.**
+  - End of a pen stroke: regenerate the slots under the stroke (≥40 % covered,
+    or the slot centre is covered), except sentences the writer wrote. This is
+    also how partial redraw works.
+  - Generate Again: every slot from the first sketched slot to the last, except
+    sentences the writer wrote or edited. Uncovered (erased) slots in that
+    range get no fortune target.
+  - Earlier texts for the same slots are sent as "avoid", so a new run differs.
+- **Recognition of written text.** Changed bullets are re-scored 0.7 s after
+  typing stops (`runRecognition`), with up to three previous sentences and the
+  protagonist as context. A name change re-scores everything.
+- **History.** After each generation the whole story is stored (bullets, sketch,
+  surprise). An "Initial" entry is stored before the first generation. Stored
+  arcs are drawn at low opacity; hovering an entry previews its text and
+  highlights its arc; clicking rolls back.
+
+### Back end (`server.py`), Section 5
+
+- `/api/recognize`: one model call scores a batch of sentences. Each item has
+  the protagonist, up to three previous sentences and the target sentence. This
+  matches the inputs of the paper's recognition prompt (Section 5.2.1).
+- `/api/generate`: implements the loop of Section 5.2.2.
+  1. One model call writes all requested slots together, given the numbered
+     outline: written sentences with their fortune, and `[WRITE]` slots with a
+     fortune target and an optional surprise level. Writing the slots together
+     covers both continuation and infilling: the model sees what comes before
+     and after each slot.
+  2. One recognition call scores the generated sentences.
+  3. Slots whose |fortune − target| exceeds their tolerance are regenerated.
+     Each such slot gets two alternatives, all are scored, and the candidate
+     with the smallest error is kept. This repeats for up to the slot's number
+     of retries.
+- The bridge ignores temperature, so surprise is described in the prompt
+  (low = predictable, high = unexpected twist) instead of setting the softmax
+  temperature as the paper does.
+
+## Extending
+
+- To change how speed maps to width, edit `HW_MIN`, `HW_MAX`, `SPEED_SLOW` and
+  `SPEED_FAST` in `app.js`.
+- To change the regeneration policy, edit `slotSpec()` (tolerance and retries)
+  and `generate()` in `server.py`.
+- Prompts are `RECOGNIZE_SYSTEM` and `GENERATE_SYSTEM` in `server.py`.
