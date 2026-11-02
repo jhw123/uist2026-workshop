@@ -1,0 +1,18 @@
+{
+  "key": "toggle-16085fa3f8841a6a",
+  "op": "toggle",
+  "meta": {
+    "op": "toggle",
+    "baseHash": "c617e8d506337ff3",
+    "enabled": [
+      true,
+      false,
+      true,
+      false,
+      true
+    ]
+  },
+  "response": "{\"updatedCode\":\"() => {\\n  const interests = [\\n    { label: \\\"Film Camera\\\", img: \\\"/stock/landscape0.jpg\\\", icon: Film, desc: \\\"Grainy frames and slow, careful shots.\\\" },\\n    { label: \\\"Lofi Music\\\", img: \\\"/stock/landscape1.jpg\\\", icon: Headphones, desc: \\\"Calm beats for editing and long walks.\\\" },\\n    { label: \\\"Mid-Century Furniture\\\", img: \\\"/stock/landscape2.jpg\\\", icon: Sofa, desc: \\\"Warm wood, clean lines, timeless design.\\\" },\\n    { label: \\\"Music Production\\\", img: \\\"/stock/landscape3.jpg\\\", icon: Music, desc: \\\"Layering sounds into mellow tracks.\\\" },\\n  ];\\n  return (\\n    <div className=\\\"w-full h-full bg-gray-100 flex flex-col\\\">\\n      <div className=\\\"flex-1 overflow-y-auto pb-4\\\">\\n        <div className=\\\"relative w-full h-40\\\">\\n          <img src=\\\"/stock/landscape3.jpg\\\" alt=\\\"cover\\\" className=\\\"w-full h-full object-cover\\\" />\\n        </div>\\n        <div className=\\\"flex flex-col items-center -mt-12 px-4\\\">\\n          <img src=\\\"/stock/square0.jpg\\\" alt=\\\"avatar\\\" className=\\\"w-24 h-24 rounded-full object-cover border-4 border-white shadow-md\\\" />\\n          <h1 className=\\\"mt-3 text-xl font-bold text-gray-900\\\">Fuji</h1>\\n          <p className=\\\"mt-2 text-center text-gray-600 text-sm\\\">\\n            Passionate nature photographer. Find me by the water, or in the woods.\\n          </p>\\n          <div className=\\\"mt-3 text-center text-sm text-gray-500\\\">\\n            <p className=\\\"flex items-center justify-center gap-1\\\"><Mail size={14} /> photos@fuji.net</p>\\n            <p className=\\\"flex items-center justify-center gap-1 mt-1\\\"><Phone size={14} /> +123 456 7890</p>\\n          </div>\\n        </div>\\n        <div className=\\\"w-full mt-6 px-4\\\">\\n          <h2 className=\\\"text-lg font-semibold text-gray-900 mb-2\\\">Interests</h2>\\n          {interests.map((item) => {\\n            const Icon = item.icon;\\n            return (\\n              <div key={item.label} className=\\\"border-2 border-slate-800 rounded-lg bg-white p-2 mb-2 flex flex-col\\\">\\n                <img src={item.img} alt={item.label} className=\\\"w-full h-20 object-cover rounded border border-slate-800\\\" />\\n                <div className=\\\"mt-2 flex items-center gap-1 text-sm font-semibold text-gray-900\\\">\\n                  <Icon size={14} />\\n                  <span>{item.label}</span>\\n                </div>\\n                <p className=\\\"mt-1 text-xs text-gray-600\\\">{item.desc}</p>\\n              </div>\\n            );\\n          })}\\n        </div>\\n      </div>\\n      <div className=\\\"mx-3 mb-3 border-2 border-slate-800 rounded-lg bg-white flex justify-around items-center py-3\\\">\\n        <Home size={22} className=\\\"text-gray-900\\\" />\\n        <Search size={22} className=\\\"text-gray-900\\\" />\\n        <Heart size={22} className=\\\"text-gray-900\\\" />\\n        <User size={22} className=\\\"text-gray-900\\\" />\\n      </div>\\n    </div>\\n  );\\n}\"}",
+  "recordedAt": "2026-11-02T16:07:09.843Z",
+  "model": "sonnet"
+}

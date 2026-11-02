@@ -63,8 +63,11 @@ function findApproximate(req: LlmRequest): Fixture | null {
   }
   const ranked = same.map((f) => ({ f, s: score(f) })).sort((a, b) => b.s - a.s)
   if (!ranked.length) return null
-  // require at least the example (for blends) to match
+  // require at least the example (for blends) to match; toggles and fixes must be for the same code,
+  // otherwise the replay would replace the node with unrelated code
   if ((req.op === 'global' || req.op === 'dnd') && ranked[0].f.meta.exampleId !== m.exampleId) return null
+  if (req.op === 'toggle' && ranked[0].f.meta.baseHash !== m.baseHash) return null
+  if (req.op === 'fix' && ranked[0].f.meta.sourceHash !== m.sourceHash) return null
   return ranked[0].f
 }
 

@@ -22,7 +22,8 @@ body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
 
 /* render frame */
 .misty-phone { width: 390px; height: 720px; position: relative; overflow: hidden; background: white; }
-.misty-phone > * { height: 100%; }
+.misty-preview { height: 100%; }
+.misty-preview > * { height: 100%; }
 
 .cm-editor { height: 100%; font-size: 12px; }
 .cm-scroller { overflow: auto; }

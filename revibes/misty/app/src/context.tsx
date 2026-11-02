@@ -23,6 +23,7 @@ export interface MistyActions {
   setCrop: (nodeId: string, crop: Crop | null) => void
   deleteNode: (nodeId: string) => void
   reportRenderError: (nodeId: string, error: string | null) => void
+  dismissError: (nodeId: string) => void
 }
 
 export const MistyContext = createContext<MistyActions | null>(null)

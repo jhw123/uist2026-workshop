@@ -23,7 +23,7 @@ export default function Toolbar(p: ToolbarProps) {
   const [exMenu, setExMenu] = useState(false)
   const [srcMenu, setSrcMenu] = useState(false)
   return (
-    <div className="h-12 flex items-center gap-3 px-3 bg-white border-b border-gray-200 text-sm relative z-30 whitespace-nowrap overflow-x-auto">
+    <div className="h-12 flex items-center gap-3 px-3 bg-white border-b border-gray-200 text-sm relative z-30 whitespace-nowrap">
       <div className="font-bold text-[#5b21b6] text-base">Misty</div>
       <div className="text-gray-400 text-xs hidden xl:block">UI prototyping through interactive conceptual blending · revibe</div>
 
@@ -53,12 +53,12 @@ export default function Toolbar(p: ToolbarProps) {
         </button>
         {exMenu && (
           <div className="absolute right-0 mt-1 w-72 bg-white border border-gray-200 rounded-md shadow-lg py-1" onMouseLeave={() => setExMenu(false)}>
-            <button className="w-full text-left px-3 py-1.5 hover:bg-gray-100" onClick={() => { fileRef.current?.click(); setExMenu(false) }}>
+            <button className="block w-full text-left px-3 py-1.5 hover:bg-gray-100 whitespace-normal" onClick={() => { fileRef.current?.click(); setExMenu(false) }}>
               Upload screenshot or sketch…
             </button>
             <div className="border-t my-1" />
             {SAMPLE_EXAMPLES.map((s) => (
-              <button key={s.id} className="w-full text-left px-3 py-1.5 hover:bg-gray-100" onClick={() => { p.onAddSampleExample(s.id); setExMenu(false) }}>
+              <button key={s.id} className="block w-full text-left px-3 py-1.5 hover:bg-gray-100 whitespace-normal" onClick={() => { p.onAddSampleExample(s.id); setExMenu(false) }}>
                 <div>{s.label}</div>
                 <div className="text-[10px] text-gray-400">{s.note}</div>
               </button>
@@ -74,12 +74,12 @@ export default function Toolbar(p: ToolbarProps) {
         </button>
         {srcMenu && (
           <div className="absolute right-0 mt-1 w-64 bg-white border border-gray-200 rounded-md shadow-lg py-1" onMouseLeave={() => setSrcMenu(false)}>
-            <button className="w-full text-left px-3 py-1.5 hover:bg-gray-100" onClick={() => { p.onPasteSource(); setSrcMenu(false) }}>
+            <button className="block w-full text-left px-3 py-1.5 hover:bg-gray-100 whitespace-normal" onClick={() => { p.onPasteSource(); setSrcMenu(false) }}>
               Paste React + Tailwind code…
             </button>
             <div className="border-t my-1" />
             {SAMPLE_SOURCES.map((s) => (
-              <button key={s.id} className="w-full text-left px-3 py-1.5 hover:bg-gray-100" onClick={() => { p.onAddSampleSource(s.id); setSrcMenu(false) }}>
+              <button key={s.id} className="block w-full text-left px-3 py-1.5 hover:bg-gray-100 whitespace-normal" onClick={() => { p.onAddSampleSource(s.id); setSrcMenu(false) }}>
                 {s.label}
               </button>
             ))}

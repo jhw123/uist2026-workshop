@@ -131,7 +131,7 @@ export default function SourceNode({ id, data }: NodeProps<SourceNodeType>) {
           onDrop={onDrop}
         >
           <LiveProvider code={data.code} scope={SCOPE} noInline={false}>
-            <LivePreview className="h-full" />
+            <LivePreview className="misty-preview" />
             <div className="absolute left-2 right-2 bottom-2 pointer-events-none">
               <ErrorWatcher nodeId={id} />
             </div>
@@ -143,9 +143,13 @@ export default function SourceNode({ id, data }: NodeProps<SourceNodeType>) {
             </div>
           )}
           {data.status === 'error' && (
-            <div className="absolute inset-x-2 top-2 bg-red-50 border border-red-200 text-red-700 text-xs rounded p-2">
+            <button
+              className="nodrag absolute inset-x-2 top-2 bg-red-50 border border-red-200 text-red-700 text-xs rounded p-2 text-left"
+              title="Click to dismiss"
+              onClick={() => misty.dismissError(id)}
+            >
               {data.statusText}
-            </div>
+            </button>
           )}
         </div>
         {data.explanation && (

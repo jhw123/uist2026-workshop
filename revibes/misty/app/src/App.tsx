@@ -281,6 +281,7 @@ export default function App() {
         setEdges((es) => es.filter((e) => e.source !== nodeId && e.target !== nodeId))
         setEditorId((id) => (id === nodeId ? null : id))
       },
+      dismissError: (nodeId) => patchSource(nodeId, { status: 'idle', statusText: undefined }),
       reportRenderError: (nodeId, error) => {
         const n = getNode(nodeId) as Node<SourceData> | undefined
         if (!n || (n.data.renderError ?? null) === error) return

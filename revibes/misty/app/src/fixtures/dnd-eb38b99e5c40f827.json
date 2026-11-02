@@ -1,0 +1,16 @@
+{
+  "key": "dnd-eb38b99e5c40f827",
+  "op": "dnd",
+  "meta": {
+    "op": "dnd",
+    "exampleId": "apple-store",
+    "sourceHash": "4626f2367ff82899",
+    "aspects": [
+      "Content"
+    ],
+    "targetHash": "91df4232c5ed7fac"
+  },
+  "response": "{\"designExplanation\":\"Selected region is a centered, small bold dark title ('Products') on a white header bar with a thin bottom border, over a light background. Clean, minimal, iOS-style navigation header.\",\"differences\":\"Code has a gray page with a centered avatar and no top header bar. Reference has a white top bar with a small semibold centered title, a thin bottom divider, and a light gray/white content area below.\",\"updatedCode\":\"() => {\\n  return (\\n    <div className=\\\"w-full h-full bg-gray-100 flex flex-col overflow-y-auto\\\">\\n      <div className=\\\"w-full bg-white border-b border-gray-200 py-3 flex items-center justify-center\\\">\\n        <h1 className=\\\"text-sm font-semibold text-gray-900\\\">Fuji</h1>\\n      </div>\\n      <div className=\\\"p-6 flex flex-col items-center\\\">\\n        <img src=\\\"/stock/square0.jpg\\\" alt=\\\"avatar\\\" className=\\\"w-24 h-24 rounded-full object-cover border-2 border-white shadow\\\" />\\n        <h2 className=\\\"mt-4 text-xl font-bold text-gray-900\\\">Fuji</h2>\\n        <p className=\\\"mt-2 text-center text-gray-600 text-sm\\\">\\n          Passionate nature photographer. Find me by the water, or in the woods.\\n        </p>\\n        <div className=\\\"mt-3 text-center text-sm text-gray-500\\\">\\n          <p>Email: photos@fuji.net</p>\\n          <p>Phone: +123 456 7890</p>\\n        </div>\\n        <div className=\\\"w-full mt-6\\\">\\n          <h2 className=\\\"text-lg font-semibold text-gray-900 mb-2\\\">Interests</h2>\\n          <div className=\\\"bg-white rounded-lg px-4 py-3 mb-2 text-sm text-gray-800 shadow-sm\\\">Film Camera</div>\\n          <div className=\\\"bg-white rounded-lg px-4 py-3 mb-2 text-sm text-gray-800 shadow-sm\\\">Lofi Music</div>\\n          <div className=\\\"bg-white rounded-lg px-4 py-3 mb-2 text-sm text-gray-800 shadow-sm\\\">Mid-Century Furniture</div>\\n          <div className=\\\"bg-white rounded-lg px-4 py-3 mb-2 text-sm text-gray-800 shadow-sm\\\">Music Production</div>\\n        </div>\\n      </div>\\n    </div>\\n  );\\n}\",\"categorizedChanges\":[{\"category\":\"Layout: Added white top header bar with centered title\",\"changes\":[{\"type\":\"layout\",\"before\":\"p-6 flex flex-col items-center\",\"after\":\"flex flex-col (header + p-6 flex flex-col items-center content)\"},{\"type\":\"color\",\"before\":\"\",\"after\":\"bg-white\"},{\"type\":\"border\",\"before\":\"\",\"after\":\"border-b border-gray-200\"},{\"type\":\"spacing\",\"before\":\"\",\"after\":\"py-3\"}]},{\"category\":\"Font: Small semibold header title\",\"changes\":[{\"type\":\"font\",\"before\":\"\",\"after\":\"text-sm font-semibold text-gray-900\"}]}]}",
+  "recordedAt": "2026-11-02T16:08:58.264Z",
+  "model": "sonnet"
+}
