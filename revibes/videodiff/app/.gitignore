@@ -1,0 +1,3 @@
+# per-machine project state, analysis cache and uploads
+data/
+__pycache__/

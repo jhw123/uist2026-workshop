@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VideoDiff</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header id="topbar">
+  <div class="brand">Video Diff</div>
+  <select id="projectSelect" title="Source video"></select>
+  <button id="uploadBtn" class="ghost" title="Upload a video and its transcript">Upload video…</button>
+  <div class="spacer"></div>
+  <label class="toggle"><span>Timeline View</span>
+    <input type="checkbox" id="viewToggle"><span class="switch"></span>
+    <span>Transcript View</span></label>
+</header>
+
+<div id="layout">
+  <aside id="outline">
+    <h3>VERSIONS OUTLINE</h3>
+    <div id="outlineBody"></div>
+    <div id="credits"></div>
+  </aside>
+
+  <main id="main">
+    <div id="toolbar">
+      <div id="stageTitle"></div>
+      <button id="generateBtn" class="pill"><span class="ico">✨</span> GENERATE NEW</button>
+      <div class="spacer"></div>
+      <label class="toggle"><span>Extracted Timeline</span>
+        <input type="checkbox" id="timelineToggle"><span class="switch"></span>
+        <span>Original Timeline</span></label>
+      <label class="sort">Sort By
+        <select id="sortSelect"></select></label>
+    </div>
+    <div id="banner" hidden></div>
+    <div id="versions"></div>
+  </main>
+</div>
+
+<div id="tooltip" hidden></div>
+
+<dialog id="promptDialog">
+  <form method="dialog" id="promptForm">
+    <h2 id="promptTitle">Generate a new version</h2>
+    <p id="promptHelp" class="muted"></p>
+    <label class="field"><span>Type your changes.</span>
+      <textarea id="promptText" rows="3"></textarea></label>
+    <div id="promptStatus" class="muted"></div>
+    <div class="row">
+      <button type="button" id="surpriseBtn" class="ghost">🎲 Surprise me</button>
+      <div class="spacer"></div>
+      <button type="button" id="promptCancel" class="ghost">Cancel</button>
+      <button type="submit" id="promptGo" class="primary">Generate</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="uploadDialog">
+  <form method="dialog" id="uploadForm">
+    <h2>Upload a video</h2>
+    <p class="muted">VideoDiff transcribes uploads with Whisper in the paper. This rebuild has no Whisper key, so
+      add the transcript yourself: a Whisper JSON file (with word timestamps if you have them) or an SRT file.</p>
+    <label class="field"><span>Title</span><input id="upTitle" placeholder="My video"></label>
+    <label class="field"><span>Video (MP4/WebM)</span><input type="file" id="upVideo" accept="video/*"></label>
+    <label class="field"><span>Transcript (.json or .srt)</span><input type="file" id="upTranscript" accept=".json,.srt"></label>
+    <div id="upStatus" class="muted"></div>
+    <div class="row"><div class="spacer"></div>
+      <button type="button" id="upCancel" class="ghost">Cancel</button>
+      <button type="submit" class="primary">Upload</button></div>
+  </form>
+</dialog>
+
+<script type="module" src="/static/main.js"></script>
+</body>
+</html>
