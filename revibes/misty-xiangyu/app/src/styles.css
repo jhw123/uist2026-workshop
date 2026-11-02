@@ -1,0 +1,23 @@
+html, body, #root { height: 100%; margin: 0; }
+body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+
+/* Highlight animation on the source UI while a selection is dragged over it (4.2.1) */
+.misty-hover {
+  outline: 2px dashed #7c3aed !important;
+  outline-offset: 2px;
+  background-color: rgba(167, 139, 250, 0.25) !important;
+  animation: misty-pulse 0.9s ease-in-out infinite;
+}
+@keyframes misty-pulse {
+  0%, 100% { outline-color: #7c3aed; }
+  50% { outline-color: #c4b5fd; }
+}
+
+.misty-spinner {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 3px solid #ddd6fe; border-top-color: #7c3aed;
+  animation: misty-spin 0.8s linear infinite;
+}
+@keyframes misty-spin { to { transform: rotate(360deg); } }
+
+.react-flow__handle.misty-handle { width: 14px; height: 14px; background: #7c3aed; border: 2px solid white; }

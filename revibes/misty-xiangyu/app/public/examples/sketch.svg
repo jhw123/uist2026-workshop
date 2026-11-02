@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" font-family="Comic Sans MS, Marker Felt, cursive">
+<rect width="390" height="844" fill="#fffef8"/>
+<g fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M22 30 Q195 26 368 32 L366 812 Q195 816 24 810 Z"/>
+<path d="M40 70 Q200 66 350 72 L349 110 Q200 113 41 108 Z"/>
+<path d="M40 140 Q120 137 200 141 L198 300 Q120 302 42 298 Z"/><path d="M42 141 L198 298 M198 141 L42 298"/>
+<path d="M214 140 Q282 138 350 142 L348 300 Q282 302 215 299 Z"/><path d="M215 142 L348 299 M348 142 L215 299"/>
+<path d="M44 320 L190 318 M44 340 L150 341 M216 320 L340 319 M216 340 L300 341"/>
+<path d="M40 380 Q200 377 350 382 L349 470 Q200 473 41 468 Z"/><circle cx="80" cy="425" r="24"/><path d="M120 410 L320 408 M120 435 L260 436"/>
+<path d="M40 490 Q200 487 350 492 L349 580 Q200 583 41 578 Z"/><circle cx="80" cy="535" r="24"/><path d="M120 520 L320 518 M120 545 L260 546"/>
+<path d="M40 600 Q200 597 350 602 L349 690 Q200 693 41 688 Z"/><circle cx="80" cy="645" r="24"/><path d="M120 630 L320 628 M120 655 L260 656"/>
+<path d="M24 740 Q195 736 366 742"/><circle cx="80" cy="775" r="12"/><circle cx="195" cy="775" r="12"/><circle cx="310" cy="775" r="12"/>
+</g>
+<text x="60" y="97" font-size="16" fill="#555">search...</text>
+<text x="230" y="60" font-size="13" fill="#999">big image cards, 2 per row</text>
+</svg>
