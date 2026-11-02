@@ -428,6 +428,8 @@ const dirty = new Set();
 
 function onRowInput(i, node) {
   state.rows[i].text = node.textContent.replace(/\n/g, " ");
+  // an edited generated sentence becomes the writer's: Generate Again keeps it and builds on it
+  if (state.rows[i].kind === "generated") { state.rows[i].kind = "user"; node.parentElement.classList.remove("generated"); }
   state.rows[i].fortune = state.rows[i].text.trim() ? state.rows[i].fortune : null;
   dirty.add(i);
   clearTimeout(recognizeTimer);
@@ -712,8 +714,11 @@ function closeMenu() {
 
 function bindControls() {
   $("again").addEventListener("click", () => {
-    const slots = state.sketched.map((s, i) => (s ? i : -1)).filter((i) => i >= 0);
-    if (!slots.length) { setStatus("Sketch a fortune line on the canvas first.", true); return; }
+    // regenerate the sketched slots, but keep sentences the writer wrote or edited
+    const sketched = state.sketched.map((s, i) => (s ? i : -1)).filter((i) => i >= 0);
+    if (!sketched.length) { setStatus("Sketch a fortune line on the canvas first.", true); return; }
+    const slots = sketched.filter((i) => !(state.rows[i].kind === "user" && state.rows[i].text.trim()));
+    if (!slots.length) { setStatus("Every sketched sentence was written or edited by you. Redraw the line over a sentence to replace it.", true); return; }
     generateSlots(slots);
   });
   $("penTool").addEventListener("click", () => setTool("pen"));

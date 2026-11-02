@@ -146,6 +146,9 @@ GENERATE_SYSTEM = (
     "of a short story outline, in the style of five-sentence everyday stories: plain, concrete, "
     "past tense, third person, usually 8 to 25 words. The story is about the given protagonist; "
     "refer to them by name or pronoun and do not introduce random new main characters. "
+    "Build on the story so far: keep using the characters, names, places, objects and events that "
+    "earlier sentences introduced (the writer may have added some), and follow up on the most recent "
+    "development instead of ignoring it. "
     "Never repeat a sentence that is already in the story. "
     'Answer with JSON: {"sentence": "<the one sentence>"}.'
 )
@@ -157,6 +160,8 @@ def generate_once(protagonist, prev_ctx, next_ctx, mode, gap_before, gap_after,
     if mode == "continue":
         lines.append("Task: continue the story with the next sentence.")
         lines.append("Beginning story: " + (" ".join(prev_ctx) if prev_ctx else "(nothing yet: write the opening sentence)"))
+        if prev_ctx:
+            lines.append("Most recent sentence, which yours directly follows: " + prev_ctx[-1])
     else:
         lines.append("Task: infill. Write a sentence that goes in the missing part between the "
                      "beginning and the ending, so that the story flows from one to the other.")
