@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="780" viewBox="0 0 390 780" font-family="-apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6b6b"/><stop offset="1" stop-color="#7b2ff7"/></linearGradient>
+    <linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2af598"/><stop offset="1" stop-color="#009efd"/></linearGradient>
+    <linearGradient id="c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6d365"/><stop offset="1" stop-color="#fd7043"/></linearGradient>
+  </defs>
+  <rect width="390" height="780" fill="#ffffff"/>
+  <circle cx="195" cy="120" r="62" fill="url(#a)"/>
+  <text x="195" y="222" text-anchor="middle" font-size="26" font-weight="700" fill="#111111">Misty</text>
+  <text x="195" y="246" text-anchor="middle" font-size="15" fill="#8a8a8e">@misty.music</text>
+  <rect x="150" y="262" width="90" height="36" rx="18" fill="#fa2d48"/>
+  <text x="195" y="285" text-anchor="middle" font-size="15" font-weight="600" fill="#ffffff">Edit</text>
+  <text x="20" y="346" font-size="22" font-weight="700" fill="#111111">Top Playlists</text>
+  <rect x="20" y="364" width="150" height="190" rx="14" fill="url(#a)"/>
+  <text x="32" y="440" font-size="26" font-weight="800" fill="#ffffff">Top 100</text>
+  <text x="32" y="466" font-size="13" fill="#ffffff">Global</text>
+  <rect x="182" y="364" width="150" height="190" rx="14" fill="url(#b)"/>
+  <text x="194" y="440" font-size="26" font-weight="800" fill="#ffffff">Top 100</text>
+  <text x="194" y="466" font-size="13" fill="#ffffff">USA</text>
+  <rect x="344" y="364" width="150" height="190" rx="14" fill="url(#c)"/>
+  <text x="356" y="440" font-size="26" font-weight="800" fill="#ffffff">Top</text>
+  <text x="20" y="580" font-size="14" font-weight="600" fill="#111111">Daily Global</text>
+  <text x="20" y="600" font-size="13" fill="#8a8a8e">Updated today</text>
+  <text x="182" y="580" font-size="14" font-weight="600" fill="#111111">Daily USA</text>
+  <text x="182" y="600" font-size="13" fill="#8a8a8e">Updated today</text>
+  <text x="344" y="580" font-size="14" font-weight="600" fill="#111111">Daily</text>
+  <text x="344" y="600" font-size="13" fill="#8a8a8e">Updated</text>
+  <rect x="20" y="628" width="350" height="64" rx="12" fill="#f4f4f6"/>
+  <rect x="32" y="638" width="44" height="44" rx="8" fill="url(#c)"/>
+  <text x="90" y="656" font-size="15" font-weight="600" fill="#111111">Recently played</text>
+  <text x="90" y="676" font-size="13" fill="#8a8a8e">12 tracks</text>
+  <rect y="716" width="390" height="64" fill="#f9f9fb"/>
+  <g font-size="10" text-anchor="middle" fill="#8a8a8e">
+    <circle cx="65" cy="738" r="9"/><text x="65" y="764">Listen</text>
+    <circle cx="195" cy="738" r="9"/><text x="195" y="764">Browse</text>
+    <circle cx="325" cy="738" r="9" fill="#fa2d48"/><text x="325" y="764" fill="#fa2d48">Profile</text>
+  </g>
+</svg>

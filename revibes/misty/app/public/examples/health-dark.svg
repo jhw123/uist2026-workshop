@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="780" viewBox="0 0 390 780" font-family="-apple-system, Helvetica, Arial, sans-serif">
+  <rect width="390" height="780" fill="#000000"/>
+  <text x="20" y="72" font-size="30" font-weight="700" fill="#ffffff">Health Categories</text>
+  <rect x="20" y="92" width="350" height="40" rx="11" fill="#1c1c1e"/>
+  <text x="44" y="118" font-size="15" fill="#8e8e93">Search</text>
+  <rect x="20" y="152" width="350" height="500" rx="14" fill="#1c1c1e"/>
+  <g font-size="17" fill="#ffffff">
+    <circle cx="46" cy="186" r="13" fill="#ff9f0a"/><text x="72" y="192">Activity</text>
+    <circle cx="46" cy="242" r="13" fill="#64d2ff"/><text x="72" y="248">Body Measurements</text>
+    <circle cx="46" cy="298" r="13" fill="#ff375f"/><text x="72" y="304">Cycle Tracking</text>
+    <circle cx="46" cy="354" r="13" fill="#30d158"/><text x="72" y="360">Hearing</text>
+    <circle cx="46" cy="410" r="13" fill="#ff453a"/><text x="72" y="416">Heart</text>
+    <circle cx="46" cy="466" r="13" fill="#bf5af2"/><text x="72" y="472">Mental Wellbeing</text>
+    <circle cx="46" cy="522" r="13" fill="#0a84ff"/><text x="72" y="528">Mobility</text>
+    <circle cx="46" cy="578" r="13" fill="#ffd60a"/><text x="72" y="584">Nutrition</text>
+    <circle cx="46" cy="628" r="13" fill="#5e5ce6"/><text x="72" y="634">Sleep</text>
+  </g>
+  <g stroke="#38383a">
+    <line x1="72" y1="214" x2="370" y2="214"/><line x1="72" y1="270" x2="370" y2="270"/>
+    <line x1="72" y1="326" x2="370" y2="326"/><line x1="72" y1="382" x2="370" y2="382"/>
+    <line x1="72" y1="438" x2="370" y2="438"/><line x1="72" y1="494" x2="370" y2="494"/>
+    <line x1="72" y1="550" x2="370" y2="550"/><line x1="72" y1="604" x2="370" y2="604"/>
+  </g>
+  <g fill="none" stroke="#636366" stroke-width="2">
+    <path d="M350 180 l6 6 -6 6"/><path d="M350 236 l6 6 -6 6"/><path d="M350 292 l6 6 -6 6"/>
+    <path d="M350 348 l6 6 -6 6"/><path d="M350 404 l6 6 -6 6"/><path d="M350 460 l6 6 -6 6"/>
+    <path d="M350 516 l6 6 -6 6"/><path d="M350 572 l6 6 -6 6"/><path d="M350 622 l6 6 -6 6"/>
+  </g>
+  <rect y="716" width="390" height="64" fill="#1c1c1e"/>
+  <g font-size="10" text-anchor="middle">
+    <circle cx="97" cy="738" r="9" fill="#8e8e93"/><text x="97" y="764" fill="#8e8e93">Summary</text>
+    <circle cx="195" cy="738" r="9" fill="#8e8e93"/><text x="195" y="764" fill="#8e8e93">Sharing</text>
+    <circle cx="293" cy="738" r="9" fill="#0a84ff"/><text x="293" y="764" fill="#0a84ff">Browse</text>
+  </g>
+</svg>
