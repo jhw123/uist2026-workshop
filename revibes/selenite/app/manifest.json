@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Selenite · Table 5 Group 2",
+  "version": "1.0.0",
+  "description": "Criteria-guided reading rebuilt from the Selenite paper.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["http://localhost:8792/*"],
+  "background": {"service_worker": "background.js"},
+  "action": {"default_title": "Open Selenite on this article"}
+}
