@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TaleBrush: co-write a story by sketching the rise and fall of your protagonist's fortune.">
+  <title>TaleBrush — Sketch a story</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232d6652'/%3E%3Cpath d='M5 11Q12 30 18 15T28 7' fill='none' stroke='%23f7f5ef' stroke-width='2.5'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.mjs"></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="/" aria-label="TaleBrush home"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M4 13C10 34 16 28 20 16S28 6 32 6"/><circle cx="32" cy="6" r="2"/></svg><span>TaleBrush<span class="brand-dot">.</span></span></a>
+    <div class="edition"><span class="live-dot"></span> A paper-inspired writing studio <span class="edition-divider">/</span> CHI 2022</div>
+    <button class="text-button" id="help-button">How it works <span aria-hidden="true">↗</span></button>
+  </header>
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow">A LITTLE DIRECTION. A NEW POSSIBILITY.</p><h1>Every story has a shape.</h1><p class="intro-copy">Write a beginning. Sketch a rise, a fall, a way forward. See where your story goes.</p></div>
+      <div class="connection" id="connection" role="status"><span class="live-dot"></span><span id="connection-text">Connecting to Codex…</span><button id="retry-connection" aria-label="Check Codex bridge connection" title="Check connection">↻</button></div>
+    </section>
+    <div class="workspace">
+      <section class="editor-panel" aria-label="Story editor">
+        <div class="panel-top"><span class="section-label"><span class="step-number">01</span> THE STORY</span>
+          <div class="history-wrap"><button id="history-button" class="small-button" aria-haspopup="true" aria-expanded="false">History <span class="count" id="history-count">0</span><span aria-hidden="true">⌄</span></button>
+            <div id="history-menu" class="history-menu" hidden><div class="history-heading">EXPLORE YOUR DRAFTS</div><div id="history-items"></div><p class="history-footnote">Hover to compare. Select to restore.</p></div>
+          </div>
+        </div>
+        <label class="sr-only" for="story-title">Story title</label><input id="story-title" class="story-title" maxlength="200" value="" placeholder="Give your story a title">
+        <div class="editor-instruction"><span class="tiny-dot author"></span> Your words <span class="tiny-dot ai"></span> AI continuation <span class="autosave" id="autosave">Saved locally</span></div>
+        <div id="sentence-editor" class="sentence-editor"></div>
+        <div class="editor-bottom"><button id="add-sentence" class="text-button">＋ Add a sentence</button><span id="sentence-count"></span></div>
+        <div class="editor-hint"><span aria-hidden="true">↵</span> Enter adds a sentence · Backspace removes an empty one</div>
+      </section>
+      <section class="canvas-panel" aria-label="Story arc controls">
+        <div class="panel-top"><span class="section-label"><span class="step-number">02</span> THE SHAPE</span><div class="canvas-actions"><button id="undo-button" class="small-button" title="Undo the last draft action">↶ Undo</button><button id="generate-button" class="primary-button"><span aria-hidden="true">↻</span> <span id="generate-label">Generate Again</span></button></div></div>
+        <div class="fortune-heading"><label for="protagonist" class="sr-only">Protagonist</label><input id="protagonist" maxlength="100" value="" placeholder="Character"><span>’s fortune</span><span class="sketch-hint">DRAW ON THE CANVAS</span></div>
+        <div class="chart-shell"><div class="axis-label top">GOOD FORTUNE</div><div id="fortune-canvas" class="drawing-surface"></div><div class="axis-label bottom">BAD FORTUNE</div></div>
+        <div class="chart-caption"><span>STORY BEGINNING</span><span>Each point is one sentence</span><span>STORY END</span></div>
+        <div class="canvas-toolbar"><div class="tool-group" role="group" aria-label="Sketching tool"><button id="pen-tool" class="tool active" aria-pressed="true" title="Draw fortune (P)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 4 5 5M4 20l4-1L20 7a2 2 0 0 0-3-3L5 16l-1 4Z"/></svg>Draw</button><button id="eraser-tool" class="tool" aria-pressed="false" title="Erase a constraint (E)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 3 7 7-10 10H7l-5-5L14 3ZM7 10l7 7M11 20h10"/></svg>Erase</button></div><p class="speed-hint">Slow strokes, <strong>closer control.</strong><br>Fast strokes, more room to wander.</p></div>
+        <div class="canvas-legend"><span><i class="legend-envelope"></i> Your sketch</span><span><i class="legend-generated"></i> Generated fortune</span><span><i class="legend-author"></i> Your sentences</span></div>
+        <div class="surprise-section"><label class="surprise-toggle"><input id="surprise-toggle" type="checkbox"><span class="switch-track"></span><span>Make room for surprise</span></label><span class="optional">OPTIONAL</span></div>
+        <div id="surprise-panel" hidden><div class="surprise-intro">Sketch how unexpected each part should be. Higher means more surprising.</div><div class="chart-shell surprise-shell"><div class="axis-label top">UNEXPECTED</div><div id="surprise-canvas" class="drawing-surface"></div><div class="axis-label bottom">FAMILIAR</div></div><p class="surprise-note">Changes apply the next time you generate. Erase to return to the default.</p></div>
+        <div id="status" class="status-message" role="status" aria-live="polite"><span class="status-icon" aria-hidden="true">✧</span><span id="status-text">Your beginning is ready. Sketch across the empty sentences to continue.</span></div>
+        <div id="error" class="error-message" role="alert" hidden></div>
+        <div class="substitution-note"><span class="note-badge">REIMPLEMENTATION</span> Uses the workshop Codex bridge in place of the paper’s trained models. Fortune and surprise are approximate. <button id="details-button">Details ↗</button></div>
+      </section>
+    </div>
+    <footer class="footer"><span>Co-write. Explore. Make it yours.</span><div><button id="recognize-button" class="text-button">Analyze fortune</button><span>·</span><button id="export-button" class="text-button">Export story ↓</button><span>·</span><button id="new-button" class="text-button">New story</button></div></footer>
+  </main>
+  <dialog id="help-dialog"><button id="close-help" class="dialog-close" aria-label="Close help">×</button><p class="eyebrow">A STORY, ONE STROKE AT A TIME</p><h2>Give the story a little direction.</h2><ol class="help-steps"><li><strong>Set the scene.</strong> Name your protagonist and write a sentence or two on the left. One row is one step in the story.</li><li><strong>Sketch what happens.</strong> Draw across empty sentence positions. Higher is better fortune; lower is worse. Release to generate. Slow strokes narrow the green envelope and consider more candidate sentences.</li><li><strong>Follow the blue line.</strong> Generated sentences are independently scored and plotted over your sketch. Hover over a sentence or point to connect them. Blank sentences appear as gaps.</li><li><strong>Try another direction.</strong> Redraw a section to replace only that section’s AI sentences. Generate Again repeats the last range. Your own words are kept as fixed anchors; clear a row to let AI replace it.</li><li><strong>Leave some space.</strong> Erase part of the green sketch, then Generate Again to let the AI choose the fortune there. To infill, write an ending after some blank rows and sketch between the anchors.</li><li><strong>Keep the possibilities.</strong> Open History to overlay past arcs, hover or focus a draft to preview it, and select to restore it. Drafts and history are saved in this browser.</li></ol><details id="model-details"><summary>About the paper and model substitutions</summary><p>Based solely on Chung et al., “TaleBrush: Sketching Stories with Generative Pretrained Language Models,” CHI 2022, DOI 10.1145/3491102.3501819.</p><p>The original uses soft-prompt-tuned GPT-Neo 2.7B for recognition and generation, and modified GeDi with GPT2-medium for continuous fortune control. This reconstruction uses prompt-based generation and separate recognition calls through the workshop’s signed-in Codex bridge. It does not reproduce training or claim equivalent model quality.</p><p>Two or three candidate sentences per slot are batched into one model call, followed by independent fortune scoring. If the first candidate differs from the target by more than 0.2, the closest candidate is selected. Scores use the preceding context’s first candidates, so chosen alternatives can slightly change context. Infilling uses both fixed contexts in a single pass rather than alternating directions. Surprise is expressed as an instruction because the bridge ignores temperature. Pointer speed determines tolerance; its numeric calibration is a reconstruction choice.</p><p>Analyze fortune scores your existing text. Generation and analysis use your Codex plan. No API key is required, and failures never silently switch to canned stories.</p></details></dialog>
+</body>
+</html>
