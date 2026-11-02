@@ -164,9 +164,9 @@ Details and examples: `llm-bridge/README.md`.
 
 When the group is done, they push their work to the workshop repository as a
 branch named after the paper, their table and their group; the hackathon page gives
-them the exact name, e.g., `revibe/misty-table3-a`:
+them the exact name, e.g., `revibe/misty-table3-group1`:
 
-    git push origin HEAD:revibe/<paper>-<table and group>
+    git push origin HEAD:revibe/<paper>-table<N>-group<N>
 
 If they ask you to do it, ask for the name the hackathon page shows them, commit
 anything left first, and push with that command. Never push `main`.
