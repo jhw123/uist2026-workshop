@@ -12,3 +12,19 @@ change: who, what changed, and what question it explores.
   repair rules. Reset All now also restores edited class values, and an unknown component that
   wraps content becomes a `<div>` instead of an icon, so pasted text is kept.
 - **Question:** none yet; this is the common starting point.
+
+## The inputs argue (branch `remix/misty-table7-argue`)
+
+- **Who:** Jo (group 1), built with Claude Code.
+- **What:** before each blend (global or drag-and-drop), the reference example and your UI
+  appear as two characters and argue for six turns about what the blend should take, in
+  Simlish-style gibberish voices made with Web Audio. Each turn proposes one concrete change,
+  and you agree (✔) or disagree (✖) with it, or type your own remark. The blend prompt then
+  follows your rulings, and the new node is labelled "argued". *Argue: On/Off* in the toolbar
+  turns it off; it is skipped during the Guided Demo. One extra model call per blend
+  (about 7 to 18 seconds), and the debate plays while you decide.
+- **Question:** does arguing over a blend, and ruling on concrete points, help people express
+  their intent better than picking Color, Layout or Content from a menu? (In the paper's study,
+  only 5 of 14 participants agreed that Misty supported them in expressing their intents.)
+  And does a playful debate make the wait for a blend feel shorter?
+

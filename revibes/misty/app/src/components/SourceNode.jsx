@@ -51,7 +51,7 @@ function SourceNode({ id, data, selected }) {
             {(loading || data.toggling) && (
               <div className="m-busy">
                 <Loader2 size={22} className="m-spin" />
-                <span>{loading ? 'Blending…' : 'Applying your change…'}</span>
+                <span>{data.debating ? 'Arguing it out…' : loading ? 'Blending…' : 'Applying your change…'}</span>
               </div>
             )}
           </div>

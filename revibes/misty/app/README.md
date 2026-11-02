@@ -9,6 +9,10 @@ group 1 "xhigh" revibe: the canvas is saved in the browser (**New Canvas** clear
 the drop target, color swatches in Applied Changes, and Download in the code editor. See
 `DEVELOPER.md` and `../remixes.md`.
 
+**Remix: the inputs argue** (this branch). Before each blend, the example and your UI argue it
+out as two little characters with gibberish voices, and you side with their points (✔ or ✖)
+before Misty blends. Turn it off with *Argue: On/Off* in the toolbar. See `../remixes.md`.
+
 There is no API key. Model calls go through the workshop's LLM bridge, which uses Claude Code
 (by default the Haiku model, not the paper's GPT-4o).
 

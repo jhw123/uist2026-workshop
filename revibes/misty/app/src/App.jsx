@@ -10,16 +10,19 @@ import {
   useNodesState,
   useReactFlow,
 } from '@xyflow/react';
-import { Code2, Compass, FilePlus2, Hand, ImagePlus, Info } from 'lucide-react';
+import { Code2, Compass, FilePlus2, Hand, ImagePlus, Info, MessagesSquare } from 'lucide-react';
 import { MistyContext } from './context.js';
 import BlendDialog from './components/BlendDialog.jsx';
 import CodeDock from './components/CodeDock.jsx';
+import DebateStage from './components/DebateStage.jsx';
 import DemoTour from './components/DemoTour.jsx';
 import ExampleNode from './components/ExampleNode.jsx';
 import SourceNode from './components/SourceNode.jsx';
 import { pickTarget } from './lib/dom.js';
 import { readFileAsDataUrl, toPng } from './lib/image.js';
 import { loadCanvas, saveCanvas } from './lib/persist.js';
+import { averageColor, debatePrompt, normalizeDebate, rulingsForPrompt } from './lib/debate.js';
+import { unlockAudio } from './lib/simlish.js';
 import { BRIDGE_URL, bridgeHealth, callModel, normalizeCategories } from './lib/llm.js';
 import { dropBlendPrompt, fixRenderPrompt, globalBlendPrompt, togglePrompt } from './lib/prompts.js';
 import { repairCode } from './lib/repair.js';
@@ -53,6 +56,11 @@ function Workspace() {
   const [pasted, setPasted] = useState('');
   const [bridge, setBridge] = useState({ state: 'checking' });
   const [demoOpen, setDemoOpen] = useState(false);
+  // Remix: the inputs argue before each blend (see lib/debate.js).
+  const [argueOn, setArgueOn] = useState(() => localStorage.getItem('misty-argue') !== 'off');
+  const [debate, setDebate] = useState(null);
+  const debateRef = useRef(null);
+  debateRef.current = debate;
   const imageInput = useRef(null);
   const codeInput = useRef(null);
   const started = useRef(false);
@@ -152,6 +160,7 @@ function Workspace() {
                   ...n.data,
                   status: 'idle',
                   toggling: false,
+                  debating: false,
                   error: 'Interrupted by a page reload. Press Regenerate to try again.',
                 },
               }
@@ -225,7 +234,7 @@ function Workspace() {
     patchNode(nodeId, { status: 'loading', error: null, categories: [] });
     try {
       const prompt =
-        spec.kind === 'global'
+        (spec.kind === 'global'
           ? globalBlendPrompt(spec.parentCode, attempt)
           : dropBlendPrompt({
               code: spec.parentCode,
@@ -233,7 +242,7 @@ function Workspace() {
               custom: spec.custom,
               targetHtml: spec.targetHtml,
               attempt,
-            });
+            })) + rulingsForPrompt(spec.debate);
       const result = await callModel(prompt, spec.image);
       if (!result.updatedCode) throw new Error('The model returned no code. Try Regenerate.');
       const code = repairCode(result.updatedCode);
@@ -298,7 +307,64 @@ function Workspace() {
       },
     ]);
     setTimeout(() => flow.fitView({ nodes: [{ id: parentId }, { id }], padding: 0.15, duration: 500 }), 80);
-    requestBlend(id, { ...spec, parentCode: parent.data.code }, 0);
+    const full = { ...spec, parentCode: parent.data.code };
+    // The debate is skipped during the Guided Demo (its steps expect the blend at once)
+    // and when another debate is already on stage.
+    if (argueOn && !demoOpen && !debateRef.current) startDebate(id, full);
+    else requestBlend(id, full, 0);
+  };
+
+  // ---- remix: the inputs argue ------------------------------------------
+
+  const startDebate = async (nodeId, spec) => {
+    unlockAudio();
+    patchNode(nodeId, { status: 'loading', debating: true, error: null });
+    const color = await averageColor(spec.image);
+    setDebate({ nodeId, spec, status: 'loading', turns: [], note: '', exampleImage: spec.image, exampleColor: color });
+    try {
+      const raw = await callModel(
+        debatePrompt({
+          code: spec.parentCode,
+          kind: spec.kind,
+          aspects: spec.aspects,
+          custom: spec.custom,
+          targetHtml: spec.targetHtml,
+        }),
+        spec.image
+      );
+      const script = normalizeDebate(raw);
+      setDebate((d) => (d && d.nodeId === nodeId ? { ...d, ...script, scriptId: Date.now(), status: 'playing' } : d));
+    } catch (error) {
+      setDebate((d) => (d && d.nodeId === nodeId ? { ...d, status: 'error', error: error.message } : d));
+    }
+  };
+
+  const finishDebate = (withRulings) => {
+    const d = debateRef.current;
+    if (!d) return;
+    debateRef.current = null; // guard against a double call before the next render
+    setDebate(null);
+    const node = getNode(d.nodeId);
+    if (!node) return;
+    const argued = withRulings && d.turns.length ? { turns: d.turns, compromise: d.compromise, note: d.note } : null;
+    const spec = argued ? { ...d.spec, debate: argued } : d.spec;
+    patchNode(d.nodeId, {
+      debating: false,
+      blend: spec,
+      blendLabel: argued ? `${node.data.blendLabel} · argued` : node.data.blendLabel,
+    });
+    requestBlend(d.nodeId, spec, 0);
+  };
+
+  const cancelDebate = () => {
+    const d = debateRef.current;
+    debateRef.current = null;
+    setDebate(null);
+    if (!d) return;
+    nodesRef.current = nodesRef.current.filter((n) => n.id !== d.nodeId);
+    setNodes((list) => list.filter((n) => n.id !== d.nodeId));
+    setEdges((list) => list.filter((e) => e.target !== d.nodeId));
+    say('Blend cancelled. Nothing was changed.');
   };
 
   const globalBlend = (exampleId, sourceId) => {
@@ -706,6 +772,17 @@ function Workspace() {
           <button className="m-tool" title="Clear the canvas (it is saved in this browser)" onClick={newCanvas}>
             <FilePlus2 size={16} /> New Canvas
           </button>
+          <button
+            className={`m-tool m-tool-argue ${argueOn ? 'is-on' : ''}`}
+            aria-pressed={argueOn}
+            title="Remix: before each blend, the example and your UI argue, and you rule on their points"
+            onClick={() => {
+              localStorage.setItem('misty-argue', argueOn ? 'off' : 'on');
+              setArgueOn(!argueOn);
+            }}
+          >
+            <MessagesSquare size={16} /> Argue: {argueOn ? 'On' : 'Off'}
+          </button>
           <input
             ref={imageInput}
             type="file"
@@ -759,6 +836,20 @@ function Workspace() {
         )}
 
         {toast && <div className="m-toast" role="status">{toast}</div>}
+
+        {debate && (
+          <DebateStage
+            state={debate}
+            onRule={(turnId, ruling) =>
+              setDebate((d) => d && { ...d, turns: d.turns.map((t) => (t.id === turnId ? { ...t, ruling } : t)) })
+            }
+            onNote={(note) => setDebate((d) => d && { ...d, note })}
+            onPlayed={() => setDebate((d) => (d && d.status === 'playing' ? { ...d, status: 'done' } : d))}
+            onBlend={() => finishDebate(true)}
+            onSkip={() => finishDebate(false)}
+            onCancel={cancelDebate}
+          />
+        )}
 
         <DemoTour
           open={demoOpen}

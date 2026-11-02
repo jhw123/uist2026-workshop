@@ -224,3 +224,65 @@ body.m-dragging, body.m-dragging * { cursor: grabbing !important; user-select: n
 .m-palette-row { display: flex; gap: 2px; }
 .m-palette-cell { width: 13px; height: 13px; border-radius: 2px; border: 1px solid rgba(0,0,0,.08); padding: 0; cursor: pointer; }
 .m-palette-cell:hover { transform: scale(1.25); }
+
+/* ---- remix: the inputs argue ---- */
+.m-tool-argue.is-on { color: #5b3fa8; background: #efe8fb; }
+.m-debate {
+  position: fixed; left: 50%; bottom: 44px; transform: translateX(-50%); z-index: 60;
+  width: min(780px, 94vw); background: #fff; border-radius: 16px;
+  box-shadow: 0 18px 50px rgba(30, 20, 70, .28); border: 1px solid #e5e0f3;
+  font-size: 14px; color: #2a2540; animation: m-debate-in .25s ease-out;
+}
+@keyframes m-debate-in { from { opacity: 0; transform: translate(-50%, 16px); } }
+.m-debate-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px 6px; }
+.m-debate-head strong { font-size: 15px; }
+.m-debate-sub { flex: 1; color: #6b6585; font-size: 12.5px; }
+.m-debate-icon { border: 0; background: none; padding: 4px; border-radius: 6px; color: #6b6585; cursor: pointer; }
+.m-debate-icon:hover { background: #f2eff9; }
+.m-debate-arena { display: grid; grid-template-columns: 104px 1fr 104px; gap: 8px; align-items: end; padding: 4px 12px 8px; }
+.m-debate-lines { list-style: none; margin: 0; padding: 4px 2px; max-height: 250px; min-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.m-debate-wait { display: flex; gap: 8px; align-items: center; color: #6b6585; justify-content: center; padding-top: 40px; }
+.m-line { display: flex; flex-direction: column; max-width: 82%; animation: m-pop .2s ease-out; }
+@keyframes m-pop { from { opacity: 0; transform: scale(.92); } }
+.m-line-example { align-self: flex-start; align-items: flex-start; }
+.m-line-ui { align-self: flex-end; align-items: flex-end; }
+.m-line-compromise { align-self: center; max-width: 92%; }
+.m-bubble { margin: 0; padding: 8px 12px; border-radius: 14px; line-height: 1.35; }
+.m-line-example .m-bubble { background: #e6edfb; border-bottom-left-radius: 4px; }
+.m-line-ui .m-bubble { background: #efe6fb; border-bottom-right-radius: 4px; }
+.m-line-compromise .m-bubble { background: #fff6d8; font-weight: 500; text-align: center; }
+.m-line.is-speaking .m-bubble { box-shadow: 0 0 0 2px #7fd36b; }
+.m-ruling { display: flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 12px; color: #5e5878; }
+.m-proposal { font-style: italic; }
+.m-rule { width: 24px; height: 24px; border-radius: 50%; border: 1px solid #d8d3e8; background: #fff; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #8a84a3; padding: 0; }
+.m-rule-keep.is-on { background: #3aa856; border-color: #3aa856; color: #fff; }
+.m-rule-reject.is-on { background: #d9534f; border-color: #d9534f; color: #fff; }
+.m-rule:hover { transform: scale(1.1); }
+.m-debate-foot { display: flex; gap: 8px; padding: 8px 14px 12px; border-top: 1px solid #f0edf7; }
+.m-debate-note { flex: 1; border: 1px solid #dcd7ea; border-radius: 8px; padding: 7px 10px; font: inherit; font-size: 13px; }
+.m-debate-skip, .m-debate-go { display: inline-flex; align-items: center; gap: 5px; border-radius: 8px; padding: 7px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+.m-debate-skip { border: 1px solid #dcd7ea; background: #fff; color: #5e5878; }
+.m-debate-go { border: 0; background: #5b3fa8; color: #fff; font-weight: 600; }
+.m-debate-go:disabled { opacity: .5; cursor: default; }
+
+/* the two characters */
+.m-char { display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; padding-top: 26px; }
+.m-char-body { width: 70px; height: 78px; border-radius: 46% 46% 40% 40%; position: relative; box-shadow: inset 0 -8px 0 rgba(0,0,0,.08), 0 6px 14px rgba(40,30,80,.18); transition: transform .15s; }
+.m-char-badge { position: absolute; width: 26px; height: 26px; right: -8px; bottom: -4px; border-radius: 6px; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.2); background: #fff; }
+.m-char-eyes { position: absolute; top: 24px; left: 0; right: 0; display: flex; justify-content: center; gap: 14px; }
+.m-char-eyes span { width: 9px; height: 11px; background: #2a2540; border-radius: 50%; animation: m-blink 4s infinite; }
+@keyframes m-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+.m-char-mouth { position: absolute; left: 50%; top: 46px; width: 22px; height: 12px; margin-left: -11px; background: #3a2030; border-radius: 0 0 12px 12px; transform-origin: top; transition: transform .06s; }
+.m-char-name { font-size: 12px; font-weight: 600; color: #4a4466; }
+.m-char.is-talking .m-char-body { animation: m-bob .32s ease-in-out infinite alternate; }
+.m-char.is-talking.is-insist .m-char-body { animation: m-shake .18s ease-in-out infinite alternate; }
+.m-char.is-talking.is-joke .m-char-body { animation: m-wiggle .4s ease-in-out infinite alternate; }
+@keyframes m-bob { to { transform: translateY(-5px); } }
+@keyframes m-shake { from { transform: translateX(-3px) rotate(-3deg); } to { transform: translateX(3px) rotate(3deg); } }
+@keyframes m-wiggle { from { transform: rotate(-7deg); } to { transform: rotate(7deg) translateY(-3px); } }
+/* a nod to a certain life simulator */
+.m-plumbob { position: absolute; top: 0; width: 14px; height: 22px; background: linear-gradient(160deg, #b8f59a, #3fbf3a 60%, #1f8c2a); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); opacity: 0; transition: opacity .2s; animation: m-float 1.6s ease-in-out infinite; }
+.m-char.is-active .m-plumbob { opacity: 1; }
+@keyframes m-float { 50% { transform: translateY(-4px) rotate(8deg); } }
+
+.m-busy span { background: rgba(255, 255, 255, .92); padding: 3px 10px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }

@@ -143,3 +143,21 @@ Two fixes: Reset All now also restores class values edited in the panel (`origin
 change), so the list matches the code again. Pasted code with an unknown wrapper component no
 longer loses its text.
 
+## Remix: the inputs argue
+
+- `src/lib/debate.js`: the debate prompt (the UI's code, the example image, and for a drop the
+  target and aspects), `normalizeDebate` for the JSON script (`turns` of speaker, line, mood and
+  proposal, plus a `compromise`), and `rulingsForPrompt`, which appends the user's rulings to the
+  global or drag-and-drop blend prompt. `averageColor` colors the example character.
+- `src/lib/simlish.js`: gibberish speech with the Web Audio API. Each syllable is a sawtooth or
+  square wave through two band-pass filters at that vowel's formants, with a noise burst for
+  consonants, and a pitch contour per mood. No samples or services. It works muted, keeping the
+  same pacing.
+- `src/components/DebateStage.jsx`: the stage, characters, speech bubbles, ✔/✖ rulings, note
+  field, and Skip, Blend and Cancel. If the user does not touch the stage, it blends 12 seconds
+  after the debate ends. Playback is keyed on `scriptId`, so rulings don't restart it.
+- `App.jsx`: `startBlend` creates the output node as before, then calls `startDebate` when
+  *Argue* is on, no Guided Demo is open, and no other debate is on stage; otherwise it blends at
+  once. `finishDebate` stores the rulings in the node's `blend` spec, so Regenerate keeps them.
+  `cancelDebate` removes the pending node and its edges.
+
