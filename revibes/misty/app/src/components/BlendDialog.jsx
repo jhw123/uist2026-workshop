@@ -1,80 +1,97 @@
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Paintbrush, LayoutList, Plus, MoreVertical, Check } from "lucide-react";
-import { Modal } from "./ui.jsx";
 
-// "Pick Blending Option" (Figure 1 C): shown after a cropped example section is
-// dropped on a source UI. Several aspects can be picked at once (in §2, Fuji
-// picks color, layout and content together).
 const OPTIONS = [
-  { key: "Color", icon: Paintbrush, text: "Apply the colors to your design" },
-  { key: "Layout", icon: LayoutList, text: "Arrange and structure your design elements" },
-  { key: "Content", icon: Plus, text: "Add the selected UI elements" },
-  { key: "Customize", icon: MoreVertical, text: "Specify a new blending aspect" },
+  { key: "Color", icon: Paintbrush, desc: "Apply the colors to your design" },
+  { key: "Layout", icon: LayoutList, desc: "Arrange and structure your design elements" },
+  { key: "Content", icon: Plus, desc: "Add the selected UI elements" },
+  { key: "Customize", icon: MoreVertical, desc: "Specify a new blending aspect" },
 ];
 
-export default function BlendDialog({ drop, onCancel, onNext }) {
+/** "Pick Blending Option" (C in Figure 1), shown after dropping an example section. */
+export default function BlendDialog({ request, onCancel, onNext }) {
   const [picked, setPicked] = useState([]);
   const [custom, setCustom] = useState("");
+  const customRef = useRef(null);
+
+  useEffect(() => {
+    setPicked([]);
+    setCustom("");
+  }, [request]);
+
+  useEffect(() => {
+    if (picked.includes("Customize")) customRef.current?.focus();
+  }, [picked]);
+
+  useEffect(() => {
+    const k = (e) => e.key === "Escape" && onCancel();
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [onCancel]);
+
+  if (!request) return null;
   const toggle = (k) => setPicked((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
-  const ready = picked.length > 0 && (!picked.includes("Customize") || custom.trim());
-  const ordered = OPTIONS.map((o) => o.key).filter((k) => picked.includes(k));
+  const canNext = picked.length > 0 && (!picked.includes("Customize") || custom.trim() || picked.length > 1);
 
   return (
-    <Modal onClose={onCancel} className="w-[340px] rounded-sm bg-[#4a5196] p-6 text-white shadow-2xl">
-      <h2 className="text-center text-[19px] font-medium">Pick Blending Option</h2>
-      <div className="mt-3 flex items-center gap-3 rounded-md bg-white/10 p-2 text-xs text-indigo-100">
-        <img src={drop.thumb} className="h-12 w-12 shrink-0 rounded border border-white/30 bg-white object-contain" />
-        <div className="min-w-0">
-          <div>From <b>{drop.exampleTitle}</b></div>
-          <div className="truncate">into <code className="text-white">{drop.targetLabel}</code></div>
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/20" onMouseDown={onCancel}>
+      <div className="w-[290px] rounded-lg bg-[#4f5a9c] p-5 shadow-2xl" onMouseDown={(e) => e.stopPropagation()}>
+        <h2 className="mb-3 text-center text-lg font-medium text-white">Pick Blending Option</h2>
+        <div className="mb-3 flex items-center gap-2 rounded-md bg-white/10 p-2">
+          <img src={request.imageUrl} alt="" className="h-12 w-12 rounded bg-white object-contain" />
+          <div className="min-w-0 text-[11px] leading-snug text-indigo-100">
+            <div>
+              From <span className="font-medium text-white">{request.exampleName}</span>
+            </div>
+            <div className="truncate" title={request.targetLabel}>
+              into <span className="font-medium text-white">{request.targetLabel || "the screen"}</span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="mt-4 space-y-3">
-        {OPTIONS.map(({ key, icon: Icon, text }) => {
-          const on = picked.includes(key);
-          return (
-            <div key={key}>
+        <div className="space-y-3">
+          {OPTIONS.map(({ key, icon: Icon, desc }) => {
+            const on = picked.includes(key);
+            return (
               <button
-                type="button"
+                key={key}
                 onClick={() => toggle(key)}
-                className={`flex w-full items-center gap-4 rounded px-4 py-3 text-left shadow transition-colors ${
-                  on ? "bg-[#2e3266] text-white ring-2 ring-white/70" : "bg-white text-gray-900 hover:bg-indigo-50"
+                className={`relative flex w-full items-center gap-4 rounded-md px-4 py-3 text-left transition ${
+                  on ? "bg-[#2f3566] text-white ring-2 ring-white/70" : "bg-white text-gray-900 hover:bg-indigo-50"
                 }`}
               >
-                <Icon className={`h-6 w-6 shrink-0 ${on ? "text-white" : "text-[#4a5196]"}`} />
-                <span className="flex-1">
-                  <span className="block text-[17px] font-medium">{key}</span>
-                  <span className={`block text-[13px] leading-snug ${on ? "text-indigo-100" : "text-gray-600"}`}>{text}</span>
-                </span>
-                {on && <Check className="h-5 w-5 shrink-0" />}
+                <Icon size={22} className={on ? "text-white" : "text-[#4f5a9c]"} />
+                <div>
+                  <div className="text-[16px] font-medium">{key}</div>
+                  <div className={`text-[12px] leading-tight ${on ? "text-indigo-100" : "text-gray-600"}`}>{desc}</div>
+                </div>
+                {on && <Check size={16} className="absolute right-2 top-2 text-white" />}
               </button>
-              {key === "Customize" && on && (
-                <input
-                  autoFocus
-                  value={custom}
-                  onChange={(e) => setCustom(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && ready && onNext(ordered, custom)}
-                  placeholder="e.g. typography, rounded corners and shadows"
-                  className="mt-2 w-full rounded bg-white px-3 py-2 text-sm text-gray-900 outline-none"
-                />
-              )}
-            </div>
-          );
-        })}
+            );
+          })}
+          {picked.includes("Customize") && (
+            <textarea
+              ref={customRef}
+              value={custom}
+              onChange={(e) => setCustom(e.target.value)}
+              placeholder="e.g. the rounded image corners, the typography, the card shadow"
+              className="h-16 w-full resize-none rounded-md border-0 p-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+            />
+          )}
+        </div>
+        <p className="mt-2 text-center text-[11px] text-indigo-100/80">Pick one or more aspects to blend.</p>
+        <div className="mt-3 flex gap-3">
+          <button className="flex-1 rounded-md bg-sky-500 py-2.5 text-white hover:bg-sky-600" onClick={onCancel}>
+            Cancel
+          </button>
+          <button
+            className="flex-1 rounded-md bg-sky-500 py-2.5 text-white hover:bg-sky-600 disabled:opacity-40"
+            disabled={!canNext}
+            onClick={() => onNext({ aspects: picked, custom: custom.trim() })}
+          >
+            Next
+          </button>
+        </div>
       </div>
-      <div className="mt-6 flex gap-4">
-        <button type="button" onClick={onCancel} className="flex-1 rounded bg-[#3d9be9] py-2.5 text-[16px] font-medium hover:bg-[#2f8ad6]">
-          Cancel
-        </button>
-        <button
-          type="button"
-          disabled={!ready}
-          onClick={() => onNext(ordered, custom)}
-          className="flex-1 rounded bg-[#3d9be9] py-2.5 text-[16px] font-medium hover:bg-[#2f8ad6] disabled:opacity-40"
-        >
-          Next
-        </button>
-      </div>
-    </Modal>
+    </div>
   );
 }
