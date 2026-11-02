@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaleBrush</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <span class="brand">TaleBrush</span>
+  <span class="subst" title="The paper uses GPT-Neo 2.7B with trained soft prompts and a modified GeDi (GPT2-medium). This rebuild substitutes a general LLM reached through the workshop LLM bridge.">
+    Substitution: recognition and generation use an LLM through the workshop bridge, not the paper's GPT-Neo + GeDi models
+  </span>
+  <span id="bridgeStatus" class="bridge">checking bridge…</span>
+</header>
+
+<main class="layout">
+  <!-- Text editor (Figure 1 A2 / B1) -->
+  <section class="editorPane">
+    <div class="editorHead">
+      <input id="title" class="title" placeholder="Title" spellcheck="false">
+      <div class="historyWrap">
+        <button id="historyBtn" class="historyBtn" title="Stored stories (Figure 1 B6, Figure 5)">History ▾</button>
+        <div id="historyList" class="historyList" hidden></div>
+      </div>
+    </div>
+    <div id="editor" class="editor"></div>
+    <p class="hint">Each bullet is one sentence slot. <kbd>Enter</kbd> adds a slot, <kbd>Backspace</kbd> on an empty slot removes it.
+      <span class="legend"><i class="bar user"></i>written by you <i class="bar ai"></i>generated</span></p>
+  </section>
+
+  <!-- Canvas (Figure 1 A1, A3, B2-B5) -->
+  <section class="canvasPane">
+    <div class="canvasHead">
+      <input id="protagonist" class="protagonist" value="Mike" spellcheck="false" title="Protagonist's name (Figure 1 A1)">
+      <span class="fortuneLabel">'s fortune</span>
+      <button id="generateAgain" class="generateAgain" title="Generate new sentences for the same sketch (Figure 1 B3)">⟳ Generate Again</button>
+    </div>
+
+    <div class="canvasBox">
+      <canvas id="fortuneCanvas" class="fortuneCanvas"></canvas>
+      <div class="axisLabel top">good fortune</div>
+      <div class="axisLabel bottom">bad fortune</div>
+    </div>
+
+    <div id="surpriseBox" class="canvasBox surpriseBox" hidden>
+      <canvas id="surpriseCanvas" class="surpriseCanvas"></canvas>
+      <div class="axisLabel top hi">High Surprise</div>
+      <div class="axisLabel bottom">Low Surprise</div>
+    </div>
+
+    <label class="surpriseToggle"><input type="checkbox" id="surpriseToggle"> Surprise in a separate panel.</label>
+
+    <div class="toolbar" role="toolbar" title="Pen and eraser (Figure 1 B5)">
+      <button id="penTool" class="tool active" title="Pen: sketch the fortune arc. Draw slowly for a tight envelope, fast for a loose one.">✎ Pen</button>
+      <button id="eraserTool" class="tool" title="Eraser: erase part of the sketch. Erased slots get sentences with no fortune target.">⌫ Eraser</button>
+    </div>
+
+    <div id="status" class="status"></div>
+    <button id="stopBtn" class="stopBtn" hidden>Stop generating</button>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
