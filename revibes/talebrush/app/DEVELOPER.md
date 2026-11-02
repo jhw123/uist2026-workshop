@@ -76,6 +76,9 @@ Key behaviour:
 - **Generation order** (`generateSlots`). The selected slots are split into contiguous runs, handled
   left to right. A run with story text after it is infilled, alternating `infill_prev` from its
   left end and `infill_next` from its right end. Any other run is continued left to right.
+- **Edited generated sentences** become `kind: "user"` (`onRowInput`). Generate Again skips
+  non-empty user rows, so the edit survives and is sent as context. Redrawing over the slot still
+  replaces it.
 - **Recognition after edits**. 900 ms after typing stops, the edited rows and the 3 rows after them
   (whose context changed) are rated again. Changing the protagonist's name re-rates every row.
 - **History**. A snapshot is stored after every generation run. While the menu is open, every stored

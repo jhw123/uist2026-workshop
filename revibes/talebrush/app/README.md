@@ -45,11 +45,14 @@ Other ports: `PORT=8600 BRIDGE_URL=http://localhost:8788 python3 revibes/talebru
    - **Redraw part of the line** to regenerate only those sentences.
    - **Eraser** (toolbar under the canvas): erase part of the line. The erased sentences are
      generated with no fortune target the next time you click Generate Again.
-4. **Generate Again** regenerates every sketched slot with the same sketch.
+4. **Generate Again** regenerates every sketched slot with the same sketch, except sentences
+   you wrote or edited: an edited generated sentence turns grey (yours) and is kept, and the
+   new sentences build on it.
 5. **Surprise in a separate panel** opens a second canvas. Draw a line there to set how
    unexpected each sentence should be (low = predictable, high = surprising). It applies
    to the next generation. Without it, surprise is low (0.3).
-6. **Edit any sentence** directly. Its fortune is read again after you stop typing.
+6. **Edit any sentence** directly. Its fortune is read again after you stop typing. Later
+   generations use your edits (new characters, places, events) as context.
 7. **History** (top left) stores every generated story. While it is open, all stored
    arcs show faintly on the canvas. Hover a story to see its text and arc, click to roll back to it,
    and use ✎ to rename or ✕ to delete.
