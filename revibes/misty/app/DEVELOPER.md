@@ -132,6 +132,14 @@ from the group 1 "xhigh" revibe.
   so it needs no model call (`ColorSwatch` in `components/AppliedChanges.jsx`).
 - **Download.** The code dock saves the component as `misty-component.jsx`.
 
-One fix: Reset All now also restores class values edited in the panel (`original` on each change),
-so the list matches the code again.
+- **Repair rules.** `src/lib/repair.js` now uses xhigh's rules. They render the main component
+  when the code defines several, keep HTML comments as JSX comments, handle multi-line imports,
+  `style="..."` strings and JSON-escaped code, and rewrite screen classes (`h-screen`, `fixed`)
+  only inside `className`. Avatars get portrait photos. Icon-like names (`FaHeart`, `HomeIcon`)
+  become the matching lucide icon. New in the remix base: any other unknown component that wraps
+  content becomes a `<div>`, so its text is kept. A self-closing one becomes a `Circle` icon.
+
+Two fixes: Reset All now also restores class values edited in the panel (`original` on each
+change), so the list matches the code again. Pasted code with an unknown wrapper component no
+longer loses its text.
 
