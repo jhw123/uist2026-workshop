@@ -1,0 +1,21 @@
+{
+  "title": "The Best Robot Vacuums, Tested in a House With Two Dogs",
+  "url": "sample://robot-vacuums",
+  "note": "Written for this revibe as a stand-in review article (not from the paper).",
+  "paragraphs": [
+    {"tag": "p", "text": "We ran six robot vacuums for a month each in a 1,800-square-foot house with hardwood floors, two medium-pile rugs, and two shedding dogs. We measured how much debris each one picked up, how often it got stuck, how loud it was, and how much babysitting it needed."},
+    {"tag": "h", "text": "Best overall: Roborock S8"},
+    {"tag": "p", "text": "The Roborock S8 picked up 94 percent of the test mixture of rice, sand, and dog hair on hardwood and 87 percent on the medium-pile rug, the best scores in our group. Its dual rubber brush rolls rarely tangled with hair, and the lidar navigation mapped the whole house on the first run and never once got lost."},
+    {"tag": "p", "text": "At around $600, the S8 is not cheap, and the self-emptying dock adds another $200 and a lot of countertop space. Battery life was excellent: the S8 cleaned the entire house on one charge with 30 percent to spare, and it returns to the dock and resumes on its own when it does run low. The app lets you draw no-go zones and schedule rooms individually, which proved essential for keeping it out of the dogs' water bowl area."},
+    {"tag": "h", "text": "Best budget pick: Eufy RoboVac 11S"},
+    {"tag": "p", "text": "The Eufy 11S costs about $200 and has no mapping at all; it bounces around the room in a semi-random pattern. Surprisingly, that worked fine in our open-plan living area, where it picked up 81 percent of debris on hardwood. On the rug it managed only 62 percent, and it tended to miss corners."},
+    {"tag": "p", "text": "What the 11S does well is being quiet and slim. At 55 decibels it is the quietest vacuum we tested, and its 2.85-inch height let it clean under the sofa and the bed where the taller Roborock could not fit. There is no app, just a remote control, and it got stuck on the fringe of our rug roughly once every three runs, so it needs more supervision than the pricier models."},
+    {"tag": "h", "text": "Best for pet hair: iRobot Roomba j7+"},
+    {"tag": "p", "text": "The Roomba j7+ is the one we would recommend to anyone with pets. Its front camera recognizes and avoids pet waste, cables, and socks, and in a month it never once smeared anything across the floor, a mistake two of the other robots made. The self-emptying base holds about 60 days of debris and the bags trap allergens well."},
+    {"tag": "p", "text": "Suction and pickup were good but a step behind the Roborock: 89 percent on hardwood and 78 percent on the rug. It is also loud at 68 decibels, and iRobot's app occasionally lost the connection to the robot. The rubber brush rolls were the easiest to clean of any model, and replacement parts are easy to find in any hardware store, which matters for a device you expect to run for years."},
+    {"tag": "h", "text": "Also tested: Shark AI Ultra and Dreame L10s"},
+    {"tag": "p", "text": "The Shark AI Ultra matched the Roomba on pickup and costs less, but its navigation was erratic and it took three runs to produce a usable map. The Dreame L10s Ultra combines vacuuming and mopping with a dock that washes and dries the mop pads; the mopping was genuinely useful on hardwood, but the dock is enormous and the app was confusing and full of untranslated text."},
+    {"tag": "h", "text": "What to look for"},
+    {"tag": "p", "text": "Mapping and navigation separate the good robots from the frustrating ones: lidar-based models clean in neat rows and finish faster, while bump-and-go robots take twice as long. Rubber brush rolls beat bristle rolls for hair. A self-emptying dock is a luxury that becomes a necessity if you have pets. Check the height if you have low furniture, and look at the replacement filter and brush costs, which can add up to $50 a year. Finally, be realistic about maintenance: every robot we tested needed its sensors wiped and brushes cleared about once a week."}
+  ]
+}

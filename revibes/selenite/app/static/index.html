@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Selenite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand" id="brand" title="Back to your topics and pages">◈ Selenite</div>
+  <form class="open" id="open-form">
+    <input id="url-input" type="text" placeholder="Paste the address of a web page to read with Selenite…" autocomplete="off">
+    <button type="submit" class="primary">Open</button>
+  </form>
+  <button id="paste-btn" class="ghost" title="Paste the text of an article instead of a URL">Paste text</button>
+  <div class="samples-wrap">
+    <button id="samples-btn" class="ghost">Sample pages ▾</button>
+    <div id="samples-menu" class="menu hidden"></div>
+  </div>
+  <div class="spacer"></div>
+  <div id="bridge-status" class="status" title="LLM bridge">bridge: …</div>
+</header>
+
+<main id="main">
+  <!-- Library / home view -->
+  <section id="home" class="view">
+    <div class="home-inner">
+      <h1>Make sense of unfamiliar topics</h1>
+      <p class="lead">Open a web page. Selenite recognizes its <b>topic</b>, retrieves the <b>criteria people commonly consider</b>, extracts the <b>options</b> on the page, annotates each paragraph in place, and, when you reach the end, summarizes what you read and suggests what to search for next.</p>
+      <div id="library"></div>
+    </div>
+  </section>
+
+  <!-- Reader view -->
+  <section id="reader" class="view hidden">
+    <div id="article" class="article">
+      <div class="article-inner">
+        <h1 id="article-title"></h1>
+        <div class="article-meta"><a id="article-url" target="_blank" rel="noopener"></a> <span id="article-source"></span></div>
+        <div id="paragraphs"></div>
+        <div id="summary" class="summary hidden"></div>
+        <div class="end-pad"></div>
+      </div>
+    </div>
+    <button id="sidebar-toggle" class="sidebar-toggle hidden" title="Show Selenite sidebar">«</button>
+    <aside id="sidebar" class="sidebar">
+      <div class="sb-top">
+        <div id="stage" class="stage"></div>
+        <button id="sb-collapse" class="icon" title="Hide sidebar">»</button>
+      </div>
+      <div class="sb-section">
+        <div class="sb-head">
+          <span class="sb-label">💡 Topic:</span> <span id="topic-name" class="topic-name" title="Click to rename">…</span>
+          <span class="spacer"></span>
+          <button class="icon" id="topic-menu-btn" title="Topic options">⋮</button>
+        </div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-head">
+          <span class="sb-label">☰ Options encountered so far:</span>
+          <span class="spacer"></span>
+          <button class="icon" id="options-menu-btn" title="Options">⋮</button>
+        </div>
+        <div id="options-list" class="chips"></div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-head">
+          <span class="sb-label">▦ Criteria that people consider regarding the topic:</span>
+          <span class="spacer"></span>
+          <button class="icon" id="criteria-menu-btn" title="Criteria">⋮</button>
+        </div>
+        <div id="criteria-list" class="chips"></div>
+        <div class="sb-actions">
+          <button id="more-criteria" class="ghost">✧ Request more criteria</button>
+          <button id="add-criterion" class="ghost">+ Add a criterion</button>
+        </div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<div id="modal" class="modal hidden"><div class="modal-card" id="modal-card"></div></div>
+<div id="popover" class="menu hidden"></div>
+<div id="toast" class="toast hidden"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>
