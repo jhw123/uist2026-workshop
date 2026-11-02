@@ -1,0 +1,28 @@
+html, body, #root { height: 100%; margin: 0; }
+body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: #fafafa; }
+
+.react-flow__node { font-size: 14px; }
+.react-flow__node.selected .misty-node { box-shadow: 0 0 0 2px #8b5cf6; }
+
+/* drop-target highlight inside the live render (the paper's hover animation) */
+.misty-drop-target {
+  outline: 3px solid #7c3aed !important;
+  outline-offset: 2px;
+  background-color: rgba(167, 139, 250, 0.25) !important;
+  transition: background-color 120ms ease;
+  animation: misty-pulse 900ms ease-in-out infinite;
+}
+@keyframes misty-pulse {
+  0%, 100% { outline-color: #7c3aed; }
+  50% { outline-color: #c4b5fd; }
+}
+
+.misty-crop-handle { cursor: grab; }
+.misty-crop-handle:active { cursor: grabbing; }
+
+/* render frame */
+.misty-phone { width: 390px; height: 720px; position: relative; overflow: hidden; background: white; }
+.misty-phone > * { height: 100%; }
+
+.cm-editor { height: 100%; font-size: 12px; }
+.cm-scroller { overflow: auto; }

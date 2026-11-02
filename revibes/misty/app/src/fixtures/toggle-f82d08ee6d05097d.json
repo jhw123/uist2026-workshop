@@ -1,0 +1,17 @@
+{
+  "key": "toggle-f82d08ee6d05097d",
+  "op": "toggle",
+  "meta": {
+    "op": "toggle",
+    "baseHash": "6c31a7cb4e2ed81d",
+    "enabled": [
+      false,
+      true,
+      true,
+      true
+    ]
+  },
+  "response": "{\"updatedCode\":\"() => {\\n  return (\\n    <div className=\\\"w-full h-full bg-gray-100 p-5 flex flex-col items-stretch overflow-y-auto\\\">\\n      <h1 className=\\\"text-2xl font-bold text-gray-900 mb-4\\\">Fuji</h1>\\n      <div className=\\\"flex items-center gap-4 mb-4\\\">\\n        <img src=\\\"/stock/square0.jpg\\\" alt=\\\"avatar\\\" className=\\\"w-24 h-24 rounded-full object-cover border-2 border-white shadow\\\" />\\n        <p className=\\\"text-left text-gray-600 text-sm flex-1\\\">\\n          Passionate nature photographer. Find me by the water, or in the woods.\\n        </p>\\n      </div>\\n      <div className=\\\"bg-white rounded-2xl overflow-hidden mb-6\\\">\\n        <div className=\\\"flex items-center gap-4 pl-4 py-3 pr-4\\\">\\n          <Mail className=\\\"w-7 h-7 text-sky-400 shrink-0\\\" />\\n          <span className=\\\"text-base font-medium text-gray-800 flex-1\\\">Email: photos@fuji.net</span>\\n          <ChevronRight className=\\\"w-5 h-5 text-zinc-500\\\" />\\n        </div>\\n        <div className=\\\"ml-16 border-t border-gray-200\\\" />\\n        <div className=\\\"flex items-center gap-4 pl-4 py-3 pr-4\\\">\\n          <Phone className=\\\"w-7 h-7 text-green-400 shrink-0\\\" />\\n          <span className=\\\"text-base font-medium text-gray-800 flex-1\\\">Phone: +123 456 7890</span>\\n          <ChevronRight className=\\\"w-5 h-5 text-zinc-500\\\" />\\n        </div>\\n      </div>\\n      <h2 className=\\\"text-2xl font-bold text-gray-900 mb-3\\\">Interests</h2>\\n      <div className=\\\"bg-white rounded-2xl overflow-hidden\\\">\\n        <div className=\\\"flex items-center gap-4 pl-4 py-4 pr-4\\\">\\n          <Film className=\\\"w-7 h-7 text-orange-500 shrink-0\\\" />\\n          <span className=\\\"text-base font-medium text-gray-800 flex-1\\\">Film Camera</span>\\n          <ChevronRight className=\\\"w-5 h-5 text-zinc-500\\\" />\\n        </div>\\n        <div className=\\\"ml-16 border-t border-gray-200\\\" />\\n        <div className=\\\"flex items-center gap-4 pl-4 py-4 pr-4\\\">\\n          <Headphones className=\\\"w-7 h-7 text-purple-400 shrink-0\\\" />\\n          <span className=\\\"text-base font-medium text-gray-800 flex-1\\\">Lofi Music</span>\\n          <ChevronRight className=\\\"w-5 h-5 text-zinc-500\\\" />\\n        </div>\\n        <div className=\\\"ml-16 border-t border-gray-200\\\" />\\n        <div className=\\\"flex items-center gap-4 pl-4 py-4 pr-4\\\">\\n          <Sofa className=\\\"w-7 h-7 text-pink-500 shrink-0\\\" />\\n          <span className=\\\"text-base font-medium text-gray-800 flex-1\\\">Mid-Century Furniture</span>\\n          <ChevronRight className=\\\"w-5 h-5 text-zinc-500\\\" />\\n        </div>\\n        <div className=\\\"ml-16 border-t border-gray-200\\\" />\\n        <div className=\\\"flex items-center gap-4 pl-4 py-4 pr-4\\\">\\n          <Mic className=\\\"w-7 h-7 text-cyan-400 shrink-0\\\" />\\n          <span className=\\\"text-base font-medium text-gray-800 flex-1\\\">Music Production</span>\\n          <ChevronRight className=\\\"w-5 h-5 text-zinc-500\\\" />\\n        </div>\\n      </div>\\n    </div>\\n  );\\n}\"}",
+  "recordedAt": "2026-11-02T15:49:32.760Z",
+  "model": "sonnet"
+}
