@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaleBrush</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="layout">
+  <!-- Text editor (Figure 1 A2 / B1) with title and history dropdown (B6) -->
+  <section class="pane left">
+    <div class="titlebar">
+      <input id="title" class="title" placeholder="Title" autocomplete="off">
+      <div class="history">
+        <button id="historyBtn" class="history-btn" type="button">History <span class="caret">▾</span></button>
+        <div id="historyMenu" class="history-menu" hidden></div>
+      </div>
+    </div>
+    <div id="editor" class="editor" aria-label="Story sentences, one per bullet"></div>
+  </section>
+
+  <!-- Canvas (Figure 1 A1, A3 / B2-B5) -->
+  <section class="pane right">
+    <div class="controls">
+      <input id="protagonist" class="protagonist" placeholder="Name" autocomplete="off">
+      <span class="fortune-label">'s fortune</span>
+      <button id="again" class="again" type="button">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/></svg>
+        Generate Again
+      </button>
+    </div>
+    <div class="canvas-wrap">
+      <svg id="fortuneCanvas" class="canvas" viewBox="0 0 640 340" preserveAspectRatio="none"></svg>
+      <svg id="surpriseCanvas" class="canvas surprise" viewBox="0 0 640 190" preserveAspectRatio="none" hidden></svg>
+    </div>
+    <label class="surprise-toggle"><input type="checkbox" id="surpriseToggle"> Surprise in a separate panel.</label>
+    <div class="tools" role="toolbar" aria-label="Sketch tools">
+      <button id="penTool" class="tool active" type="button" title="Pen: sketch the fortune line (slow = tighter, fast = looser)">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 21h6v-8l-1.5-3V4.5a1.5 1.5 0 0 0-3 0V10L9 13z" fill="currentColor"/><path d="M11 7h2" stroke="#3f4a52" stroke-width="1"/></svg>
+      </button>
+      <button id="eraserTool" class="tool" type="button" title="Eraser: erase part of the sketch; erased sentences are generated without a fortune target">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="5" y="10" width="14" height="6" rx="1.5" fill="#f3b6b6"/><rect x="5" y="10" width="6" height="6" rx="1.5" fill="currentColor" opacity=".55"/></svg>
+      </button>
+    </div>
+  </section>
+</main>
+<footer class="statusbar">
+  <span id="status">Write a name and a sentence or two, then sketch the protagonist's fortune on the canvas.</span>
+  <button id="stopBtn" class="stop" type="button" hidden>Stop</button>
+  <span id="modelNote" class="model-note"></span>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
