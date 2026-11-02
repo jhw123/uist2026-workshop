@@ -16,7 +16,7 @@ Terminal 1, from the **repository root**, start the LLM bridge:
 
 Terminal 2, start the app:
 
-    cd revibes/misty-xiangyu/app
+    cd revibes/misty/medium/app
     npm install        # first time only
     npm run dev
 

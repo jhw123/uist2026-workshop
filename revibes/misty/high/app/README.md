@@ -14,7 +14,7 @@ You need Node.js 18 or later, Python 3, and Claude Code installed and signed in 
 
 2. **Start Misty** in a second terminal:
 
-       cd revibes/misty/app
+       cd revibes/misty/high/app
        npm install        # first time only
        npm run dev
 

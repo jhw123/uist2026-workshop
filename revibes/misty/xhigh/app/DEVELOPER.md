@@ -21,7 +21,7 @@ No API keys and no `.env` file are needed: all model calls go through the bridge
     python3 llm-bridge/bridge.py claude
 
     # terminal 2
-    cd revibes/misty/extra-high/app
+    cd revibes/misty/xhigh/app
     npm install
     npm run dev                # http://localhost:5317
 

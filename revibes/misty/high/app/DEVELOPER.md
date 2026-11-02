@@ -19,7 +19,7 @@ No API keys or `.env` file are needed. If your npm is configured for a registry 
     python3 llm-bridge/bridge.py claude          # http://localhost:8787, check /health
 
     # terminal 2
-    cd revibes/misty/app
+    cd revibes/misty/high/app
     npm install
     npm run dev                                   # http://localhost:5180
 

@@ -4,8 +4,8 @@ A rebuild of **Misty** (Lu et al., "Misty: UI Prototyping Through Interactive
 Conceptual Blending"), made by Claude Code (Claude Opus 5.5) from the paper alone
 for the Revibing HCI workshop, UIST 2026.
 
-This folder (`revibes/misty/extra-high/`) holds a second Misty revibe of the
-group, kept next to the one in `revibes/misty/app/`.
+This folder (`revibes/misty/xhigh/`) holds the group's extra-high effort Misty
+revibe, kept next to the high (`../high/`) and medium (`../medium/`) ones.
 
 Misty lets you blend example UIs (screenshots or hand-drawn sketches) into your
 own work-in-progress React + Tailwind UI on an infinite canvas. Every blend makes a
@@ -32,7 +32,7 @@ needed. Leave it running. Check it at http://localhost:8787/health.
 
 **2. Misty**:
 
-    cd revibes/misty/extra-high/app
+    cd revibes/misty/xhigh/app
     npm install        # first time only
     npm run dev
 

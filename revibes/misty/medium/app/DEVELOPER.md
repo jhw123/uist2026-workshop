@@ -13,7 +13,7 @@ Install and run:
     # repository root
     python3 llm-bridge/bridge.py claude          # http://localhost:8787
     # in another terminal
-    cd revibes/misty-xiangyu/app && npm install && npm run dev   # http://localhost:5174
+    cd revibes/misty/medium/app && npm install && npm run dev   # http://localhost:5174
 
 `npm run build` makes a static build in `dist/` (it still needs the bridge
 at run time). `VITE_BRIDGE_URL` points the app at a bridge on another port.
