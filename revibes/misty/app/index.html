@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Misty</title>
+    <!-- Tailwind's browser build: generates classes at runtime, so code the model writes renders without a build step. -->
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <style>
+      html, body, #root { margin: 0; height: 100%; }
+      body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+      .misty-highlight { outline: 3px solid #7c5cd6; background: rgba(124, 92, 214, 0.16); animation: misty-pulse 1s ease-in-out infinite; transition: all 120ms ease-out; }
+      @keyframes misty-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(124, 92, 214, 0.45); } 50% { box-shadow: 0 0 0 7px rgba(124, 92, 214, 0); } }
+      .react-flow__edge-textbg { fill: #f6f5fb; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
