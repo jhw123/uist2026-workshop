@@ -21,6 +21,9 @@ def unit(value, name="score"):
 def validate_request(body, generation=True):
     if not isinstance(body, dict):
         raise StoryError("Expected a JSON object.")
+    if "characters" in body:
+        from multi_story import validate_multi
+        return validate_multi(body, generation)
     protagonist = body.get("protagonist", "")
     if not isinstance(protagonist, str) or not protagonist.strip() or len(protagonist) > 100:
         raise StoryError("Enter a protagonist's name (1-100 characters).")
@@ -125,6 +128,9 @@ def score_items(protagonist, items, model):
 
 
 def recognize(body, model=call_model):
+    if isinstance(body, dict) and "characters" in body:
+        from multi_story import recognize_multi
+        return recognize_multi(body, model)
     validate_request(body, generation=False)
     slots = body["slots"]
     items = [{"id": str(i), "text": slot["text"],
@@ -150,6 +156,9 @@ explanations, or rewrite unrequested slots. Output JSON only:
 
 
 def generate(body, model=call_model):
+    if isinstance(body, dict) and "characters" in body:
+        from multi_story import generate_multi
+        return generate_multi(body, model)
     validate_request(body)
     requested = sorted(body["indices"])
     plans = []

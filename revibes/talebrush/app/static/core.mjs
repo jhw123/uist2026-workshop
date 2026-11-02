@@ -28,16 +28,20 @@ export function generationIndices(slots, touched) {
 }
 
 export function insertSlot(state, index, slot = emptySlot()) {
+  state.plannedRange=[];
   state.slots.splice(index, 0, slot);
-  state.controls.splice(index, 0, null);
+  state.controls?.splice(index, 0, null);
+  if(state.tracks)for(const track of Object.values(state.tracks)){track.controls.splice(index,0,null);track.values.splice(index,0,null);}
   state.surprises.splice(index, 0, null);
   state.lastRange = [];
 }
 
 export function removeSlot(state, index) {
   if (state.slots.length <= 1) return;
+  state.plannedRange=[];
   state.slots.splice(index, 1);
-  state.controls.splice(index, 1);
+  state.controls?.splice(index, 1);
+  if(state.tracks)for(const track of Object.values(state.tracks)){track.controls.splice(index,1);track.values.splice(index,1);}
   state.surprises.splice(index, 1);
   state.lastRange = [];
 }

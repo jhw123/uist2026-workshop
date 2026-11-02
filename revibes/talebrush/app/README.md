@@ -1,6 +1,17 @@
 # TaleBrush
 
-A local reconstruction of **TaleBrush: Sketching Stories with Generative Pretrained Language Models** (Chung et al., CHI 2022), built from the workshop's paper text and figures. Workshop identity: table 1, group 2.
+A local reconstruction and user-directed remix of **TaleBrush: Sketching Stories with Generative Pretrained Language Models** (Chung et al., CHI 2022), built from the workshop's paper text and figures. Workshop identity: table 1, group 2.
+
+## Characters, dimensions, and 3D story space
+
+- Add up to **six named characters**, with optional roles, goals and relationships. Select a character to edit their independent curves; **Edit selected** renames/removes them. Undo restores removals.
+- Choose **Fortune, Mood, Confidence or Tension**, or add a **custom dimension** with low/high endpoint meanings. Up to eight dimensions are supported. Every character has separate controls for each dimension.
+- **All drawn curves guide generation together**, including curves for other characters and dimensions. The expandable curve overview lists them. Opposing targets are soft constraints and can require a narrative compromise.
+- Turn off **Generate after drawing** to plan several curves before one generation. Planned sentence ranges accumulate across strokes; **Generate Again** applies their union while protecting author-written sentences.
+- Select **3D / nD space** for a rotatable, holographic-style perspective scene. Each numbered point is a sentence in the selected character’s dimension space. Assign any three dimensions to X/Y/Z, including custom dimensions. The axes are story attributes; sentence numbers indicate chronological order.
+- Drag the background to **orbit**, use the wheel to **zoom**, or **Reset camera**. Drag a numbered point in the selected **XY, XZ or YZ plane**, holding the third axis fixed. Use the sentence selector and **all-dimension sliders** to edit higher-dimensional values with the keyboard.
+- Green targets and blue recognized positions are distinct. Hollow points have at least one unset projected coordinate. Unset coordinates display the recognized value or a neutral midpoint; viewing them does not create targets. Spatial edits are staged; click **Generate Again** when ready.
+- Existing drafts and histories migrate automatically. An untouched pre-remix backup is saved under the browser storage key `talebrush.reconstruction.v1.before-cast-remix`. If migration or backup fails, replacement saving is blocked to preserve the original.
 
 ## Launch
 
@@ -37,19 +48,19 @@ If model access fails, check which CLI `command -v codex` resolves, choose a mod
 
 ## Use
 
-1. Name the protagonist above the graph. Edit the title and opening sentences on the left. Each row is one sentence slot.
-2. Draw on the fortune canvas across blank slots. Higher means better fortune; left to right follows sentence order. Releasing a stroke generates only the touched range. Slow drawing creates a narrower green envelope and considers three candidates rather than two.
-3. Generated text and independently recognized fortune points are blue. Author-written sentences are gray. Hover over a row or graph position to link them. Blank rows break the arc. **Analyze fortune** recognizes existing text; direct edits also schedule recognition after a pause.
+1. Add/select characters and dimensions using the controls above the visualization. Edit the title and opening sentences on the left. Each row is one sentence slot.
+2. Draw on the fortune canvas across blank slots. The axis labels define low/high for the selected dimension; left to right follows sentence order in the 2D view. Releasing a stroke generates only the touched range. Slow drawing creates a narrower green envelope and considers three candidates rather than two.
+3. Generated text and independently recognized fortune points are blue. Author-written sentences are gray. Hover over a row or graph position to link them. Blank rows break the arc. **Analyze arcs** recognizes the selected and constrained character/dimension pairs in existing text; direct edits also schedule recognition after a pause.
 4. Redraw over AI sentences to replace that range, or click **Generate Again** for another version with the last range and controls. Author text is protected as context; clear a row to make it replaceable.
 5. To **infill**, write an ending after several blank rows and sketch across those rows. The model receives both sides of the gap as fixed context.
 6. Use **Erase** to remove fortune constraints; then **Generate Again** explores that range without a fortune target.
 7. Enable **Make room for surprise** and sketch the desired surprise on the separate graph. Higher means more unexpected; changes apply at the next generation.
 8. **History** overlays past arcs. Hover or keyboard-focus an entry to preview text and arc, then select it to restore the complete draft. Undo restores local actions. Browser storage retains up to 50 history entries. **Export story** saves a plain-text copy.
 
-Enter inserts a row at the cursor, Backspace removes an empty row, and Shift+Enter makes a line break inside a row. Multiline paste creates multiple rows. The canvas supports up to 30 rows; a generation can change up to 24 rows at once. Keyboard shortcuts outside text inputs: P for Draw, E for Erase. Focus a graph point and press Enter to focus its sentence.
+Enter inserts a row at the cursor, Backspace removes an empty row, and Shift+Enter makes a line break inside a row. Multiline paste creates multiple rows. The 2D canvas supports up to 30 rows; a generation can change up to 24 rows at once. Keyboard shortcuts outside text inputs: P for Draw, E for Erase. Focus a graph point and press Enter to focus its sentence.
 
 ## Substitutions and limits
 
-The original soft-prompt-tuned GPT-Neo 2.7B and modified GeDi/GPT2-medium are replaced with two prompt-based Codex bridge requests: candidate generation, then independent fortune recognition without the target values. Candidate generation is batched, rather than sequentially regenerating/alternating infill directions. A first candidate within 0.2 of its target is kept; otherwise the closest allowed candidate is chosen. Recognition context uses the first candidate at earlier generated slots, so choosing another candidate can alter that context. Surprise is an instruction, because bridge temperature settings are ignored. Pointer-speed calibration and envelope sizes are reconstruction choices. The UI labels these substitutions; model quality and the paper's experimental results are not reproduced.
+The original soft-prompt-tuned GPT-Neo 2.7B and modified GeDi/GPT2-medium are replaced with two prompt-based Codex bridge requests: candidate generation, then independent fortune recognition without the target values. Candidate generation is batched, rather than sequentially regenerating/alternating infill directions. For multi-dimensional requests, a first candidate within 0.2 of every target is kept; otherwise the candidate with minimum aggregate error across constrained pairs is chosen, weighted by tolerance. Recognition covers the active and constrained pairs without receiving targets. The original one-fortune API remains compatible. Recognition context uses the first candidate at earlier generated slots, so choosing another candidate can alter that context. Surprise is an instruction, because bridge temperature settings are ignored. Pointer-speed calibration and envelope sizes are reconstruction choices. The UI labels these substitutions; model quality and the paper's experimental results are not reproduced.
 
-This is the workshop's initial build step. The separate feature-check prompt, human grading, later revisions and sharing have not been run. See [DEVELOPER.md](DEVELOPER.md) for architecture and checks.
+The initial paper reconstruction is preserved in commit `cf51ffb`. This remix adds features explicitly requested by the group; it does not automatically run the workshop grading procedure. The requested publication branch is `talebrush-table1-group2-humaninloop`. See [DEVELOPER.md](DEVELOPER.md) for architecture and checks.

@@ -30,6 +30,11 @@ export class SketchCanvas {
   coord(e){const r=this.svg.getBoundingClientRect();return {x:clamp((e.clientX-r.left)/r.width*W-P.left,0,W-P.left-P.right)/(W-P.left-P.right),y:clamp((e.clientY-r.top)/r.height*H-P.top,0,H-P.top-P.bottom)/(H-P.top-P.bottom),t:e.timeStamp};}
   setState(state, {history=[], preview=null, hover=null, busy=false, tool='pen'}={}) {
     this.state=state;this.history=history;this.preview=preview;this.hover=hover;this.busy=busy;this.tool=tool;
+    if(this.kind==='fortune'){
+      const shown=preview||state,dimension=shown.dimension,character=shown.character;
+      this.svg.setAttribute('aria-label',`Draw ${character?.name||'the character'}’s ${dimension?.name||'fortune'} arc. Higher means ${dimension?.high||'good fortune'}; lower means ${dimension?.low||'bad fortune'}.`);
+      this.svg.setAttribute('data-character-id',character?.id||'');this.svg.setAttribute('data-dimension-id',dimension?.id||'fortune');
+    }
     this.container.classList.toggle('busy',busy);this.container.classList.toggle('erasing',tool==='eraser');this.render();
   }
   setHover(index){
@@ -101,8 +106,9 @@ export class SketchCanvas {
         const slot=slots[i];if(slot.fortune===null||!slot.text.trim())continue;
         const [x,y]=point(i,slot.fortune),color=slot.source==='ai'?'#608eb5':'#929f87';
         if(i>0&&slots[i-1].fortune!==null&&slots[i-1].text.trim())this.svg.append(el('path',{d:smooth([point(i-1,slots[i-1].fortune),[x,y]]),fill:'none',stroke:color,'stroke-width':2.5}));
-        const dot=el('circle',{cx:x,cy:y,r:this.hover===i?6.5:3.8,fill:color,stroke:'#fffefa','stroke-width':this.hover===i?2:1,class:'chart-point','data-index':i,tabindex:0,'aria-label':`Sentence ${i+1}: fortune ${Math.round(slot.fortune*100)}%. ${slot.text}`});
-        const title=el('title');title.textContent=`${i+1}. ${slot.text}\nFortune: ${Math.round(slot.fortune*100)}%`;dot.append(title);
+        const label=`${display.character?.name||'Character'} · ${display.dimension?.name||'Fortune'}`;
+        const dot=el('circle',{cx:x,cy:y,r:this.hover===i?6.5:3.8,fill:color,stroke:'#fffefa','stroke-width':this.hover===i?2:1,class:'chart-point','data-index':i,tabindex:0,'aria-label':`Sentence ${i+1}: ${label} ${Math.round(slot.fortune*100)}%. ${slot.text}`});
+        const title=el('title');title.textContent=`${i+1}. ${slot.text}\n${label}: ${Math.round(slot.fortune*100)}%`;dot.append(title);
         dot.addEventListener('focus',()=>this.onHover?.(i));dot.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.stopPropagation();this.onFocus?.(i);}});this.svg.append(dot);
       }
       if(!controls.some(Boolean)&&!slots.some(s=>s.fortune!==null)){

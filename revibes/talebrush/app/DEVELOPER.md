@@ -4,6 +4,24 @@
 
 Read the adjacent README for the two-process launch. Application code uses only Python's standard library and native browser modules. Internet is required for Codex model calls. Google Fonts is optional: the UI falls back to system sans-serif and Georgia if unavailable. There are no runtime package dependencies, build step, .env secrets, author code or custom-trained weights.
 
+## Remix architecture and protocol
+
+The current UI uses schema version 2. Legacy single-protagonist endpoint descriptions below remain supported for original clients.
+
+- `static/tracks.mjs` owns characters, built-in/custom dimension definitions, independent track arrays, selected-track views, score invalidation, planned-range accumulation and migration of the entire saved workspace/history. Track keys are `characterId:dimensionId`; each stores aligned `controls` and `values` arrays.
+- `static/storage.mjs` writes a pre-migration backup and gates every subsequent save if loading/backup fails, preventing a seed draft from replacing a retained original.
+- `static/cast.mjs` manages cast and custom-dimension forms, selectors, endpoint labels and the constrained-curve overview.
+- `static/space-math.mjs` implements perspective projection, inverse plane dragging, bounds, nearest/depth-based picking and per-dimension target writes. `static/space.mjs` renders the perspective 3D canvas, cube/grid, numbered targets and recognized positions, orbit/zoom, axis selectors and keyboard-accessible sliders. It uses no graphics dependencies. Camera state is view-only; target values use the same saved tracks as the 2D interface.
+- `multi_story.py` validates schema-2 requests and jointly generates/scorers multiple characters and dimensions. `story.py` dispatches to it when `characters` is present, preserving the legacy implementation.
+
+New generation requests contain `characters:[{id,name,description}]`, `dimensions:[{id,name,low,high,description}]`, `activeCharacterId`, `activeDimensionId`, `tracks:{key:{characterId,dimensionId,controls,values}}`, `slots`, `indices`, `title` and `surprises`. All metadata, IDs, finite scores, array lengths and selected indices are validated. Bounds: six characters, eight dimensions, 30 slots and 24 generation slots. Unknown pairs and duplicate IDs/names fail before calling the model.
+
+Each generation plan includes all non-null controls at that slot across every character/dimension. Candidate recognition receives only actual text/context plus pair meanings, never target/tolerance values. The active pair and all constrained pairs are scored in one batch. Responses contain `updates:[{index,text,source,values:{pairKey:score}}]`; recognition returns `scores:[{index,values:{pairKey:score}}]`. Missing/extra pair keys fail atomically. The first candidate is accepted if every constrained pair is within 0.2; otherwise aggregate absolute error divided by each tolerance (minimum 0.08) selects an alternative.
+
+Schema-1 drafts migrate under the same storage key with a separate untouched backup. All histories are migrated. Text edits clear downstream recognition values; character metadata edits clear only that character’s values. Insert/delete shifts every curve. New story clears all targets, recognized values and planned ranges while retaining the cast and dimension definitions. 3D mode stages edits and uses the accumulated planned range for manual generation.
+
+Run all tests with `node --test tests/*.test.mjs` and `python3 -m unittest discover -s tests -v`. Node tests cover independent tracks, storage-failure preservation and 3D mathematics in addition to the original controls. See `docs/story-space-design.md`, `docs/characters-dimensions-design.md` and `../remixes.md` for scope and validation.
+
 ## Files and data flow
 
 - `server.py`: localhost-only threaded HTTP server, static assets, JSON endpoints, request size/content checks, origin checks, clean error responses. `--port` defaults to 5173. `TALEBRUSH_BRIDGE_URL` defaults to `http://localhost:8787`.
@@ -47,7 +65,7 @@ Python tests exercise candidate selection, anchor preservation, independent scor
 | §5.2.1 | Separate fortune recognition with protagonist and preceding context; prompt substitute |
 | §5.2.2; Figures 7, 9 and 10 | Continuous fortune targets and candidate selection; prompt/batching substitutes |
 
-Training data collection, soft-prompt learning, modified GeDi token distributions, TrueSkill calibration and experimental evaluation are not recreated. Features suggested only as future work (multiple protagonists, flashbacks, longer-form hierarchical story controls) are outside the implemented prototype.
+Training data collection, soft-prompt learning, modified GeDi token distributions, TrueSkill calibration and experimental evaluation are not recreated. Multiple characters and dimensions are now implemented as the user-directed remix; flashbacks and longer-form hierarchical story controls remain outside scope.
 
 ## Repository practice
 

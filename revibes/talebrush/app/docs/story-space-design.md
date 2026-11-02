@@ -1,0 +1,9 @@
+# Interactive 3D and higher-dimensional story space
+
+Approved by the group on 2026-11-02: a rotatable 3D trajectory with selectable X/Y/Z dimensions, draggable sentence points and controls for all dimensions, including custom ones. This extends the cast/dimensions remix and will be included in the requested remote branch.
+
+Each sentence is a point in the selected character's attribute space. The three axes are user-selected dimensions, not chronological time; numbered points and a sentence selector preserve story order. Green targets are editable; blue recognized positions are shown separately wherever all three scores exist. Unspecified target coordinates default visually to the recognized value or a neutral midpoint and remain visibly hollow until constrained. Merely viewing a point never creates a model target.
+
+Drag the background to orbit, use the wheel to zoom, and drag a numbered point in an explicit XY/XZ/YZ plane. Solve the projected drag mathematically with the remaining coordinate held fixed. Sliders provide keyboard-accessible editing of every dimension, including those outside the 3D projection. All edits use the same character/dimension tracks and are saved in drafts/history. Switching to 3D enables manual planning; Generate Again applies the accumulated changed sentence range, using all characters' constraints. Text anchors remain protected.
+
+Use a dependency-free perspective 3D canvas renderer with depth sorting, glowing lines, a cube/grid and labeled axes. This is an interactive browser visualization, not a claim to produce physical volumetric light or an AR device integration. Tests cover perspective projection, plane inversion, bounds, axis uniqueness, independent high-dimensional edits and unchanged off-plane controls. Browser QA covers rotation, point manipulation, custom dimension axes and slider persistence.
