@@ -1,0 +1,28 @@
+html, body, #root { height: 100%; margin: 0; }
+body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+
+/* The rendered UI lives in a phone-sized frame: make viewport units mean the frame. */
+.misty-frame .min-h-screen { min-height: 100% !important; }
+.misty-frame .h-screen { height: 100% !important; }
+.misty-frame .w-screen { width: 100% !important; }
+.misty-frame .misty-live { min-height: 100%; position: relative; }
+.misty-frame .misty-live > * { min-height: 100%; }
+
+/* Drop target highlight while dragging an example section (Section 4.2.1). */
+@keyframes misty-pulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.95), 0 0 0 6px rgba(124, 58, 237, 0.25); background: rgba(139, 92, 246, 0.18); }
+  50% { box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.95), 0 0 0 12px rgba(124, 58, 237, 0.08); background: rgba(139, 92, 246, 0.32); }
+}
+.misty-hl { animation: misty-pulse 1s ease-in-out infinite; transition: all 120ms ease-out; }
+.misty-hl-similar { outline: 2px dashed rgba(124, 58, 237, 0.6); background: rgba(139, 92, 246, 0.08); transition: all 120ms ease-out; }
+
+/* Handles: a bar on the example node's right edge, a tall drop zone on source nodes' left edge. */
+.react-flow__handle.misty-handle-out { width: 10px; height: 46px; border-radius: 4px; background: #818cf8; border: 2px solid #eef2ff; right: -6px; }
+.react-flow__handle.misty-handle-out:hover { background: #4f46e5; }
+.react-flow__handle.misty-handle-in { width: 10px; height: 46px; border-radius: 4px; background: #c4b5fd; border: 2px solid #f5f3ff; left: -6px; }
+.react-flow__handle.misty-handle-hidden { opacity: 0; pointer-events: none; }
+.react-flow__handle.connectingto, .react-flow__handle.valid { background: #22c55e !important; }
+.react-flow__node { cursor: default; }
+.react-flow__node.dragging { cursor: grabbing; }
+.react-flow__edge-textbg { rx: 4; }
+.cm-editor { height: 100%; }
