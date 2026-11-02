@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TaleBrush</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f4f3ef'/%3E%3Cpath d='M4 10c5 0 6 14 12 14s7-16 12-16' fill='none' stroke='%234cbf7f' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/css/talebrush.css" />
+  </head>
+  <body>
+    <header class="appbar">
+      <div class="brand">
+        <span class="logo">TaleBrush</span>
+        <span class="tag">sketching stories with a language model · rebuilt from Chung et al., CHI 2022</span>
+      </div>
+      <div class="appbar-actions">
+        <button id="newStory" class="link-btn" type="button">New story</button>
+        <div class="menu-wrap">
+          <button id="examplesBtn" class="link-btn" type="button" aria-haspopup="true">Examples ▾</button>
+          <div id="examplesMenu" class="menu" hidden></div>
+        </div>
+        <div class="menu-wrap">
+          <button id="settingsBtn" class="link-btn" type="button" aria-haspopup="true">Settings ▾</button>
+          <div id="settingsMenu" class="menu settings-menu" hidden>
+            <div class="settings-title">Generation pipeline</div>
+            <label class="radio">
+              <input type="radio" name="pipeline" value="batch" />
+              <span><b>All sentences in one model call</b> (default, about 10 to 30 s). Sentences that miss the
+                sketch are rewritten together.</span>
+            </label>
+            <label class="radio">
+              <input type="radio" name="pipeline" value="sequential" />
+              <span><b>One sentence at a time, as in the paper</b> (slow: about 10 to 30 s per sentence).
+                Continuation goes left to right; infilling alternates between filling from the previous and
+                from the next sentences.</span>
+            </label>
+            <label class="number">
+              Regenerate a sentence when its fortune misses the sketch by more than
+              <input id="threshold" type="number" min="0.05" max="1" step="0.05" />
+            </label>
+            <p class="settings-note">The paper uses 0.2. Fast strokes allow 1 retry, slow strokes 2.</p>
+          </div>
+        </div>
+        <div id="bridgeStatus" class="bridge-status"></div>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="panel editor-panel" aria-label="Story text">
+        <div class="editor-head">
+          <input id="title" class="title-input" placeholder="Title" autocomplete="off" aria-label="Title" />
+          <div class="menu-wrap">
+            <button id="historyBtn" class="history-btn" type="button" aria-haspopup="true">
+              History
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M6 9l6 6 6-6" /></svg>
+            </button>
+            <div id="historyMenu" class="menu history-menu" hidden></div>
+          </div>
+        </div>
+        <div class="editor-scroll">
+          <div id="editor" class="bullets"></div>
+          <div id="preview" class="bullets preview" hidden></div>
+        </div>
+      </section>
+
+      <section class="panel canvas-panel" aria-label="Fortune sketch">
+        <div class="canvas-head">
+          <input id="protagonist" class="name-input" placeholder="Name" autocomplete="off" aria-label="Protagonist's name" />
+          <span class="fortune-label">'s fortune</span>
+          <button id="generateAgain" class="generate-btn" type="button" title="Generate new sentences for the same sketch">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66" /><path d="M20 4v5h-5" /></svg>
+            <span>Generate Again</span>
+          </button>
+        </div>
+
+        <div id="fortuneWrap" class="canvas-wrap fortune-wrap" title="">
+          <svg id="fortuneCanvas" class="sketch-canvas" role="img" aria-label="Fortune canvas: sketch the protagonist's fortune; higher is better"></svg>
+        </div>
+
+        <div id="surpriseWrap" class="canvas-wrap surprise-wrap" hidden>
+          <svg id="surpriseCanvas" class="sketch-canvas" role="img" aria-label="Surprise canvas: sketch how surprising each sentence should be"></svg>
+        </div>
+
+        <label class="surprise-toggle">
+          <input type="checkbox" id="surpriseToggle" />
+          Surprise in a separate panel.
+        </label>
+
+        <div class="tools" role="toolbar" aria-label="Sketch tools">
+          <button class="tool" data-tool="pen" type="button" title="Pen (B)" aria-label="Pen">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M10 2.5h4v3.2l1.2 1.3v5.5l1.3 1.6V21h-9v-6.9l1.3-1.6V7l1.2-1.3z" /></svg>
+          </button>
+          <button class="tool" data-tool="eraser" type="button" title="Eraser (E)" aria-label="Eraser">
+            <svg viewBox="0 0 24 24" width="22" height="22"><rect x="4.5" y="9" width="15" height="7" rx="1.6" fill="currentColor" /></svg>
+          </button>
+        </div>
+
+        <div id="status" class="status" aria-live="polite">
+          <span id="statusText"></span>
+          <button id="stopBtn" class="stop-btn" type="button" hidden>Stop</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footnote">
+      Substitution: fortune recognition and story generation use the language model of the workshop LLM bridge
+      (shown at the top right), prompted with the paper's fortune definition and calibration sentences. The paper
+      used GPT-Neo 2.7B with trained soft prompts and a GeDi control model (GPT2-medium), which are not available
+      here. The surprise level is given to the model in words, because the bridge has no temperature setting.
+      Your stories are saved in this browser.
+    </footer>
+
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>
