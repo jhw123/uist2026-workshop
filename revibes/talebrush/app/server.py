@@ -156,7 +156,15 @@ def surprise_words(s):
     return "Make it highly surprising, even wild or bizarre, while still being a story sentence."
 
 
-def generation_prompt(protagonist, mode, prev, nxt, target, surprise, n):
+def gap_note(gap):
+    if gap <= 0:
+        return ("This is the ONLY missing sentence: it must follow directly from the beginning story "
+                "AND lead directly and plausibly into the ending story, so the whole story reads smoothly.")
+    return (f"After this sentence, {gap} more sentence{'s are' if gap > 1 else ' is'} still missing between "
+            "the beginning and the ending; pace the story so it can reach the ending in that many steps.")
+
+
+def generation_prompt(protagonist, mode, prev, nxt, target, surprise, n, gap=0):
     parts = [f"Story character (protagonist): {protagonist}"]
     if mode == "continue":
         parts.append("Beginning story: " + (" ".join(prev) if prev else "(the story has not started yet)"))
@@ -169,17 +177,15 @@ def generation_prompt(protagonist, mode, prev, nxt, target, surprise, n):
         parts.append("Ending story: " + " ".join(nxt))
         parts.append("Beginning story: " + (" ".join(prev) if prev else "(none)"))
         parts.append(
-            "Task: write the sentence that comes RIGHT AFTER the beginning story. "
-            "Other sentences may still be missing between it and the ending story, so it does not "
-            "have to connect directly to the ending, but the story must be able to reach that ending."
+            "Task: write the sentence that comes RIGHT AFTER the beginning story, as a step "
+            "towards the ending story (the ending is fixed and must stay consistent). " + gap_note(gap)
         )
     else:  # infill_next
         parts.append("Beginning story: " + (" ".join(prev) if prev else "(none)"))
         parts.append("Ending story: " + " ".join(nxt))
         parts.append(
-            "Task: write the sentence that comes RIGHT BEFORE the ending story. "
-            "Other sentences may still be missing between the beginning story and it, so it must lead "
-            "directly into the ending story but does not have to follow directly from the beginning."
+            "Task: write the sentence that comes RIGHT BEFORE the ending story; it must set up "
+            "the ending story so that the ending follows naturally from it. " + gap_note(gap)
         )
     if target is None:
         parts.append("Fortune: no constraint; write whatever suits the story best.")
@@ -204,7 +210,7 @@ def clean_sentence(s):
     return s
 
 
-def generate(protagonist, mode, prev, nxt, target, surprise, max_regen):
+def generate(protagonist, mode, prev, nxt, target, surprise, max_regen, gap=0):
     """Generate one sentence. With a target, the recognition module scores the
     candidates and the first one within ERROR_THRESHOLD is used; otherwise the
     one with the smallest error (paper section 5.2.2)."""
@@ -213,7 +219,7 @@ def generate(protagonist, mode, prev, nxt, target, surprise, max_regen):
     if mode != "continue" and not nxt:
         mode = "continue"
     n = 1 if target is None else 1 + max(0, min(2, int(max_regen)))
-    prompt = generation_prompt(protagonist, mode, prev, nxt, target, surprise, n)
+    prompt = generation_prompt(protagonist, mode, prev, nxt, target, surprise, n, gap)
     out = parse_json(
         llm(
             [{"role": "system", "content": GENERATION_SYSTEM}, {"role": "user", "content": prompt}],
@@ -299,6 +305,7 @@ class Handler(SimpleHTTPRequestHandler):
                     target,
                     clamp01(body.get("surprise", 0.3)),
                     body.get("max_regen", 1),
+                    int(body.get("gap", 0) or 0),
                 )
                 return self.send_json(res)
             return self.send_json({"error": "not found"}, 404)

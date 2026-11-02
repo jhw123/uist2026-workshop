@@ -44,11 +44,15 @@ The screen has the **text editor** on the left and the **canvas** on the right.
      blue line on top of your sketch. Hover a dot to see its sentence, its
      fortune and the target; double-click it to jump to the sentence.
    - **Infilling:** if there is text after the sketched slots, TaleBrush fills
-     the gap so it leads into that text.
+     the gap so it leads into that text. Your own sentences are never
+     overwritten, so you can sketch right across a written beginning and ending:
+     only the blanks between them are generated.
    - **Redraw part of the line** to regenerate only that part.
 4. **Eraser:** switch to the eraser (under the canvas) and rub out part of the
-   sketch. Erased slots are generated *without* a fortune target on the next
-   generation. Blank slots left between sketched parts are filled the same way.
+   sketch (anywhere on the band, not only its centre). Erased slots show a
+   dashed "no target" marker and are generated *without* a fortune target when
+   you click Generate Again; their dots are drawn hollow. Blank slots left
+   between sketched parts are filled the same way.
 5. **Generate Again** regenerates the last generated slots with the current
    sketch, to see another story.
 6. **Surprise:** tick "Surprise in a separate panel." to open a second canvas.
@@ -56,7 +60,9 @@ The screen has the **text editor** on the left and the **canvas** on the right.
    generation. Without it, a moderate default is used.
 7. **Edit freely.** You can change any generated sentence; an edited sentence
    turns gray (it is now yours) and is used as context for later generations.
-8. **History** (top right of the editor): every generation is stored. While the
+8. **New story** (top of the editor) clears the editor and the sketches; the
+   current story is kept in History.
+9. **History** (top right of the editor): every generation is stored. While the
    list is open, all stored stories' arcs are drawn faintly on the canvas;
    hovering one shows its text in the editor and highlights its arc. Click it
    to roll back to it. Rename (✎) or delete (×) entries.

@@ -273,8 +273,9 @@
       }
       if (!hit && s.length) {
         // snap a stroke that starts or ends just short of the centre
+        // (not an end made by the eraser or by redrawing: that gap is intended)
         for (const p of [s[0], s[s.length - 1]]) {
-          if (Math.abs(p.x - cx) <= SNAP) hit = { y: p.y, w: p.w ?? 0 };
+          if (!p.cut && Math.abs(p.x - cx) <= SNAP) hit = { y: p.y, w: p.w ?? 0 };
         }
       }
     }
@@ -287,32 +288,40 @@
     return out;
   }
 
-  function cutRange(strokes, x0, x1) {
-    const out = [];
-    for (const s of strokes) {
-      let cur = [];
-      for (const p of s) {
-        if (p.x >= x0 && p.x <= x1) { if (cur.length > 1) out.push(cur); cur = []; }
-        else cur.push(p);
-      }
-      if (cur.length > 1) out.push(cur);
-    }
-    return out;
-  }
-
-  function eraseAt(strokes, g, px, py) {
+  /** Split strokes, dropping points where remove(p) is true. Ends created by a
+   *  split are flagged `cut` so they do not snap onto neighbouring slots. */
+  function splitStrokes(strokes, remove) {
     const out = [];
     let changed = false;
     for (const s of strokes) {
-      let cur = [];
+      let cur = [], afterCut = false;
       for (const p of s) {
-        const d = Math.hypot(g.xPx(p.x) - px, g.yPx(p.y) - py);
-        if (d < ERASER_RADIUS) { changed = true; if (cur.length > 1) out.push(cur); cur = []; }
-        else cur.push(p);
+        if (remove(p)) {
+          changed = true;
+          if (cur.length) cur[cur.length - 1] = { ...cur[cur.length - 1], cut: true };
+          if (cur.length > 1) out.push(cur);
+          cur = [];
+          afterCut = true;
+        } else {
+          cur.push(afterCut ? { ...p, cut: true } : p);
+          afterCut = false;
+        }
       }
       if (cur.length > 1) out.push(cur);
     }
     return changed ? out : strokes;
+  }
+
+  function cutRange(strokes, x0, x1) {
+    return splitStrokes(strokes, (p) => p.x >= x0 && p.x <= x1);
+  }
+
+  /** The eraser removes any part of the band it touches, not only its centre line. */
+  function eraseAt(strokes, g, px, py) {
+    return splitStrokes(strokes, (p) => {
+      const half = (p.w || 0) * g.yScale;
+      return Math.abs(g.xPx(p.x) - px) < ERASER_RADIUS && Math.abs(g.yPx(p.y) - py) < ERASER_RADIUS + half;
+    });
   }
 
   const widthForSpeed = (v) => W_MIN + (W_MAX - W_MIN) * clamp((v - SPEED_SLOW) / (SPEED_FAST - SPEED_SLOW), 0, 1);
@@ -374,6 +383,26 @@
     el("path", { d, fill: "url(#fortune-hatch)", stroke: "none" }, grp);
   }
 
+  /** Slots inside the sketched span with no sketch (erased): generated without a fortune target. */
+  function unconstrainedSlots() {
+    const sk = sketchedSlots(state.strokes);
+    const out = [];
+    if (sk.length < 2) return out;
+    for (let i = sk[0] + 1; i < sk[sk.length - 1]; i++) {
+      const l = state.lines[i];
+      if (!sampleSlot(state.strokes, i) && !(l.text.trim() && l.source === "user")) out.push(i);
+    }
+    return out;
+  }
+
+  function drawUnconstrained(svg, g) {
+    for (const i of unconstrainedSlots()) {
+      const x = g.xPx(i + 0.5);
+      el("line", { x1: x, x2: x, y1: g.yPx(0.96), y2: g.yPx(0.04), stroke: "#59cf8a", "stroke-width": 1.5, "stroke-dasharray": "3 5", "stroke-opacity": 0.8 }, svg);
+      el("text", { x, y: g.yPx(0) - 3, "text-anchor": "middle", "font-size": 9.5, fill: "#3c9a5c" }, svg).textContent = "no target";
+    }
+  }
+
   function drawArc(svg, g, lines, opts = {}) {
     // recognized fortune of each sentence: dots, connected within runs of non-blank sentences
     const pts = lines.map((l, i) => (l.text && l.text.trim() && l.fortune != null && !l.pending ? { i, x: g.xPx(i + 0.5), y: g.yPx(l.fortune), l } : null));
@@ -389,7 +418,11 @@
     pts.forEach((p) => {
       if (!p) return;
       const color = opts.color || (p.l.source === "generated" ? "var(--blue)" : "var(--gray-arc)");
-      const dot = el("circle", { cx: p.x, cy: p.y, r: opts.dot || 4.5, fill: color, stroke: "#fff", "stroke-width": 1.2 }, grp);
+      // hollow dot = generated without a fortune target (erased part of the sketch)
+      const free = !opts.color && p.l.source === "generated" && p.l.target == null;
+      const dot = el("circle", free
+        ? { cx: p.x, cy: p.y, r: opts.dot || 4.5, fill: "#fff", stroke: color, "stroke-width": 2 }
+        : { cx: p.x, cy: p.y, r: opts.dot || 4.5, fill: color, stroke: "#fff", "stroke-width": 1.2 }, grp);
       if (opts.interactive) {
         dot.style.cursor = "pointer";
         dot.addEventListener("pointerenter", (e) => showTip(e, p.i, p.l));
@@ -422,6 +455,7 @@
     drawBackground(svg, g, "fortune");
     for (const s of state.strokes) drawEnvelope(svg, g, s);
     if (state.drawing && state.drawing.svg === svg && state.drawing.pts.length > 1) drawEnvelope(svg, g, state.drawing.pts);
+    drawUnconstrained(svg, g);
 
     if (state.historyOpen) {
       state.history.forEach((h) => {
@@ -547,9 +581,18 @@
     return h ? h.y : DEFAULT_SURPRISE;
   }
 
+  const isWriters = (i) => state.lines[i].text.trim() && state.lines[i].source === "user";
+
   async function generateFor(targets) {
     targets = targets.filter((i) => i < N());
-    if (!targets.length) return;
+    // The writer's own sentences (typed or edited) are never overwritten: a stroke
+    // drawn across a written beginning and ending infills only the slots between.
+    const kept = targets.filter(isWriters);
+    targets = targets.filter((i) => !isWriters(i));
+    if (!targets.length) {
+      if (kept.length) setStatus("Those slots hold your own sentences, so nothing was generated. Clear a sentence to let TaleBrush rewrite it.");
+      return;
+    }
     if (!state.history.length && state.lines.some((l) => l.text.trim())) storeHistory("Initial");
     state.busy = true;
     state.lastTargets = targets.slice();
@@ -590,6 +633,7 @@
             target,
             surprise: surpriseAt(slot),
             max_regen: maxRegen,
+            gap: remaining.length,   // other sentences still missing in this gap
           });
           Object.assign(state.lines[slot], { text: res.sentence, source: "generated", fortune: res.fortune, target, pending: false, dirty: false, tries: res.generations_used });
           done++;
@@ -610,7 +654,12 @@
       storeHistory();
       const tight = targets.filter((i) => state.lines[i].target != null);
       const err = tight.length ? tight.reduce((a, i) => a + Math.abs(state.lines[i].fortune - state.lines[i].target), 0) / tight.length : null;
-      setStatus(`Generated ${done} sentence${done === 1 ? "" : "s"}` + (err != null ? ` · mean distance from sketch ${err.toFixed(2)}` : "") + ". Stored in History.");
+      const free = targets.filter((i) => state.lines[i].target == null).length;
+      setStatus(`Generated ${done} sentence${done === 1 ? "" : "s"}` +
+        (free ? ` (${free} without a fortune target)` : "") +
+        (err != null ? ` · mean distance from sketch ${err.toFixed(2)}` : "") +
+        (kept.length ? ` · kept your sentence${kept.length > 1 ? "s" : ""} #${kept.map((i) => i + 1).join(", #")}` : "") +
+        ". Stored in History.");
     }
     renderAll();
   }
@@ -723,6 +772,22 @@
   document.addEventListener("click", (e) => {
     if (!e.target.isConnected) return;   // e.g. a deleted history entry
     if (state.historyOpen && !historyMenu.contains(e.target) && e.target !== historyBtn) closeHistory();
+  });
+
+  $("new-story").addEventListener("click", () => {
+    if (state.busy) return;
+    const hasText = state.lines.some((l) => l.text.trim());
+    const last = state.history[state.history.length - 1];
+    const same = last && JSON.stringify(last.lines.map((l) => l.text)) === JSON.stringify(state.lines.map((l) => l.text));
+    if (hasText && !same) storeHistory();
+    state.lines = Array.from({ length: DEFAULT_SLOTS }, () => ({ text: "", source: "user", fortune: null }));
+    state.strokes = [];
+    state.surpriseStrokes = [];
+    state.lastTargets = null;
+    titleEl.value = "";
+    renderEditor(0, 0);
+    renderAll();
+    setStatus(hasText && !same ? "Started a new story. The previous one is in History." : "Started a new story.");
   });
 
   // ------------------------------------------------------------------ misc controls
