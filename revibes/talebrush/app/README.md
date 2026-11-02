@@ -88,3 +88,7 @@ The screen has the **text editor** on the left and the **canvas** on the right.
 Each generated sentence takes two model calls (about 4–8 seconds) and uses the
 plan Claude Code is signed in to. Sketching across ten slots generates ten
 sentences one after another, so it takes about a minute.
+
+## Design chat
+
+The "Ask about TaleBrush" button (bottom right) opens a chat for questions about design rationales and details. Answers are grounded in the paper's text (`papers/talebrush/paper/`, read by `server.py`) and go through the LLM bridge. This is an addition beyond the paper's interface.

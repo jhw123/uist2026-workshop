@@ -826,4 +826,39 @@
   renderAll();
   checkBridge();
   setStatus("Name the protagonist, write a sentence or two, then sketch their fortune on the canvas.");
+
+  // ------------------------------------------------------------------ design chat
+  (function chatInit() {
+    const box = document.getElementById("chat"), toggle = document.getElementById("chat-toggle");
+    const log = document.getElementById("chat-log"), form = document.getElementById("chat-form");
+    const input = document.getElementById("chat-input"), sug = document.getElementById("chat-suggest");
+    const history = [];
+    const add = (role, text, cls) => {
+      const d = document.createElement("div");
+      d.className = "chat-msg " + role + (cls ? " " + cls : "");
+      d.textContent = text; log.appendChild(d); log.scrollTop = log.scrollHeight; return d;
+    };
+    const open = (v) => { box.classList.toggle("hidden", !v); toggle.classList.toggle("hidden", v); if (v) input.focus(); };
+    toggle.onclick = () => open(true);
+    document.getElementById("chat-close").onclick = () => open(false);
+    add("assistant", "Ask me why TaleBrush was designed the way it was, or how a feature works. Answers come from the paper.");
+    ["Why sketch the fortune arc?", "Why does line width mean control?", "How is surprise handled?", "How does fortune recognition work?"].forEach((q) => {
+      const b = document.createElement("button"); b.type = "button"; b.textContent = q;
+      b.onclick = () => { input.value = q; form.requestSubmit(); }; sug.appendChild(b);
+    });
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const q = input.value.trim(); if (!q || form.dataset.busy) return;
+      input.value = ""; add("user", q); form.dataset.busy = "1";
+      const wait = add("assistant", "Thinking…");
+      try {
+        const context = { protagonist: document.getElementById("protagonist").value, story: state.lines.map((l) => l.text).filter(Boolean) };
+        const r = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question: q, history, context }) });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error || r.statusText);
+        wait.textContent = j.answer; history.push({ role: "user", content: q }, { role: "assistant", content: j.answer });
+      } catch (err) { wait.textContent = "Error: " + err.message; wait.classList.add("error"); }
+      delete form.dataset.busy; log.scrollTop = log.scrollHeight;
+    };
+  })();
 })();

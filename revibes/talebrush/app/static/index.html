@@ -63,6 +63,17 @@
     </section>
   </main>
 
+  <button id="chat-toggle" class="chat-toggle" title="Ask about TaleBrush's design rationales and details">Ask about TaleBrush</button>
+  <aside id="chat" class="chat hidden" aria-label="Design chat">
+    <div class="chat-head"><strong>Ask about TaleBrush</strong><button id="chat-close" class="history-btn" aria-label="Close">✕</button></div>
+    <div id="chat-log" class="chat-log"></div>
+    <div id="chat-suggest" class="chat-suggest"></div>
+    <form id="chat-form" class="chat-form">
+      <input id="chat-input" placeholder="Why a sketch? How is surprise controlled?" autocomplete="off">
+      <button class="gen-btn" type="submit">Send</button>
+    </form>
+  </aside>
+
   <footer class="substitution">
     Revibed TaleBrush. <strong>Substitution:</strong> fortune recognition and fortune-controlled generation use a general LLM through the workshop LLM bridge,
     in place of the paper's soft-prompted GPT-Neo 2.7B and modified GeDi (GPT2-medium). Surprise is given to the model as an instruction, not as softmax temperature.

@@ -121,3 +121,7 @@ of `server.py` (`ERROR_THRESHOLD`, `RECOGNITION_CONTEXT`).
   at the same slot positions.
 - Generation is sequential (each sentence is context for the next), so a long
   sketch takes about 5 seconds per sentence.
+
+## Design chat
+
+`POST /api/chat` `{question, history, context}` -> `{answer}`. `server.py:chat()` puts the paper body (sections 00 excluded, acknowledgments and references excluded; ~83 KB) plus the current protagonist/story in the system prompt and keeps the last 10 turns. UI is `chatInit()` at the end of `static/app.js`.
