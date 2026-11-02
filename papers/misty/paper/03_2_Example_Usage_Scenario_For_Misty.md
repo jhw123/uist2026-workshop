@@ -4,7 +4,7 @@ Fuji is a frontend developer creating a user profile management page in a new mo
 
 Fuji has recently installed Misty, which streamlines the incorporation of design examples through conceptual blending. With some inspiring UI designs found online, Fuji is ready to use Misty to explore improvement directions for the profile UI.
 
-![[Uncaptioned image]](2409.13900v3/images/example_scenario1.png)
+![[Uncaptioned image]](figures/scenario-01.png)
 
 *Figure description (from the authors):* This figure demonstrates \sys{}'s global blending feature for initial design exploration. The image is divided into two sections: section 1 shows an example UI with ``Health Categories'' in a dark-themed list, while section 2 displays Fuji's current profile UI with a light theme. A dotted line with a hand cursor connects these two sections, illustrating the blending process. The accompanying text explains that Fuji began by uploading their current profile UI code and screenshots of inspiring designs to \sys{}. To explore possibilities quickly, Fuji utilized \sys{}'s global blending feature, connecting the example UI (1) to their source UI (2). This action initiated a global, screen-level blending operation. \sys{} then generated updated code that incorporated Fuji's existing profile content while adopting the visual styles of the example UI. This process demonstrates how \sys{} enables users to efficiently experiment with different design aesthetics while maintaining their original content, facilitating rapid UI prototyping and exploration.
 
@@ -12,7 +12,7 @@ Fuji has recently installed Misty, which streamlines the incorporation of design
 
 Fuji began by uploading the code for their current profile UI to Misty, along with screenshots of a few inspiring profile UI designs. To get an overview of possibilities, Fuji used Misty’s global blending feature to quickly explore alternatives. They connected the example UI 1 to their source UI 2, triggering a global, screen-level blending operation. Misty generated updated code that took Fuji’s current profile UI content and blended into it the visual styles of the example UI 3.
 
-![[Uncaptioned image]](2409.13900v3/images/example_scenario2.png)
+![[Uncaptioned image]](figures/scenario-02.png)
 
 *Figure description (from the authors):* This figure illustrates the iterative design process facilitated by \sys{}. The image is divided into three sections labeled 3, 4, and 5. Section 3 shows Fuji's profile UI with a dark theme and compact list layout for interests. Section 4 displays a summary of changes made by \sys{}, including the switch to a dark theme and adaptation of layout to a compact, icon format. Two toggle switches are shown, with the cursor hovering over the first one. Section 5 presents the final iteration of Fuji's profile, reverting to a light theme while maintaining the compact list layout for interests. The accompanying text explains that \sys{} provided a summary of code updates alongside the outputs. Fuji observed that \sys{} had applied a dark theme and adopted the example's list item layout. Preferring to keep the updated layout but revert to a light theme, Fuji toggled off the dark theme option. In response, \sys{} generated an updated UI that preserved the new layout while returning to the original light theme
 
@@ -20,7 +20,7 @@ Misty provided a list of changes alongside the outputs 4, summarizing the code u
 
 Usually, Fuji would manually re-create the example using code, which is very time-consuming. Moreover, without seeing their own content reflected in these design variations, Fuji would struggle to get a direct impression of how each design would work in their scenario. But now, with Misty, Fuji can get a quick visual preview of multiple design possibilities, all populated with their own content. Misty’s global blending feature supports a more comprehensive exploration of the design space.
 
-![[Uncaptioned image]](2409.13900v3/images/example_scenario3.png)
+![[Uncaptioned image]](figures/scenario-03.png)
 
 *Figure description (from the authors):* This figure illustrates the user interface for \sys{}, focusing on a profile customization process. The image is divided into three main sections, numbered 6, 7, and 8. Section 6 shows a profile editing screen with a circular profile picture of a sunset over water, the name ``Fuji'' and username ``fujimist''. Below this is a horizontally scrollable list of music playlists labeled ``Top 100'' for different regions. Section 7 displays a profile card for Fuji, describing them as a ``Passionate nature photographer''. It includes contact information and a list of interests such as ``Film Camera'', ``Lofi Music'', ``Mid-Century Furniture'', and ``Music Production''. Section 8 presents a ``Pick Blending Option''menu with four choices: Color, Layout, Content, and Customize. Each option has a brief description of its function. The image demonstrates the process of dragging elements from one design (the music playlists) to another (the interests list), as indicated by a dotted line with a hand cursor icon. This visualization corresponds to the paragraph in the second image, which explains how Fuji, the user, is using the application's drag-and-drop feature to incorporate a horizontal scrollable carousel layout from an example UI into the ``Interest'' section of their own profile design.
 
@@ -28,13 +28,13 @@ Usually, Fuji would manually re-create the example using code, which is very tim
 
 As Fuji looked through other examples, they decided to adopt a design that is good at presenting information in a clean, card-based layout using a horizontal scrollable carousel 6. Fuji decided to incorporate this layout more precisely into the “Interest” section of their UI. Using Misty’s drag-and-drop feature, Fuji selected the horizontal scrollable list from the example UI 6, then dragged it onto the corresponding area in their current design 7.
 
-![[Uncaptioned image]](2409.13900v3/images/example_scenario4.png)
+![[Uncaptioned image]](figures/scenario-04.png)
 
 *Figure description (from the authors):* This figure illustrates the interface of \sys{} during a profile customization process. The image is divided into three sections numbered 7, 8, and 9. Section 7 shows part of Fuji's profile with their photo and bio. Section 8 displays a ``Pick Blending Option'' menu where the ``Layout'' option is highlighted, indicating Fuji's choice to blend the layout of the example UI. Section 9 showcases the result of this blending operation: Fuji's updated ``Interests'' section now features a horizontally scrollable list with images and descriptions for each interest, such as ``Film Camera'' and ``Lofi Music''. A dotted arrow connects the layout option to the new interests display, visualizing the transformation process. The accompanying text explains that after Fuji selected the layout blend option, \sys{} generated this new version of the interests section, incorporating a sleek, horizontally scrollable list that includes contextually relevant details for each interest item, effectively adapting the example UI's layout to Fuji's profile content.
 
 In the popup that appeared 8, Fuji specified that they wanted to blend the “layout” of the example UI. Misty processed this request and generated a new version of the interests section 9, featuring a sleek, horizontally scrollable list of users’ interest items, while also adding contextually relevant details of each interest to fit in the example UI.
 
-![[Uncaptioned image]](2409.13900v3/images/example_scenario5.png)
+![[Uncaptioned image]](figures/scenario-05.png)
 
 *Figure description (from the authors):* This figure demonstrates how \sys{} facilitates the addition of new UI elements through blending. The image is split into two sections, labeled 10 and 11. Section 10 shows an example UI profile for ``Misty'' with an ``Edit'' button beneath the username. Section 11 displays Fuji's profile, now featuring a newly added ``Edit'' button next to the ``Interests'' section. A dotted arrow connects the ``Edit'' buttons in both sections, illustrating the drag-and-drop process. The accompanying text explains that while refining their design, Fuji decided to incorporate the ``Edit'' button from the example UI (section 10) into their own profile design (section 11). This addition wasn't part of Fuji's original layout, but they recognized its potential value for allowing users to update their profiles. Using \sys{}'s drag-and-drop functionality, Fuji transferred this UI element from the example to the appropriate area in their current design, demonstrating how \sys{} enables users to easily augment their designs with new, useful features through intuitive blending operations.
 
@@ -42,7 +42,7 @@ In the popup that appeared 8, Fuji specified that they wanted to blend the “la
 
 While refining their design, Fuji realized it would be beneficial to add a new “edit” button they saw in the previous example UI 10, to let users update their profile. This section wasn’t part of Fuji’s original design, but they thought it would add value to the profile page. Fuji dragged this section from the example UI onto the designated area of their current design 11.
 
-![[Uncaptioned image]](2409.13900v3/images/example_scenario6.png)
+![[Uncaptioned image]](figures/scenario-06.png)
 
 *Figure description (from the authors):* This figure illustrates \sys{}'s blending process for integrating new UI elements. The image is divided into two parts, with a ``Pick Blending Option'' menu on the left and Fuji's updated profile on the right, labeled as 12. The blending menu shows options for ``Color'', ``Layout'', ``Content'', and ``Customize'', with the ``Content'' option highlighted. A dotted arrow connects this menu to Fuji's profile, which now includes a red ``Edit'' button beneath the contact information. The accompanying text explains that Fuji selected the ``color'', ``layout'', and ``content'' aspects to be blended from the example UI while maintaining the original design. \sys{} successfully implemented this request by adding the new ``Edit'' button to Fuji's UI at the specified location, demonstrating how \sys{} enables users to seamlessly incorporate new elements while preserving the overall design aesthetic of their existing interface.
 

@@ -22,6 +22,7 @@ Text and figures are from [arXiv 2409.13900v3](https://arxiv.org/abs/2409.13900v
 ## Known issues
 
 - Figures 2 and 3 (user study charts) are drawn in LaTeX and have no image file in the HTML; they are cropped from the PDF.
+- The six uncaptioned figures of the usage scenario (Section 2) were missing from the HTML conversion; they are cropped from the PDF at 300 DPI as `figures/scenario-01.png` to `scenario-06.png`.
 - The authors' figure descriptions contain an unexpanded macro, \sys{}, which stands for Misty.
 
 ## Files
