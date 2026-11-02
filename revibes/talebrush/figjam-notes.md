@@ -16,6 +16,9 @@ One bullet = one sticky. Updated as we go; newest at the bottom of each section.
 - Slow = thin or slow = wide? Section 3 argues both ways; Section 4.2.2 settles on slow → thin/accurate.
 - How does the band width map to the paper's fixed 0.2 regeneration threshold and its "1-2 retries"?
 - The paper's study had no axis labels (Section 7.2). Should we add "better/worse" labels?
+- Nothing was graded partial/failure. Should v2 still change things? We decided yes: fix the caveats written in "What we saw".
+- Is our 1.00 comparable to Group 1's 0.20 → 0.40? Our agent saw the rubric before building AND graded its own work, theirs didn't.
+- Does a scripted, perfectly regular stroke test speed→width fairly compared to a real hand?
 
 ## Challenges we faced (red)
 
@@ -27,6 +30,12 @@ One bullet = one sticky. Updated as we go; newest at the bottom of each section.
 - Bug: the "Generating…" overlay showed at startup (CSS `display:flex` overrode the `hidden` attribute). Fixed.
 - Bug: the eraser's dashed cursor stayed on the canvas after switching back to the pen. Fixed.
 - Testing a sketch needs real pointer timing (speed → width), so we drove it with scripted pointer events at controlled speeds.
+- Fixed by the user's sign-in to the bundled `claude` CLI; the bridge then ran claude/haiku and recognition took ~6 s per call.
+- Generation is slow: 23–33 s for 6 sentences, >45 s with retries + surprise (generate + recognize + up to 2 retry rounds, each a bridge call).
+- A stray click on the canvas (from a teammate) counted as a tiny stroke over a slot centre and regenerated a sentence.
+- Grading by hand at a precise drawing speed is hard; we scripted pointer events to get repeatable slow / fast / mixed strokes.
+- On the hackathon page, cmd+A in a notes field didn't select its text, so our v2 notes were appended to the v1 notes; we rewrote them as "v1: … | v2: …".
+- Self-grading bias: every test came out Full. Humans grading might be stricter (e.g., on T-13's surprise or T-07's coherence).
 
 ## Ideas we came up with (green)
 
@@ -36,6 +45,10 @@ One bullet = one sticky. Updated as we go; newest at the bottom of each section.
 - Retry loop: ask for 2 alternatives per missed slot in one call, score them all, and keep the closest. Fewer calls than one-at-a-time.
 - Number the slots under the canvas, and highlight the slot of the bullet being edited, to make the text ↔ x-position link visible.
 - A `--stub` mode with a loud banner, so the interface can be tried without a model.
+- Treat the "What we saw" caveats on Full grades as the v2 to-do list, not only partial/failure grades.
+- Ignore strokes shorter than ~12 columns and require 40% slot coverage, so accidental clicks never regenerate text.
+- Make surprise an explicit contrast in the prompt (LOW = no twists, VERY HIGH = near-absurd), since the bridge ignores temperature.
+- Show which retry round generation is in, so a 45 s wait feels less broken.
 
 ## Iterations and decision points (blue)
 
@@ -49,6 +62,10 @@ One bullet = one sticky. Updated as we go; newest at the bottom of each section.
 - Decision: History stores an "Initial" entry before the first generation, plus rename/delete (as in Figure 5 A).
 - Iteration v1 (step 3): feature check against Sections 4 and 7 found no missing interface features; added the eraser-cursor fix.
 - Blocked after v1: grading needs real generation, so we waited for the CLI sign-in.
+- Step 4, v1 grades: 15/15 Full, score 1.00 (graded by the agent in the browser, with notes for each test).
+- Step 5, v2: no failed tests, so it fixed 3 caveats: stray-click regeneration (T-11), widest band reachable with a normal swipe (T-05, fast 70 → ~100 units), stronger surprise prompt (T-13).
+- Step 6, v2 re-test: stray click → no generation; T-07 still Full in 23 s; T-11 only slots 7–8 changed; T-13 final sentence now clearly surprising (raccoons in the guitar case). All 15 stay Full (1.00).
+- Table scores at the end: Group 1 0.20 → 0.40, Group 2 1.00 → 1.00.
 
 ## Remix ideas (green, bottom strip)
 
@@ -57,3 +74,5 @@ One bullet = one sticky. Updated as we go; newest at the bottom of each section.
 - Use pen pressure instead of speed for tightness, and compare which writers find more intuitive.
 - Edit-level regeneration: rewrite part of a sentence instead of replacing it (the user study's complaint in Section 7.3.1).
 - Show the model's fortune rating next to each bullet so writers can disagree with it, and use their correction as feedback.
+- Meta-remix for the workshop: does seeing the rubric before building inflate revibe scores? Compare our build to Group 1's on the same tests.
+
