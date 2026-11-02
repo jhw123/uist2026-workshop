@@ -15,7 +15,8 @@ const MIN_SLOTS = 8;            // empty sentence slots to sketch into (Figure 1
 // Sketching speed -> band half-width, in fortune units (Section 4.2.2).
 // Slow -> thin (tight control), fast -> wide (loose control).
 const HW_MIN = 0.05, HW_MAX = 0.25;
-const SPEED_SLOW = 0.12, SPEED_FAST = 1.4;   // SVG units per millisecond
+const SPEED_SLOW = 0.12, SPEED_FAST = 0.9;   // SVG units per millisecond
+const MIN_STROKE_COLS = 12;     // shorter strokes (e.g., a stray click) do not generate
 
 const fy = f => PAD_T + (1 - f) * PLOT_H;              // fortune -> y
 const yf = y => clamp((PAD_T + PLOT_H - y) / PLOT_H, 0, 1);
@@ -417,7 +418,7 @@ canvas.addEventListener("pointerleave", () => { eraserCursor = null; if (state.t
 const endStroke = () => {
   if (!liveStroke) return;
   const s = liveStroke; liveStroke = null;
-  if (s.cols.size < 3) { renderCanvas(); return; }
+  if (s.cols.size < MIN_STROKE_COLS) { renderCanvas(); return; }
   for (const [c, v] of s.cols) state.sketch[c] = v;
   renderCanvas();
   // Generate for the sketched sentence slots under this stroke only (partial redraw, Section 4.2.2).
@@ -427,8 +428,7 @@ const endStroke = () => {
     const [a, b] = slotCols(i, n);
     let hit = 0;
     for (let c = a; c < b; c++) if (s.cols.has(c)) hit++;
-    const centerCol = xcol(slotCx(i, n));
-    if (hit / (b - a) >= 0.4 || s.cols.has(centerCol)) slots.push(i);
+    if (hit / (b - a) >= 0.4) slots.push(i);
   }
   const targets = slots.filter(i => !isWritten(state.bullets[i]) || state.bullets[i].kind === "gen");
   if (targets.length) generate(targets, { label: describe(targets, "Sketch"), avoidCurrent: true });

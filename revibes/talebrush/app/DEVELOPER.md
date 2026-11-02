@@ -52,9 +52,10 @@ From the repository root:
   linearly from slow to fast onto a half-width of 0.05 to 0.25. Because the
   width is interpolated per column, it changes gradually along a stroke.
 - **Generation triggers.**
-  - End of a pen stroke: regenerate the slots under the stroke (≥40 % covered,
-    or the slot centre is covered), except sentences the writer wrote. This is
-    also how partial redraw works.
+  - End of a pen stroke: regenerate the slots under the stroke (≥40 % covered),
+    except sentences the writer wrote. This is also how partial redraw works.
+    Strokes shorter than `MIN_STROKE_COLS` (12 columns), such as a stray click,
+    do not generate.
   - Generate Again: every slot from the first sketched slot to the last, except
     sentences the writer wrote or edited. Uncovered (erased) slots in that
     range get no fortune target.

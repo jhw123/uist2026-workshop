@@ -119,12 +119,15 @@ def surprise_words(s):
     if s is None:
         return None
     if s < 0.25:
-        return "low: predictable, the most natural next event"
+        return ("LOW: completely predictable; the most ordinary, expected next event, "
+                "no new characters, no twists")
     if s < 0.5:
-        return "moderate: a little unexpected"
+        return "moderate: mostly expected, with one small unexpected detail"
     if s < 0.75:
-        return "high: an unexpected turn the reader would not guess"
-    return "very high: a wild, startling twist (but still about the story)"
+        return ("HIGH: an unexpected turn the reader would not guess from the previous "
+                "sentence (a sudden event, a stranger, a reveal)")
+    return ("VERY HIGH: a wild, startling twist that defies expectations (a bizarre event, "
+            "a shocking reveal, something almost absurd) while keeping the protagonist")
 
 
 def previous_context(sentences, i):
@@ -190,8 +193,10 @@ Rules:
   after a slot, lead plausibly into them (infilling).
 - Keep the same protagonist; refer to them by name or pronoun. Do not introduce a new
   protagonist.
-- If a slot gives a surprise level, follow it: low = predictable next event, high = an
-  unexpected, surprising event.
+- If a slot gives a surprise level, follow it strictly and make the contrast obvious:
+  low-surprise slots must be plain and predictable, high-surprise slots must contain an
+  event the reader would never see coming. Surprise is independent of fortune: a
+  surprising sentence can be good or bad luck, as its fortune target says.
 - One plain sentence per slot, 8 to 25 words, past tense unless the story uses another.
 Answer with JSON only: {"sentences": [{"line": <line number>, "text": "<sentence>"}, ...]}
 with one entry per [WRITE] slot."""

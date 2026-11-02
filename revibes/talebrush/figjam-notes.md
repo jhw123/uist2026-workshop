@@ -1,0 +1,59 @@
+# FigJam notes · Table 1 · Group 2 · TaleBrush
+
+One bullet = one sticky. Updated as we go; newest at the bottom of each section.
+
+**Paper:** TaleBrush (Chung et al., CHI 2022)
+**Agent and model:** Claude Code, Claude Opus 5.5 (the app's own model calls: Claude Haiku via the LLM bridge)
+**Revibe link:** branch `revibe/talebrush-table1-group2` (not pushed yet)
+
+## Questions we had (yellow)
+
+- Is it OK for the agent to also run the "YOU" steps (grading)? AGENTS.md says grading is the group's job and the agent must never see the rubric.
+- The URL said `paper=talebrush`, but the page's first visible card was Misty. Which paper is ours? (The query string picks the paper; the page lists all four.)
+- How many sentence slots should the canvas have before anything is written? The paper doesn't say. Figure 1 A2 shows 2 sentences + 6 blank bullets.
+- Does "Generate Again" regenerate sentences the writer has edited? The paper doesn't say. Editing implies ownership.
+- Does erasing trigger generation, or only the next Generate? Section 4.2.2 is ambiguous.
+- Slow = thin or slow = wide? Section 3 argues both ways; Section 4.2.2 settles on slow → thin/accurate.
+- How does the band width map to the paper's fixed 0.2 regeneration threshold and its "1-2 retries"?
+- The paper's study had no axis labels (Section 7.2). Should we add "better/worse" labels?
+
+## Challenges we faced (red)
+
+- The agent read the rubric before building (it was on the page we pointed it to), so v1 is not a clean "paper alone" measurement.
+- The LLM bridge needs the `claude` CLI signed in. It wasn't on PATH and wasn't logged in; the desktop app's auth doesn't reach child processes.
+- So generation could only be tested with a stub (canned sentences, keyword fortune scores) at first.
+- The paper's models can't be rebuilt: GPT-Neo soft prompts, GeDi on GPT2-medium, and the crowdsourced fortune dataset aren't available.
+- The bridge ignores temperature, but the paper's surprise control IS temperature. Surprise had to become a prompt instruction.
+- Bug: the "Generating…" overlay showed at startup (CSS `display:flex` overrode the `hidden` attribute). Fixed.
+- Bug: the eraser's dashed cursor stayed on the canvas after switching back to the pen. Fixed.
+- Testing a sketch needs real pointer timing (speed → width), so we drove it with scripted pointer events at controlled speeds.
+
+## Ideas we came up with (green)
+
+- Write all sketched slots in ONE model call from a numbered outline. Continuation and infilling come for free because the model sees text before and after each slot.
+- Show each written sentence's recognized fortune in the outline so the model sees the trajectory (going down vs. up).
+- For Generate Again, send earlier versions of each slot as "avoid" so the new story actually differs.
+- Retry loop: ask for 2 alternatives per missed slot in one call, score them all, and keep the closest. Fewer calls than one-at-a-time.
+- Number the slots under the canvas, and highlight the slot of the bullet being edited, to make the text ↔ x-position link visible.
+- A `--stub` mode with a loud banner, so the interface can be tried without a model.
+
+## Iterations and decision points (blue)
+
+- Decision: Python standard-library server + vanilla JS/SVG instead of Flask + React. Nothing to install at the workshop.
+- Decision: store the sketch as 300 columns of {fortune, half-width}. A new stroke overwrites only its columns, which gives partial redraw.
+- Decision: slot count = max(#bullets, 8).
+- Decision: a slot counts as sketched at ≥1/3 coverage; a stroke regenerates a slot at ≥40% coverage or when it covers the centre.
+- Decision: band half-width 0.05 (slow) to 0.25 (fast) = tolerance; thin band → 2 retries, wide → 1.
+- Decision: Generate Again keeps sentences the writer wrote OR edited; redraw over a slot still regenerates it.
+- Decision: erased slots inside the sketched range get sentences with no fortune target (as the paper says).
+- Decision: History stores an "Initial" entry before the first generation, plus rename/delete (as in Figure 5 A).
+- Iteration v1 (step 3): feature check against Sections 4 and 7 found no missing interface features; added the eraser-cursor fix.
+- Blocked after v1: grading needs real generation, so we waited for the CLI sign-in.
+
+## Remix ideas (green, bottom strip)
+
+- Two characters' fortunes on one canvas (Section 3, Figure 3a), and see whether the arcs interact.
+- Sketch other attributes per sentence: tension, pace, or tone, instead of fortune.
+- Use pen pressure instead of speed for tightness, and compare which writers find more intuitive.
+- Edit-level regeneration: rewrite part of a sentence instead of replacing it (the user study's complaint in Section 7.3.1).
+- Show the model's fortune rating next to each bullet so writers can disagree with it, and use their correction as feedback.
