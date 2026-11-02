@@ -99,6 +99,11 @@ cut that B-roll/text work on. It returns `{keep | brolls | texts, summary, label
 - **Text effects**: `{sentence, text, style}`, phrases copied from the sentence.
 - **Prompts / Surprise me / Edit**: the same output formats plus a `summary` of the changes, which the UI shows
   under the version's title.
+- **Rough-cut edits** (`edit_roughcut`): the model returns only `{remove, add}` sentence indices, applied to the
+  original's `keep`, so sentences the request is not about cannot change. A "shorten" request that does not
+  shorten is retried once, then reported as an error. `diff_desc` appends the computed change per section
+  (e.g. `[“Making Stock From Scraps” −3 sentences (40s → 26s); other sections unchanged]`) to the summary.
+- **Ordering**: sorting reorders original versions; an edited version always follows its original.
 
 Model calls use `response_format: json_object`; `parse_json` strips code fences. A bridge or JSON error comes
 back to the browser as `{error}` and is shown in the banner or the prompt dialog.

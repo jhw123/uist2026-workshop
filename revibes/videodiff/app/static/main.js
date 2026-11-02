@@ -145,9 +145,6 @@ function orderedVersions(stage) {
   // default: creation order, edits right below their original
   const roots = vs.filter(v => !v.editedFrom || !byKey.has(v.editedFrom)).sort((a, b) => a.seq - b.seq);
   const kids = id => vs.filter(v => v.editedFrom === id).sort((a, b) => a.seq - b.seq);
-  const out = [];
-  const walk = v => { out.push(v); kids(v.id).forEach(walk); };
-  roots.forEach(walk);
   const sort = S.ui.sort[stage] || 'default';
   const metric = {
     'longest': v => -M.editedDuration(v.keep),
@@ -159,10 +156,14 @@ function orderedVersions(stage) {
     'media': v => dominant(v.brolls, b => b.media?.type || b.type, MEDIA_ORDER) * 100 - v.brolls.length,
     'style': v => dominant(v.texts, t => t.style, STYLE_ORDER) * 100 - v.texts.length,
   }[sort];
-  let list = out.map((v, i) => ({ v, i }));
-  if (metric) list.sort((a, b) => metric(a.v) - metric(b.v) || a.i - b.i);
-  list = list.map(x => x.v);
-  return [...list.filter(v => v.pinned && !v.archived), ...list.filter(v => !v.pinned && !v.archived), ...list.filter(v => v.archived)];
+  const group = v => v.archived ? 2 : v.pinned ? 0 : 1;
+  // sort the originals; an edit stays right below its original (paper §4.2) when both are in the same group
+  let rs = roots.map((v, i) => ({ v, i }));
+  if (metric) rs.sort((a, b) => metric(a.v) - metric(b.v) || a.i - b.i);
+  const list = [];
+  const walk = v => { list.push(v); kids(v.id).forEach(walk); };
+  rs.forEach(x => walk(x.v));
+  return [0, 1, 2].flatMap(g => list.filter(v => group(v) === g));
 }
 
 // --------------------------------------------------------------------------

@@ -315,6 +315,65 @@ def repair_duration(keep, segs, sections, lo, hi):
     return keep
 
 
+SHORTEN_WORDS = re.compile(r"\b(shorten|shorter|trim|cut|remove|drop|less|reduce|condense|tighten)\b", re.I)
+LENGTHEN_WORDS = re.compile(r"\b(lengthen|longer|extend|expand|more|add|include)\b", re.I)
+
+
+def diff_desc(old, new, segs, sections):
+    """What actually changed between two rough cuts, per section (computed, not the model's words)."""
+    old_s, new_s = set(old), set(new)
+    parts = []
+    for k, s in enumerate(sections):
+        ids = range(s["start"], s["end"] + 1)
+        rem = [i for i in ids if i in old_s and i not in new_s]
+        add = [i for i in ids if i in new_s and i not in old_s]
+        if not rem and not add:
+            continue
+        before = sum(segs[i]["end"] - segs[i]["start"] for i in ids if i in old_s)
+        after = sum(segs[i]["end"] - segs[i]["start"] for i in ids if i in new_s)
+        bits = []
+        if rem:
+            bits.append(f"−{len(rem)} sentence{'s' * (len(rem) > 1)}")
+        if add:
+            bits.append(f"+{len(add)} sentence{'s' * (len(add) > 1)}")
+        parts.append(f"“{s['title']}” {', '.join(bits)} ({before:.0f}s → {after:.0f}s)")
+    return "; ".join(parts) + "; other sections unchanged"
+
+
+def edit_roughcut(segs, sections, req, head):
+    """Edit a rough cut as a small change: the model names sentences to remove or add, and every other
+    sentence of the version stays as it was (paper §4.2: the edit carries out the request only)."""
+    n = len(segs)
+    tgt = req["target"]
+    old = sorted(set(tgt["keep"]))
+    prompt = req["prompt"]
+    user = (head + f"Current version #{tgt['id']} keeps these sentences:\n"
+            f"{source_listing(segs, sections, idxs=old)}\n\n"
+            f"The user's edit request: \"{prompt}\"\n"
+            "Carry out the request with the smallest change: list only the sentence indices to remove from the "
+            "current version and the source sentence indices to add to it. Do not touch sentences the request is "
+            "not about. To shorten a part, remove some (not all) of its sentences, keeping the ones that carry "
+            "the key steps.\n"
+            'Return JSON: {"remove": [index, ...], "add": [index, ...], '
+            '"summary": "one sentence naming the specific change and the section it affected, e.g. '
+            "Shortened the description of dining halls within the 'Dining and Housing' section.\"}")
+    shorten = bool(SHORTEN_WORDS.search(prompt)) and not LENGTHEN_WORDS.search(prompt)
+    for attempt in range(2):
+        out = chat(EDITOR_SYS, user)
+        rem = set(parse_keep(out.get("remove"), n)) & set(old)
+        add = set(parse_keep(out.get("add"), n)) - set(old)
+        new = sorted((set(old) - rem) | add)
+        ok = new and new != old and (not shorten or dur_of(new, segs) < dur_of(old, segs))
+        if ok:
+            break
+        user += ("\n\nYour previous answer did not change the version as asked"
+                 + (" (it must end up shorter)" if shorten else "") + ". Try again.")
+    if not ok:
+        raise LLMError("The model did not make that change. Try naming the part more precisely.")
+    summary = str(out.get("summary", "")).strip()
+    return {"keep": new, "summary": (summary + " " if summary else "") + f"[{diff_desc(old, new, segs, sections)}]"}
+
+
 def gen_roughcut(segs, sections, req):
     mode = req.get("mode", "augment")
     n = len(segs)
@@ -343,12 +402,8 @@ def gen_roughcut(segs, sections, req):
                 "label": f"Length: {L[3]} · Coverage: {F[1]}"}
 
     if mode == "edit":
-        tgt = req["target"]
-        user = (head + f"Current version #{tgt['id']}: {keep_desc(tgt['keep'], segs, sections)}\n\n"
-                f"The user's edit request: \"{req['prompt']}\"\n"
-                "Change the current version to carry out the request, and change nothing else.\n"
-                + fmt % "one sentence naming the specific change and the section it affected, e.g. Shortened the description of dining halls within the 'Dining and Housing' section.")
-    elif mode == "surprise":
+        return edit_roughcut(segs, sections, req, head)
+    if mode == "surprise":
         user = (head + f"Existing rough cut versions:\n{vlist}\n\n"
                 "Create one new rough cut that is clearly different from all existing versions: a different "
                 "storyline, length, or choice of sections, that would still make a good video.\n"
