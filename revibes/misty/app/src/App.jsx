@@ -10,7 +10,7 @@ import {
   useNodesState,
   useReactFlow,
 } from '@xyflow/react';
-import { Code2, Compass, Hand, ImagePlus, Info } from 'lucide-react';
+import { Code2, Compass, FilePlus2, Hand, ImagePlus, Info } from 'lucide-react';
 import { MistyContext } from './context.js';
 import BlendDialog from './components/BlendDialog.jsx';
 import CodeDock from './components/CodeDock.jsx';
@@ -19,6 +19,7 @@ import ExampleNode from './components/ExampleNode.jsx';
 import SourceNode from './components/SourceNode.jsx';
 import { pickTarget } from './lib/dom.js';
 import { readFileAsDataUrl, toPng } from './lib/image.js';
+import { loadCanvas, saveCanvas } from './lib/persist.js';
 import { BRIDGE_URL, bridgeHealth, callModel, normalizeCategories } from './lib/llm.js';
 import { dropBlendPrompt, fixRenderPrompt, globalBlendPrompt, togglePrompt } from './lib/prompts.js';
 import { repairCode } from './lib/repair.js';
@@ -55,6 +56,7 @@ function Workspace() {
   const imageInput = useRef(null);
   const codeInput = useRef(null);
   const started = useRef(false);
+  const [loaded, setLoaded] = useState(false);
 
   const nodesRef = useRef(nodes);
   nodesRef.current = nodes;
@@ -126,18 +128,72 @@ function Workspace() {
     [setNodes]
   );
 
+  const seedCanvas = useCallback(async () => {
+    nodesRef.current = [];
+    setNodes([]);
+    setEdges([]);
+    await addExample(SAMPLE_EXAMPLES[0].src, SAMPLE_EXAMPLES[0].name, { x: -420, y: 40 });
+    addSource(PARKS_CODE, { x: 40, y: 0 });
+    setTimeout(() => flow.fitView({ padding: 0.15, duration: 300 }), 80);
+  }, [addExample, addSource, flow, setEdges, setNodes]);
+
   useEffect(() => {
     if (started.current) return;
     started.current = true;
     (async () => {
-      await addExample(SAMPLE_EXAMPLES[0].src, SAMPLE_EXAMPLES[0].name, { x: -420, y: 40 });
-      addSource(PARKS_CODE, { x: 40, y: 0 });
-      setTimeout(() => flow.fitView({ padding: 0.15, duration: 300 }), 80);
+      // Restore the saved canvas (see lib/persist.js); start from the samples otherwise.
+      const saved = await loadCanvas();
+      if (saved?.nodes?.length) {
+        const restored = saved.nodes.map((n) =>
+          n.type === 'source' && (n.data.status === 'loading' || n.data.toggling)
+            ? {
+                ...n,
+                data: {
+                  ...n.data,
+                  status: 'idle',
+                  toggling: false,
+                  error: 'Interrupted by a page reload. Press Regenerate to try again.',
+                },
+              }
+            : n
+        );
+        nodesRef.current = restored;
+        setNodes(restored);
+        setEdges(saved.edges ?? []);
+        setTimeout(() => (saved.viewport ? flow.setViewport(saved.viewport) : flow.fitView({ padding: 0.15 })), 80);
+      } else {
+        await seedCanvas();
+      }
+      setLoaded(true);
     })().catch((error) => say(error.message));
     bridgeHealth()
       .then((info) => setBridge({ state: 'ok', info }))
       .catch(() => setBridge({ state: 'down' }));
-  }, [addExample, addSource, flow, say]);
+  }, [seedCanvas, flow, say, setEdges, setNodes]);
+
+  // Save the canvas shortly after every change.
+  useEffect(() => {
+    if (!loaded) return undefined;
+    const timer = setTimeout(() => {
+      const clean = nodes.map(({ id, type, position, data }) => ({
+        id,
+        type,
+        position,
+        data: { ...data, renderError: undefined },
+      }));
+      saveCanvas({ nodes: clean, edges, viewport: flow.getViewport() });
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [nodes, edges, loaded, flow]);
+
+  const newCanvas = async () => {
+    if (!window.confirm('Clear the canvas and start again from the sample nodes?')) return;
+    setDockId(null);
+    setPendingDrop(null);
+    setHighlight(null);
+    setMenu(null);
+    await seedCanvas().catch((error) => say(error.message));
+  };
 
   const importFiles = useCallback(
     async (files) => {
@@ -304,7 +360,12 @@ function Workspace() {
   const resetAll = (id) => {
     const node = getNode(id);
     if (!node?.data.blendedCode) return;
-    const categories = node.data.categories.map((c) => ({ ...c, enabled: true }));
+    // Also undo class values edited in the panel, so the list matches the code again.
+    const categories = node.data.categories.map((c) => ({
+      ...c,
+      enabled: true,
+      changes: c.changes.map((x) => (x.original !== undefined ? { ...x, after: x.original, original: undefined } : x)),
+    }));
     patchNode(id, {
       categories,
       code: node.data.blendedCode,
@@ -328,7 +389,12 @@ function Workspace() {
       toggleCache: {},
       categories: node.data.categories.map((c) =>
         c.id === categoryId
-          ? { ...c, changes: c.changes.map((x, i) => (i === index ? { ...x, after: value } : x)) }
+          ? {
+              ...c,
+              changes: c.changes.map((x, i) =>
+                i === index ? { ...x, after: value, original: x.original ?? x.after } : x
+              ),
+            }
           : c
       ),
     });
@@ -378,7 +444,11 @@ function Workspace() {
         setHighlight(null);
         return;
       }
-      const target = pickTarget(hovered, root);
+      // Shift or Alt widens the target to the enclosing section (ported from xhigh).
+      let target = pickTarget(hovered, root);
+      if ((event.shiftKey || event.altKey) && target?.parentElement && target.parentElement !== root) {
+        target = target.parentElement;
+      }
       const rect = target?.getBoundingClientRect();
       if (!rect) return;
       over = { nodeId, target };
@@ -633,6 +703,9 @@ function Workspace() {
           >
             <Compass size={16} /> Guided Demo
           </button>
+          <button className="m-tool" title="Clear the canvas (it is saved in this browser)" onClick={newCanvas}>
+            <FilePlus2 size={16} /> New Canvas
+          </button>
           <input
             ref={imageInput}
             type="file"
@@ -673,6 +746,7 @@ function Workspace() {
           <div className="m-ghost" style={{ left: drag.x, top: drag.y }}>
             <img src={drag.crop} alt="" />
             <Hand size={20} />
+            <small className="m-ghost-hint">Hold Shift for a wider target</small>
           </div>
         )}
 

@@ -112,8 +112,26 @@ was already true on arrival (after Back). The tour uses the app only through `lo
 
 ## Known limitations
 
-- Canvas state lives in memory, so a page reload clears it.
 - Drops always target a block-level element, so a single small element can't be targeted exactly.
 - Mapping rendered HTML to source relies entirely on the model.
 - Toggles rely on the model too, so unrelated parts of the UI can change.
 - There are no automated tests.
+
+## Remix base additions (table 7)
+
+This app is the table 7 remix base: Kiki's revibe (table 7, group 3), with four features ported
+from the group 1 "xhigh" revibe.
+
+- **Saved canvas.** `src/lib/persist.js` stores nodes, edges and the viewport in IndexedDB
+  (`misty-remix-table7`) 600 ms after each change. `App.jsx` restores it on start, and marks a
+  blend that a reload interrupted with an error, so Regenerate retries it. **New Canvas** clears it.
+- **Wider drop target.** While dragging a section, holding Shift (or Alt) moves the highlighted
+  target up to its parent element (`trackTarget` in `App.jsx`). The drag ghost shows a hint.
+- **Color swatches.** In Applied Changes, a class value that contains a Tailwind color gets a
+  swatch. It opens a palette, and picking a color goes through the same `editChange` as typing,
+  so it needs no model call (`ColorSwatch` in `components/AppliedChanges.jsx`).
+- **Download.** The code dock saves the component as `misty-component.jsx`.
+
+One fix: Reset All now also restores class values edited in the panel (`original` on each change),
+so the list matches the code again.
+

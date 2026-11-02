@@ -2,6 +2,64 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronLeft, ChevronRight, RotateCcw } from 'lucide-react';
 import { useMisty } from '../context.js';
 
+// Colour tokens get a swatch that opens a palette (ported from the xhigh revibe), so
+// "varying individual colors" (Section 4.2.3) takes one click.
+const HUES = ['slate', 'gray', 'zinc', 'stone', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald',
+  'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose'];
+const SHADES = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'];
+const COLOR_RE = new RegExp(
+  `^((?:[\\w-]+:)*)(bg|text|border|from|via|to|ring|fill|stroke|divide|outline|decoration|accent|shadow)-(?:(${HUES.join('|')})-(\\d{2,3})|(white|black))(\\/\\d+)?$`
+);
+
+function ColorSwatch({ value, disabled, onPick }) {
+  const [open, setOpen] = useState(false);
+  const tokens = value.split(/\s+/).filter(Boolean);
+  const index = tokens.findIndex((t) => COLOR_RE.test(t));
+  if (index < 0) return null;
+  const [, variants, prop, hue, shade, plain, alpha = ''] = tokens[index].match(COLOR_RE);
+  const current = plain || `${hue}-${shade}`;
+  const pick = (color) => {
+    setOpen(false);
+    const next = [...tokens];
+    next[index] = `${variants}${prop}-${color}${alpha}`;
+    onPick(next.join(' '));
+  };
+  return (
+    <span className="m-swatch-wrap">
+      <button
+        type="button"
+        className={`m-swatch bg-${current}`}
+        title={disabled ? '' : 'Pick another color'}
+        aria-label={`Pick another color for ${tokens[index]}`}
+        disabled={disabled}
+        onClick={() => setOpen((o) => !o)}
+      />
+      {open && (
+        <span className="m-palette" onMouseLeave={() => setOpen(false)}>
+          <span className="m-palette-row">
+            {['white', 'black'].map((c) => (
+              <button key={c} type="button" title={c} className={`m-palette-cell bg-${c}`} onClick={() => pick(c)} />
+            ))}
+          </span>
+          {HUES.map((h) => (
+            <span key={h} className="m-palette-row">
+              {SHADES.map((sh) => (
+                <button
+                  key={sh}
+                  type="button"
+                  title={`${h}-${sh}`}
+                  className={`m-palette-cell bg-${h}-${sh}`}
+                  onClick={() => pick(`${h}-${sh}`)}
+                />
+              ))}
+            </span>
+          ))}
+        </span>
+      )}
+    </span>
+  );
+}
+
 // The semantic diff: one toggle per category of change (Section 4.2.3), with the
 // class-level changes underneath for fine-grained edits.
 export default function AppliedChanges({ id, data }) {
@@ -78,6 +136,11 @@ export default function AppliedChanges({ id, data }) {
                     <span className="m-class-type">{change.type}</span>
                     <code>{change.before || '(new)'}</code>
                     <span>→</span>
+                    <ColorSwatch
+                      value={change.after || ''}
+                      disabled={disabled || !category.enabled}
+                      onPick={(value) => editChange(id, category.id, index, value)}
+                    />
                     <input
                       key={change.after}
                       className="m-class-input"

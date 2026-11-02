@@ -214,3 +214,13 @@ body.m-dragging, body.m-dragging * { cursor: grabbing !important; user-select: n
 .m-dock-editor { flex: 1; overflow: auto; font: 12px/1.5 ui-monospace, Menlo, monospace; }
 .m-dock-editor pre { min-height: 100%; }
 .m-dock-error { margin: 0; padding: 10px 14px; background: #4a2020; color: #ffc9c0; font-size: 11px; white-space: pre-wrap; }
+
+/* ---- remix base additions (ported from the xhigh revibe) ---- */
+.m-ghost-hint { display: block; margin-top: 4px; font-size: 11px; color: #4b4f6b; background: rgba(255,255,255,.9); border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+.m-swatch-wrap { position: relative; display: inline-flex; align-items: center; }
+.m-swatch { width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(0,0,0,.15); cursor: pointer; padding: 0; }
+.m-swatch:disabled { cursor: default; opacity: .5; }
+.m-palette { position: absolute; right: 0; top: 18px; z-index: 30; display: flex; flex-direction: column; gap: 2px; padding: 6px; background: #fff; border: 1px solid #e2e3ec; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+.m-palette-row { display: flex; gap: 2px; }
+.m-palette-cell { width: 13px; height: 13px; border-radius: 2px; border: 1px solid rgba(0,0,0,.08); padding: 0; cursor: pointer; }
+.m-palette-cell:hover { transform: scale(1.25); }

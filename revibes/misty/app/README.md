@@ -4,6 +4,11 @@ A rebuild of **Misty: UI Prototyping Through Interactive Conceptual Blending**, 
 paper alone. Blend example screenshots or sketches into work-in-progress React and Tailwind UI
 code on an infinite canvas.
 
+**Table 7 remix base.** This is Kiki's revibe (table 7, group 3) with four features from the
+group 1 "xhigh" revibe: the canvas is saved in the browser (**New Canvas** clears it), Shift widens
+the drop target, color swatches in Applied Changes, and Download in the code editor. See
+`DEVELOPER.md` and `../remixes.md`.
+
 There is no API key. Model calls go through the workshop's LLM bridge, which uses Claude Code
 (by default the Haiku model, not the paper's GPT-4o).
 

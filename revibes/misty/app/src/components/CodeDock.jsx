@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { LiveEditor, LiveError, LiveProvider } from 'react-live';
-import { Check, Copy, X } from 'lucide-react';
+import { Check, Copy, Download, X } from 'lucide-react';
 import { iconScope } from '../lib/icons.js';
 
 const THEME = {
@@ -26,6 +26,16 @@ export default function CodeDock({ node, onChange, onClose }) {
     setTimeout(() => setCopied(false), 1500);
   };
 
+  // Save the component as a .jsx file to take back to a project (ported from xhigh).
+  const download = () => {
+    const url = URL.createObjectURL(new Blob([code], { type: 'text/javascript' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'misty-component.jsx';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+
   return (
     <aside className="m-dock" aria-label="Code editor">
       <header>
@@ -33,6 +43,9 @@ export default function CodeDock({ node, onChange, onClose }) {
         <span className="m-dock-spacer" />
         <button className="m-dock-button" onClick={copy}>
           {copied ? <Check size={14} /> : <Copy size={14} />} {copied ? 'Copied' : 'Copy'}
+        </button>
+        <button className="m-dock-button" onClick={download}>
+          <Download size={14} /> Download
         </button>
         <button className="m-dock-button" aria-label="Close the code editor" onClick={onClose}>
           <X size={14} />

@@ -27,12 +27,12 @@ Otherwise:
 Prefer to be walked through it? Press **Guided Demo** in the toolbar for an on-screen version of these
 tests. Sections A and J are combined there, and so are C and D.
 
-Reload the page to get a clean canvas. To remove a node, click its panel and press Backspace.
+Press **New Canvas** in the toolbar to get a clean canvas (the canvas is saved in the browser, so a reload keeps it). To remove a node, click its panel and press Backspace.
 Use the fit-view button at the bottom left (the square corners) whenever nodes go off screen.
 
 ## A. Figure 1: the parks card layout (model)
 
-1. Reload. You see a store example on the left and "Find parks" on the right.
+1. Press **New Canvas**. You see a store example on the left and "Find parks" on the right.
 2. Drag across the example to select the big **Featured** card. A dashed box appears, with **Undo** and **Done**.
 3. Press **Undo**. The box disappears. Select the card again.
 4. Drag from inside the box onto the **Steep Ravine** card. A small thumbnail follows the pointer, and the card under it pulses purple.
@@ -43,7 +43,7 @@ Use the fit-view button at the bottom left (the square corners) whenever nodes g
 
 ## B. Section 2: Fuji's global blend and dark theme toggle (model)
 
-1. Reload. Click each default panel and press Backspace to clear the canvas.
+1. Press **New Canvas**. Click each default panel and press Backspace to clear the canvas.
 2. **Add Source** > **Fuji's profile (Section 2)**, then **Add Example** > **Health: dark list**. Press fit view.
 3. Drag from the blue bar on the right of the example to the purple bar on the left of Fuji's profile. Do not expect a dialog.
 
@@ -78,14 +78,14 @@ Use the fit-view button at the bottom left (the square corners) whenever nodes g
 
 ## E. Study task 2: add a header (model)
 
-1. Reload. Select the **Products** bar at the top of the store example.
+1. Press **New Canvas**. Select the **Products** bar at the top of the store example.
 2. Drag it onto the **Nearby** chips or the search box. Choose **Content**, press **Next**.
 
 **Expect:** a centered header at the top with a title that suits the parks, such as "Saved Trails", rather than the word "Products". The rest stays as it was.
 
 ## F. Study task 3: blend a hand-drawn sketch (model)
 
-1. Reload. **Add Example** > **Hand-drawn sketch**. The panel is titled **Reference Sketch**. Press fit view.
+1. Press **New Canvas**. **Add Example** > **Hand-drawn sketch**. The panel is titled **Reference Sketch**. Press fit view.
 2. Drag from its blue bar to the Find parks purple bar.
 
 **Expect:** the sketch's structure: search bar, big image, three small cards, list rows with round thumbnails, a tab bar. The parks keep their content, and the result looks like a finished UI rather than a drawing.
@@ -100,7 +100,7 @@ To go further, draw your own on paper, photograph it, and add it with **Add Exam
 
 ## H. Customize and Regenerate (model)
 
-1. Reload. Select the **Ways to save** tiles and drop them on a park card.
+1. Press **New Canvas**. Select the **Ways to save** tiles and drop them on a park card.
 2. Click **Customize**. **Next** stays disabled until you type. Type `the corner roundness of the tiles`, then press **Next**.
 
    **Expect:** corners change and little else, often just one toggle.
